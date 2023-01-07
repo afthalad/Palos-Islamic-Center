@@ -19,7 +19,7 @@ class SalahTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
+      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
       width: mWidth,
       height: 70,
       decoration: BoxDecoration(
@@ -79,51 +79,49 @@ class MSalahTime extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              SalahTime(
-                mWidth: mWidth * 0.3,
-                salahImage: 'images/subah.png',
-                salahTitle: 'Fajr',
-                salahTime: '05.22 am',
-              ),
-              SalahTime(
-                mWidth: mWidth * 0.3,
-                salahImage: 'images/sunrise.png',
-                salahTitle: 'Sunrise',
-                salahTime: '6.02 an',
-              ),
-              SalahTime(
-                mWidth: mWidth * 0.3,
-                salahImage: 'images/duhr.png',
-                salahTitle: 'Duhr',
-                salahTime: '12.42 pm',
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              SalahTime(
-                mWidth: mWidth * 0.3,
-                salahImage: 'images/sunrise.png',
-                salahTitle: 'Asr',
-                salahTime: '03.22 pm',
-              ),
-              SalahTime(
-                mWidth: mWidth * 0.3,
-                salahImage: 'images/magrib.png',
-                salahTitle: 'Magrib',
-                salahTime: '6.02 pm',
-              ),
-              SalahTime(
-                mWidth: mWidth * 0.3,
-                salahImage: 'images/isha.png',
-                salahTitle: 'Isha',
-                salahTime: '03.42 am',
-              ),
-            ],
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SalahTime(
+                  mWidth: mWidth * 0.3,
+                  salahImage: 'images/subah.png',
+                  salahTitle: 'Fajr',
+                  salahTime: '05.22 am',
+                ),
+                SalahTime(
+                  mWidth: mWidth * 0.3,
+                  salahImage: 'images/sunrise.png',
+                  salahTitle: 'Sunrise',
+                  salahTime: '6.02 an',
+                ),
+                SalahTime(
+                  mWidth: mWidth * 0.3,
+                  salahImage: 'images/duhr.png',
+                  salahTitle: 'Duhr',
+                  salahTime: '12.42 pm',
+                ),
+                SalahTime(
+                  mWidth: mWidth * 0.3,
+                  salahImage: 'images/sunrise.png',
+                  salahTitle: 'Asr',
+                  salahTime: '03.22 pm',
+                ),
+                SalahTime(
+                  mWidth: mWidth * 0.3,
+                  salahImage: 'images/magrib.png',
+                  salahTitle: 'Magrib',
+                  salahTime: '6.02 pm',
+                ),
+                SalahTime(
+                  mWidth: mWidth * 0.3,
+                  salahImage: 'images/isha.png',
+                  salahTitle: 'Isha',
+                  salahTime: '03.42 am',
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -325,62 +323,3 @@ class MFeaturesCard2 extends StatelessWidget {
 }
 
 //Event card
-class Events extends StatelessWidget {
-  const Events({
-    Key? key,
-    required this.mHeight,
-    required this.mWidth,
-    required this.image,
-    required this.eventDateTime,
-    required this.eventName,
-  }) : super(key: key);
-
-  final double mHeight;
-  final double mWidth;
-  final String image;
-  final String eventDateTime;
-  final String eventName;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(children: [
-      Container(
-        height: mHeight * 0.2,
-        width: mWidth * 1,
-        margin: const EdgeInsets.symmetric(horizontal: 10),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.3), BlendMode.darken),
-            fit: BoxFit.cover,
-            image: AssetImage(image),
-          ),
-          borderRadius: BorderRadius.circular(15),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 20, bottom: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              eventDateTime,
-              style: const TextStyle(
-                fontSize: 15,
-                color: Colors.white,
-              ),
-            ),
-            Text(
-              eventName,
-              style: const TextStyle(
-                fontSize: 30,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ]);
-  }
-}

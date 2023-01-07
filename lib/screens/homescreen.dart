@@ -16,8 +16,8 @@ class _HomeScreenState extends State<HomeScreen> {
     var mWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        elevation: 0.5,
-        backgroundColor: Colors.purple,
+        elevation: 1,
+        backgroundColor: Color.fromARGB(255, 41, 84, 169),
         centerTitle: true,
         leading: IconButton(
           onPressed: () {},
@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             ImageSlideshow(
                 width: double.infinity,
-                height: mHeight * 0.22,
+                height: mHeight * 0.28,
                 initialPage: 0,
                 indicatorColor: Colors.grey,
                 indicatorBackgroundColor: Colors.white,
@@ -97,5 +97,65 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+}
+
+class Events extends StatelessWidget {
+  const Events({
+    Key? key,
+    required this.mHeight,
+    required this.mWidth,
+    required this.image,
+    required this.eventDateTime,
+    required this.eventName,
+  }) : super(key: key);
+
+  final double mHeight;
+  final double mWidth;
+  final String image;
+  final String eventDateTime;
+  final String eventName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      Container(
+        height: mHeight * 0.2,
+        width: mWidth * 1,
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.3), BlendMode.darken),
+            fit: BoxFit.cover,
+            image: AssetImage(image),
+          ),
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(left: 20, bottom: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              eventDateTime,
+              style: const TextStyle(
+                fontSize: 15,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              eventName,
+              style: const TextStyle(
+                fontSize: 30,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ]);
   }
 }
