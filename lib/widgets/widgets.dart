@@ -100,7 +100,7 @@ class MSalahTime extends StatelessWidget {
 
 //Features Card
 class FeaturesCard extends StatelessWidget {
-  final IconData featuresIcon;
+  final String featuresIcon;
   final String featuresTitle;
   const FeaturesCard({
     Key? key,
@@ -138,16 +138,16 @@ class FeaturesCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
-                featuresIcon,
-                color: Colors.black54,
-              ),
-              SizedBox(
-                height: 10,
+              Container(
+                width: 30,
+                child: Image(
+                  image: AssetImage(featuresIcon),
+                ),
               ),
               Text(
                 featuresTitle,
                 style: TextStyle(
+                  fontSize: 12,
                   color: Colors.black87,
                 ),
               )
@@ -180,19 +180,19 @@ class MFeaturesCard1 extends StatelessWidget {
             FeaturesCard(
               mWidth: mWidth,
               mHeight: mHeight,
-              featuresIcon: Icons.mosque_outlined,
+              featuresIcon: 'images/icon.png',
               featuresTitle: 'Masjidh Service',
             ),
             FeaturesCard(
               mWidth: mWidth,
               mHeight: mHeight,
-              featuresIcon: Icons.event,
+              featuresIcon: 'images/icon-event.png',
               featuresTitle: 'Events',
             ),
             FeaturesCard(
               mWidth: mWidth,
               mHeight: mHeight,
-              featuresIcon: Icons.money_sharp,
+              featuresIcon: 'images/icon-donation.png',
               featuresTitle: 'Donation',
             ),
           ],
@@ -203,19 +203,19 @@ class MFeaturesCard1 extends StatelessWidget {
             FeaturesCard(
               mWidth: mWidth,
               mHeight: mHeight,
-              featuresIcon: Icons.timer_outlined,
+              featuresIcon: 'images/icon-time.png',
               featuresTitle: 'Prayer Timings',
             ),
             FeaturesCard(
               mWidth: mWidth,
               mHeight: mHeight,
-              featuresIcon: Icons.location_on_outlined,
+              featuresIcon: 'images/icons-location.png',
               featuresTitle: 'Location',
             ),
             FeaturesCard(
               mWidth: mWidth,
               mHeight: mHeight,
-              featuresIcon: Icons.live_tv_sharp,
+              featuresIcon: 'images/icons-youtube.png',
               featuresTitle: 'Live Streaming',
             ),
           ],
@@ -246,19 +246,19 @@ class MFeaturesCard2 extends StatelessWidget {
             FeaturesCard(
               mWidth: mWidth,
               mHeight: mHeight,
-              featuresIcon: Icons.mosque_outlined,
+              featuresIcon: 'images/icon-imam.png',
               featuresTitle: 'Ask the imam',
             ),
             FeaturesCard(
               mWidth: mWidth,
               mHeight: mHeight,
-              featuresIcon: Icons.event,
+              featuresIcon: 'images/icon-quote.png',
               featuresTitle: 'Jumada al-akhir',
             ),
             FeaturesCard(
               mWidth: mWidth,
               mHeight: mHeight,
-              featuresIcon: Icons.mosque_outlined,
+              featuresIcon: 'images/icon-discount.png',
               featuresTitle: 'Promotions',
             ),
           ],
@@ -269,24 +269,90 @@ class MFeaturesCard2 extends StatelessWidget {
             FeaturesCard(
               mWidth: mWidth,
               mHeight: mHeight,
-              featuresIcon: Icons.mosque_outlined,
+              featuresIcon: 'images/icon-quote.png',
               featuresTitle: 'Dua o Azkar',
             ),
             FeaturesCard(
               mWidth: mWidth,
               mHeight: mHeight,
-              featuresIcon: Icons.mosque_outlined,
+              featuresIcon: 'images/icon-quote.png',
               featuresTitle: 'Sunnah',
             ),
             FeaturesCard(
               mWidth: mWidth,
               mHeight: mHeight,
-              featuresIcon: Icons.format_quote_outlined,
+              featuresIcon: 'images/icon-quote.png',
               featuresTitle: 'Quotes',
             ),
           ],
         ),
       ],
+    );
+  }
+}
+
+//Event card
+class Events extends StatelessWidget {
+  const Events({
+    Key? key,
+    required this.mHeight,
+    required this.mWidth,
+    required this.image,
+    required this.eventDateTime,
+    required this.eventName,
+  }) : super(key: key);
+
+  final double mHeight;
+  final double mWidth;
+  final String image;
+  final String eventDateTime;
+  final String eventName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Stack(children: [
+        Container(
+          height: mHeight * 0.2,
+          width: mWidth * 1,
+          margin: const EdgeInsets.symmetric(
+            horizontal: 10,
+          ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.3), BlendMode.darken),
+              fit: BoxFit.cover,
+              image: AssetImage(image),
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20, bottom: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                eventDateTime,
+                style: const TextStyle(
+                  fontSize: 15,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                eventName,
+                style: const TextStyle(
+                  fontSize: 30,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ]),
     );
   }
 }
