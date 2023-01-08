@@ -118,44 +118,49 @@ class Events extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      Container(
-        height: mHeight * 0.2,
-        width: mWidth * 1,
-        margin: const EdgeInsets.symmetric(horizontal: 10),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.3), BlendMode.darken),
-            fit: BoxFit.cover,
-            image: AssetImage(image),
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Stack(children: [
+        Container(
+          height: mHeight * 0.2,
+          width: mWidth * 1,
+          margin: const EdgeInsets.symmetric(
+            horizontal: 10,
           ),
-          borderRadius: BorderRadius.circular(15),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 20, bottom: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              eventDateTime,
-              style: const TextStyle(
-                fontSize: 15,
-                color: Colors.white,
-              ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.3), BlendMode.darken),
+              fit: BoxFit.cover,
+              image: AssetImage(image),
             ),
-            Text(
-              eventName,
-              style: const TextStyle(
-                fontSize: 30,
-                color: Colors.white,
-              ),
-            ),
-          ],
+            borderRadius: BorderRadius.circular(15),
+          ),
         ),
-      ),
-    ]);
+        Padding(
+          padding: const EdgeInsets.only(left: 20, bottom: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                eventDateTime,
+                style: const TextStyle(
+                  fontSize: 15,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                eventName,
+                style: const TextStyle(
+                  fontSize: 30,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ]),
+    );
   }
 }

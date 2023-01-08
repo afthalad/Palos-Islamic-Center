@@ -4,59 +4,42 @@ import 'package:flutter/material.dart';
 class SalahTime extends StatelessWidget {
   final double mWidth;
 
-  final String salahImage;
+  final String? salahImage;
   final String salahTitle;
   final String salahTime;
 
   const SalahTime({
     Key? key,
     required this.mWidth,
-    required this.salahImage,
+    this.salahImage,
     required this.salahTitle,
     required this.salahTime,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 11),
-      width: mWidth,
-      height: 70,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          colorFilter: ColorFilter.mode(
-            Colors.black.withOpacity(0.6),
-            BlendMode.darken,
-          ),
-          fit: BoxFit.cover,
-          image: AssetImage(
-            salahImage,
-          ),
-        ),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              salahTitle,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 17,
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            salahTitle,
+            style: const TextStyle(
+              color: Colors.white,
+              // fontWeight: FontWeight.bold,
+              fontSize: 15,
             ),
-            Text(
-              salahTime,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-              ),
+          ),
+          Text(
+            salahTime,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -75,47 +58,39 @@ class MSalahTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+    return Container(
+      color: Color(0xFF66B35A),
       child: Column(
         children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                SalahTime(
-                  mWidth: mWidth * 0.3,
-                  salahImage: 'images/subah.png',
-                  salahTitle: 'Subah',
-                  salahTime: '05.22 am',
-                ),
-                SalahTime(
-                  mWidth: mWidth * 0.3,
-                  salahImage: 'images/duhr.png',
-                  salahTitle: 'Duhr',
-                  salahTime: '6.02 an',
-                ),
-                SalahTime(
-                  mWidth: mWidth * 0.3,
-                  salahImage: 'images/duhr.png',
-                  salahTitle: 'Asr',
-                  salahTime: '12.42 pm',
-                ),
-                SalahTime(
-                  mWidth: mWidth * 0.3,
-                  salahImage: 'images/magrib.png',
-                  salahTitle: 'Magrib',
-                  salahTime: '05.22 am',
-                ),
-                SalahTime(
-                  mWidth: mWidth * 0.3,
-                  salahImage: 'images/isha.png',
-                  salahTitle: 'Isha',
-                  salahTime: '6.02 an',
-                ),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SalahTime(
+                mWidth: mWidth * 0.3,
+                salahTitle: 'Subah',
+                salahTime: '05.22 am',
+              ),
+              SalahTime(
+                mWidth: mWidth * 0.3,
+                salahTitle: 'Duhr',
+                salahTime: '6.02 an',
+              ),
+              SalahTime(
+                mWidth: mWidth * 0.3,
+                salahTitle: 'Asr',
+                salahTime: '12.42 pm',
+              ),
+              SalahTime(
+                mWidth: mWidth * 0.3,
+                salahTitle: 'Magrib',
+                salahTime: '05.22 am',
+              ),
+              SalahTime(
+                mWidth: mWidth * 0.3,
+                salahTitle: 'Isha',
+                salahTime: '6.02 an',
+              ),
+            ],
           ),
         ],
       ),
