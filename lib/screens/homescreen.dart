@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: Color.fromARGB(255, 41, 84, 169),
+        backgroundColor: Color(0xFF66B35A),
         centerTitle: true,
         leading: IconButton(
           onPressed: () {},

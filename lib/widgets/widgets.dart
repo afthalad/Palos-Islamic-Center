@@ -19,13 +19,13 @@ class SalahTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 11),
       width: mWidth,
       height: 70,
       decoration: BoxDecoration(
         image: DecorationImage(
           colorFilter: ColorFilter.mode(
-            Colors.black.withOpacity(0.4),
+            Colors.black.withOpacity(0.6),
             BlendMode.darken,
           ),
           fit: BoxFit.cover,
@@ -33,7 +33,7 @@ class SalahTime extends StatelessWidget {
             salahImage,
           ),
         ),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: Padding(
         padding: const EdgeInsets.all(10),
@@ -87,38 +87,32 @@ class MSalahTime extends StatelessWidget {
                 SalahTime(
                   mWidth: mWidth * 0.3,
                   salahImage: 'images/subah.png',
-                  salahTitle: 'Fajr',
+                  salahTitle: 'Subah',
                   salahTime: '05.22 am',
-                ),
-                SalahTime(
-                  mWidth: mWidth * 0.3,
-                  salahImage: 'images/sunrise.png',
-                  salahTitle: 'Sunrise',
-                  salahTime: '6.02 an',
                 ),
                 SalahTime(
                   mWidth: mWidth * 0.3,
                   salahImage: 'images/duhr.png',
                   salahTitle: 'Duhr',
-                  salahTime: '12.42 pm',
+                  salahTime: '6.02 an',
                 ),
                 SalahTime(
                   mWidth: mWidth * 0.3,
-                  salahImage: 'images/sunrise.png',
+                  salahImage: 'images/duhr.png',
                   salahTitle: 'Asr',
-                  salahTime: '03.22 pm',
+                  salahTime: '12.42 pm',
                 ),
                 SalahTime(
                   mWidth: mWidth * 0.3,
                   salahImage: 'images/magrib.png',
                   salahTitle: 'Magrib',
-                  salahTime: '6.02 pm',
+                  salahTime: '05.22 am',
                 ),
                 SalahTime(
                   mWidth: mWidth * 0.3,
                   salahImage: 'images/isha.png',
                   salahTitle: 'Isha',
-                  salahTime: '03.42 am',
+                  salahTime: '6.02 an',
                 ),
               ],
             ),
@@ -321,5 +315,3 @@ class MFeaturesCard2 extends StatelessWidget {
     );
   }
 }
-
-//Event card
