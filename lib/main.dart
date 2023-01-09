@@ -1,3 +1,4 @@
+import 'package:al_sahabah/screens/featuresscreen.dart';
 import 'package:al_sahabah/screens/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,7 +14,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(textTheme: GoogleFonts.poppinsTextTheme()),
-      home: HomeScreen(),
+      initialRoute: '/home_screen',
+      routes: {
+        '/home_screen': (context) => const HomeScreen(),
+      },
     );
   }
 }
