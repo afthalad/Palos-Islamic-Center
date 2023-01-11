@@ -7,6 +7,7 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../screens/drawerpagescreen.dart';
+import '../screens/settingpagescreen.dart';
 
 //Salah Times
 class SalahTime extends StatelessWidget {
@@ -1141,6 +1142,89 @@ class EndDrawer extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+// Setting Page Widget
+class SettingOptionWidget extends StatelessWidget {
+  final String settingName;
+  final IconData settingIcon;
+  final Widget pageWidget;
+  const SettingOptionWidget({
+    Key? key,
+    required this.settingName,
+    required this.settingIcon,
+    required this.pageWidget,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Colors.black12),
+        ),
+      ),
+      child: ListTile(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SettingPagesScreen(
+              appBarTitle: settingName,
+              pageWidget: pageWidget,
+            ),
+          ),
+        ),
+        leading: Icon(
+          settingIcon,
+          color: const Color(0xFF0D50A3),
+          size: 35,
+        ),
+        title: Text(settingName),
+        trailing: const Icon(
+          Icons.arrow_forward_ios,
+          color: Colors.black12,
+        ),
+      ),
+    );
+  }
+}
+
+//Setting Page Screen
+class SettingPageScreen extends StatelessWidget {
+  const SettingPageScreen({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const SettingOptionWidget(
+          settingName: 'Athan',
+          settingIcon: Icons.masks,
+          pageWidget: Text('asd'),
+        ),
+        const SettingOptionWidget(
+          settingName: 'Iqamah',
+          settingIcon: Icons.masks,
+          pageWidget: Text('asd'),
+        ),
+        const SettingOptionWidget(
+          settingName: 'Notifications',
+          settingIcon: Icons.notifications,
+          pageWidget: Text('asd'),
+        ),
+        const SettingOptionWidget(
+          settingName: 'Locations',
+          settingIcon: Icons.location_on,
+          pageWidget: Text('asd'),
+        ),
+      ],
     );
   }
 }
