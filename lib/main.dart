@@ -1,5 +1,3 @@
-import 'package:al_sahabah/screens/drawerpagescreen.dart';
-import 'package:al_sahabah/screens/featuresscreen.dart';
 import 'package:al_sahabah/screens/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

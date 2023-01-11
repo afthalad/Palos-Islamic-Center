@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DrawerPagesScreen extends StatelessWidget {
+class DrawerPagesScreen extends StatefulWidget {
   final String appBarTitle;
   final Widget pageWidget;
   const DrawerPagesScreen({
@@ -10,15 +10,22 @@ class DrawerPagesScreen extends StatelessWidget {
   });
 
   @override
+  State<DrawerPagesScreen> createState() => _DrawerPagesScreenState();
+}
+
+class _DrawerPagesScreenState extends State<DrawerPagesScreen> {
+  final _formKey = GlobalKey<FormState>();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
         backgroundColor: const Color(0xFF66B35A),
         centerTitle: true,
-        title: Text(appBarTitle),
+        title: Text(widget.appBarTitle),
       ),
-      body: pageWidget,
+      body: widget.pageWidget,
     );
   }
 }
