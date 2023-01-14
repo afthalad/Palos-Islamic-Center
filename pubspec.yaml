@@ -39,8 +39,8 @@ dependencies:
   flutter_image_slideshow: ^0.1.4
   google_fonts: ^3.0.1
   url_launcher: ^6.1.7
-  youtube_player_flutter: ^8.1.2
- 
+  location: ^4.4.0
+  geocoding: ^2.0.5
   
 
 dev_dependencies:
