@@ -168,7 +168,7 @@ String aboutus_screen_paragraph_3 =
 
 // Home screen
   String homescreen_slideshow_image1 ='https://images.unsplash.com/photo-1597734187998-e1931acfe2ed?ixlib=rb-4ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bWFzamlkfGVufDB8fDB8fA%3D%3D&w=1000&q=80';
-  String homescreen_slideshow_image2 ='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPXlJihD-aeeSlMpTx8NV2rwkPzqw5UANQLHfCv0nmC0sQkCRkrSe6fXHSqjV2wm8NgA8&usqp=CAU';
+  String homescreen_slideshow_image2 ='https://images.unsplash.com/photo-1519818187420-8e49de7adeef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=327&q=80';
 
 // Live stream screen
   String live_stream_screen_video_iframe =  '''
@@ -201,7 +201,7 @@ String aboutus_screen_paragraph_3 =
 
 
 //Prayer timings screen
-String prayer_timing_screen_bgimage = 'https://static.vecteezy.com/system/resources/previews/006/998/428/original/islamic-design-for-background-ramadan-kareem-banner-mosque-silhouette-design-illustration-ramadan-kareem-s-design-is-similar-to-greetings-invitations-templates-or-backgrounds-free-vector.jpg';
+  String prayer_timing_screen_bgimage = 'https://static.vecteezy.com/system/resources/previews/006/998/428/original/islamic-design-for-background-ramadan-kareem-banner-mosque-silhouette-design-illustration-ramadan-kareem-s-design-is-similar-to-greetings-invitations-templates-or-backgrounds-free-vector.jpg';
 
 
 
