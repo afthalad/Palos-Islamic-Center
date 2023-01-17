@@ -1,5 +1,6 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -51,11 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
               isLoop: true,
               children: [
                 Image.network(
-                  'https://images.unsplash.com/photo-1597734187998-e1931acfe2ed?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bWFzamlkfGVufDB8fDB8fA%3D%3D&w=1000&q=80',
+                  homescreen_slideshow_image1,
                   fit: BoxFit.cover,
                 ),
                 Image.network(
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPXlJihD-aeeSlMpTx8NV2rwkPzqw5UANQLHfCv0nmC0sQkCRkrSe6fXHSqjV2wm8NgA8&usqp=CAU',
+                 homescreen_slideshow_image2,
                   fit: BoxFit.cover,
                 )
               ]),

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 //Setting Page Screen
 class SettingPageScreen extends StatefulWidget {
-  SettingPageScreen({
+  const SettingPageScreen({
     Key? key,
   }) : super(key: key);
 
@@ -23,7 +23,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
         elevation: 1,
         backgroundColor: const Color(0xFF66B35A),
         centerTitle: true,
-        title: Text("Settings"),
+        title: const Text("Settings"),
       ),
       body: ListView(children: [
         Column(
@@ -207,7 +207,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
               ),
               pageWidget: Text('asd'),
             ),
-            SettingOptionWidget(
+            const SettingOptionWidget(
                 settingName: 'Puttalam',
                 settingSubtitle: 'Current Praye time location',
                 settingIcon: Icons.location_on,

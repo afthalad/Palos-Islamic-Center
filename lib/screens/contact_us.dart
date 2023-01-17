@@ -1,3 +1,4 @@
+import 'package:al_sahabah/const/const.dart';
 import 'package:flutter/material.dart';
 
 //Contace Us Details
@@ -27,31 +28,30 @@ class ContaceusDetailsScreen extends StatelessWidget {
                 ),
               ),
               child: ListTile(
-                contentPadding: EdgeInsets.all(10),
-                leading: const CircleAvatar(
+                contentPadding: const EdgeInsets.all(10),
+                leading:  CircleAvatar(
                   backgroundImage: NetworkImage(
-                      'https://www.aclu.org/wp-content/uploads/2019/09/devon_chaffee_webedit-scaled.jpg'),
+                     contactus_screen_profile),
                 ),
                 title: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('Oussuma Jammal',
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.bold)),
+                  children:  [
+                    Text(contactus_screen_profile_name,
+                        style: contactus_screen_profile_name_tstyle),
                     Text(
-                      'President and Chairman of the board',
-                      style: TextStyle(fontSize: 12),
+                     contactus_screen_profile_post,
+                      style: contactus_screen_profile_tstyle,
                     ),
                   ],
                 ),
                 subtitle: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('ojammal@mosquefoundation.org',
-                        style: TextStyle(fontSize: 12)),
-                    Text('(708)430-567', style: TextStyle(fontSize: 12)),
+                  children:  [
+                    Text(contactus_screen_profile_email,
+                        style: contactus_screen_profile_tstyle),
+                    Text(contactus_screen_profile_phone, style: contactus_screen_profile_tstyle),
                   ],
                 ),
               ),

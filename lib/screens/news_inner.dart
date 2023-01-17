@@ -1,3 +1,4 @@
+import 'package:al_sahabah/const/const.dart';
 import 'package:flutter/material.dart';
 
 class NewsInnerScreen extends StatefulWidget {
@@ -31,21 +32,21 @@ class _NewsInnerScreenState extends State<NewsInnerScreen> {
                       fit: BoxFit.cover,
                       colorFilter: ColorFilter.mode(
                           Colors.black.withOpacity(0.7), BlendMode.darken),
-                      image: const NetworkImage(
-                          'https://muslimnews.co.uk/assets/Palestine-Israeliforces-attack-coffin-of-AlJazeera-journalist-Shireen-Abu-AKleh-E-Jerusalem-13-5-22-shot-dead-by-Israeli-forces-on-may11in-jenin-ph-Mustafa-alkharouf-AA-scaled-513x239.jpg'),
+                      image:  NetworkImage(news_inner_screen_image
+                          ),
                     ),
                   ),
                 ),
-                const Padding(
+                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: ListTile(
                     title: Text(
-                      'Palestine: 55 Palestinian journalists killed by Israel since 2000',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                     news_inner_screen_title,
+                      style: news_inner_screen_title_tstyle,
                     ),
                     subtitle: Text(
-                      '10th Jan 2023',
-                      style: TextStyle(color: Colors.white54),
+                     news_inner_screen_date,
+                      style: news_inner_screen_date_tstyle,
                     ),
                   ),
                 ),
@@ -54,7 +55,7 @@ class _NewsInnerScreenState extends State<NewsInnerScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Text(
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce in vulputate nisl. Nam ut feugiat dui. Sed tempor neque sit amet bibendum finibus. Duis id efficitur ante. Etiam mauris tortor, malesuada ac eros at, dictum interdum erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam faucibus vel tortor egestas lacinia. Quisque sed mollis lacus. Morbi luctus, nisl accumsan ornare tincidunt, ex lectus luctus ligula, sed tincidunt turpis nunc eu tellus. Aenean non metus ut diam aliquam sollicitudin. Integer tincidunt lorem purus, sed feugiat nisi tempor et. Suspendisse in magna sed justo consequat placerat. Etiam tellus dui, pharetra nec libero sit amet, commodo aliquam massa. Aliquam erat volutpat.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce in vulputate nisl. Nam ut feugiat dui. Sed tempor neque sit amet bibendum finibus. Duis id efficitur ante. Etiam mauris tortor, malesuada ac eros at, dictum interdum erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam faucibus vel tortor egestas lacinia. Quisque sed mollis lacus. Morbi luctus, nisl accumsan ornare tincidunt, ex lectus luctus ligula, sed tincidunt turpis nunc eu tellus. Aenean non metus ut diam aliquam sollicitudin. Integer tincidunt lorem purus, sed feugiat nisi tempor et. Suspendisse in magna sed justo consequat placerat. Etiam tellus dui, pharetra nec libero sit amet, commodo aliquam massa. Aliquam erat volutpat.\n\n"),
+                  news_inner_screen_news),
             )
           ],
         ),

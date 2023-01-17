@@ -1,3 +1,4 @@
+import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -28,23 +29,19 @@ class _NewsScreenState extends State<NewsScreen> {
               (counter) => const NewsSlideWidget(),
             ),
           ),
-          const ListTile(
+           ListTile(
             tileColor: Colors.white,
             title: Text(
-              'Recent News',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
+              news_screen_title,
+              style: news_screen_title_tstyle
             ),
-            subtitle: Text('Stay up to date with the latest news and events'),
+            subtitle: Text(news_screen_subtitle),
           ),
           Expanded(
             child: ListView.builder(
               itemCount: 5,
               itemBuilder: (BuildContext context, int index) {
-                return NewsListtileWidget();
+                return const NewsListtileWidget();
               },
             ),
           ),

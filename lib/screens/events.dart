@@ -1,5 +1,7 @@
+import 'package:al_sahabah/const/const.dart';
 import 'package:flutter/material.dart';
 
+// Events screen
 class EventsScreen extends StatefulWidget {
   const EventsScreen({super.key});
 
@@ -31,26 +33,23 @@ class _EventsScreenState extends State<EventsScreen> {
                   ),
                   padding: const EdgeInsets.all(5),
                   child: Column(
-                    children: const [
+                    children:  [
                       Text(
-                        '20th',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        event_screen_date,
+                        style: event_screen_date_tstyle
                       ),
                       Text(
-                        'NOV',
-                        style: TextStyle(fontSize: 13),
+                        event_screen_month,
+                        style: event_screen_month_tstyle,
                       ),
                     ],
                   ),
                 ),
-                title: Text('Sister Class'),
-                subtitle: Text('Wed 06.00pm - 07.50pm'),
+                title: Text(event_screen_event_name),
+                subtitle: Text(event_screen_time),
                 trailing: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image(
+                  child: const Image(
                     image: AssetImage('images/duhr.png'),
                   ),
                 ),

@@ -12,27 +12,36 @@ class _MyAppState extends State<QiblaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _deviceSupport,
-      builder: (_, AsyncSnapshot<bool?> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (snapshot.hasError) {
-          return Center(
-            child: Text("Error: ${snapshot.error.toString()}"),
-          );
-        }
-        if (snapshot.data!) {
-          return QiblahCompass();
-        } else {
-          return const Center(
-            child: Text("Your device is not supported"),
-          );
-        }
-      },
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: const Color(0xFF66B35A),
+        centerTitle: true,
+        title: const Text('Qibla'),
+        
+      ),
+      body: FutureBuilder(
+        future: _deviceSupport,
+        builder: (_, AsyncSnapshot<bool?> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error: ${snapshot.error.toString()}"),
+            );
+          }
+          if (snapshot.data!) {
+            return QiblahCompass();
+          } else {
+            return const Center(
+              child: Text("Your device is not supported"),
+            );
+          }
+        },
+      ),
     );
   }
 }

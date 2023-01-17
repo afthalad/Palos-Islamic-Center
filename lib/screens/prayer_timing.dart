@@ -1,3 +1,4 @@
+import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -10,22 +11,31 @@ class PrayerTimingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          colorFilter:
-              ColorFilter.mode(Colors.black.withOpacity(0.6), BlendMode.darken),
-          fit: BoxFit.cover,
-          image: const NetworkImage(
-              'https://static.vecteezy.com/system/resources/previews/006/998/428/original/islamic-design-for-background-ramadan-kareem-banner-mosque-silhouette-design-illustration-ramadan-kareem-s-design-is-similar-to-greetings-invitations-templates-or-backgrounds-free-vector.jpg'),
-        ),
+    return Scaffold(
+     appBar: AppBar(
+        elevation: 1,
+        backgroundColor: const Color(0xFF66B35A),
+        centerTitle: true,
+        title: const Text('Prayer Time'),
+        
       ),
-      child: const ImageSlideshow(
-        height: double.infinity,
-        children: [
-          PrayeTimeTable(),
-          PrayeTimeTable(),
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            colorFilter:
+                ColorFilter.mode(Colors.black.withOpacity(0.6), BlendMode.darken),
+            fit: BoxFit.cover,
+            image:  NetworkImage(
+                prayer_timing_screen_bgimage),
+          ),
+        ),
+        child: const ImageSlideshow(
+          height: double.infinity,
+          children: [
+            PrayeTimeTable(),
+            PrayeTimeTable(),
+          ],
+        ),
       ),
     );
   }

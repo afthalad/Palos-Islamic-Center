@@ -1,3 +1,4 @@
+import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class NewsletterScreen extends StatelessWidget {
         elevation: 1,
         backgroundColor: const Color(0xFF66B35A),
         centerTitle: true,
-        title: Text("News Letter"),
+        title: const Text("News Letter"),
       ),
       body: Form(
         key: _formKey,
@@ -30,19 +31,19 @@ class NewsletterScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
+             Container(
               width: 400,
               height: 200,
-              child: Image(image: AssetImage('images/email.png')),
+              child: const Image(image: AssetImage('images/email.png')),
             ),
             Text(
-              'Subscribe Newsletter',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+             newsletter_screen_title,
+              style: newsletter_screen_title_tstyle,
             ),
-            Text('Subscribe to our updates right in your inbox.'),
+            Text(newsletter_screen_subtitle),
             FormTextField(
-              hintText: 'Email',
-              validatorText: 'Please enter email to subscribe',
+              hintText: newsletter_screen_hintext,
+              validatorText: newsletter_screen_validetext,
             ),
             SizedBox(height: mHeight * 0.01),
             Container(
@@ -62,7 +63,7 @@ class NewsletterScreen extends StatelessWidget {
                 },
                 child: Text(
                   'Subscribe',
-                  style: TextStyle(fontSize: 20),
+                  style: newsletter_screen_buttontext_tstyle,
                 ),
               ),
             ),
