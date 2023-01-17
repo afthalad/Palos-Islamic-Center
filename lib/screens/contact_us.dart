@@ -13,10 +13,10 @@ class ContaceusDetailsScreen extends StatelessWidget {
         elevation: 1,
         backgroundColor: const Color(0xFF66B35A),
         centerTitle: true,
-        title: Text("Contact us"),
+        title: const Text("Contact us"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: ListView.builder(
           itemCount: 5,
           itemBuilder: (BuildContext context, int index) {

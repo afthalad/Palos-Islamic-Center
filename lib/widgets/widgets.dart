@@ -202,7 +202,7 @@ class MFeaturesCard1 extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                launchUrl(Uri.parse('https://donorbox.org/pic22'));
+                launchUrl(Uri.parse(m_features_card1_donationt_web_url));
               },
               child: FeaturesCard(
                 mWidth: mWidth,
@@ -267,9 +267,9 @@ class MFeaturesCard2 extends StatelessWidget {
   final double mWidth;
   final double mHeight;
   static const List<Tab> _tabs = [
-    const Tab(text: 'Categries'),
-    const Tab(text: 'My Questions'),
-    const Tab(text: 'FAQ'),
+     Tab(text: 'Categries'),
+     Tab(text: 'My Questions'),
+     Tab(text: 'FAQ'),
   ];
   TabController? _tabController;
 
@@ -283,7 +283,7 @@ class MFeaturesCard2 extends StatelessWidget {
             InkWell(
               onTap: () {
                 launchUrl(
-                    Uri.parse('https://www.facebook.com/PalosIslamicCenter/'));
+                    Uri.parse(m_features_card2_facebook_web_url));
               },
               child: FeaturesCard(
                 mWidth: mWidth,
@@ -295,7 +295,7 @@ class MFeaturesCard2 extends StatelessWidget {
             InkWell(
               onTap: () {
                 launchUrl(
-                    Uri.parse('https://youtube.com/@picpalosislmiccenter8485'));
+                    Uri.parse(m_features_card2_youtube_web_url));
               },
               child: FeaturesCard(
                 mWidth: mWidth,
@@ -307,7 +307,7 @@ class MFeaturesCard2 extends StatelessWidget {
             InkWell(
               onTap: () {
                 launchUrl(
-                    Uri.parse('https://www.instagram.com/PalosIslamicCenter/'));
+                    Uri.parse(m_features_card2_instagram_web_url));
               },
               child: FeaturesCard(
                 mWidth: mWidth,
@@ -323,8 +323,7 @@ class MFeaturesCard2 extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                launchUrl(Uri.parse(
-                    'https://palosic.org/our-services/zakah-calculator/'));
+                launchUrl(Uri.parse(m_features_card2_zakath_calulator_web_url));
               },
               child: FeaturesCard(
                 mWidth: mWidth,
@@ -684,8 +683,7 @@ class EndDrawer extends StatelessWidget {
                     colorFilter: ColorFilter.mode(
                         Colors.black.withOpacity(0.6), BlendMode.darken),
                     fit: BoxFit.cover,
-                    image: const NetworkImage(
-                        'https://img.freepik.com/free-vector/ramadan-landscape-background-sunset_1048-1789.jpg?w=2000'),
+                    image:  NetworkImage(end_drawer_header_bgimage),
                   ),
                 ),
                 padding: const EdgeInsets.all(10),
@@ -941,10 +939,9 @@ class StartDrawer extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children:  [
-                const CircleAvatar(
+                 CircleAvatar(
                   maxRadius: 50,
-                  backgroundImage: NetworkImage(
-                      'https://thumbs.dreamstime.com/b/arabic-muslim-man-beard-smiling-36429753.jpg'),
+                  backgroundImage: NetworkImage(start_drawer_header_userimage),
                 ),
                 Text(
                   start_drawer_username,
@@ -1026,8 +1023,8 @@ class NewsSlideWidget extends StatelessWidget {
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
                   Colors.black.withOpacity(0.7), BlendMode.darken),
-              image: const NetworkImage(
-                  'https://muslimnews.co.uk/assets/Palestine-Israeliforces-attack-coffin-of-AlJazeera-journalist-Shireen-Abu-AKleh-E-Jerusalem-13-5-22-shot-dead-by-Israeli-forces-on-may11in-jenin-ph-Mustafa-alkharouf-AA-scaled-513x239.jpg'),
+              image:  NetworkImage(
+                  news_slide_widget_news_image),
             ),
           ),
         ),
@@ -1100,10 +1097,10 @@ class NewsListtileWidget extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: const Image(
+              child:  Image(
                   fit: BoxFit.fill,
-                  image: NetworkImage(
-                      'https://www.aljazeera.com/wp-content/uploads/2022/07/000_32DR44P-1.jpg?resize=770%2C513&quality=80')),
+                  image: NetworkImage(news_list_tile_widget_news_image)
+                ),
             ),
           ),
         ),
