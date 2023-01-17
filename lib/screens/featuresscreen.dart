@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 
-class FeautreScreen extends StatelessWidget {
+class FeautreScreen extends StatefulWidget {
   final String appBarTitle;
   final Widget pageWidget;
-  FeautreScreen({
+  const FeautreScreen({
     super.key,
     required this.appBarTitle,
     required this.pageWidget,
   });
 
+  @override
+  State<FeautreScreen> createState() => _FeautreScreenState();
+}
+
+class _FeautreScreenState extends State<FeautreScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,9 +21,9 @@ class FeautreScreen extends StatelessWidget {
         elevation: 1,
         backgroundColor: const Color(0xFF66B35A),
         centerTitle: true,
-        title: Text(appBarTitle),
+        title: Text(widget.appBarTitle),
       ),
-      body: pageWidget,
+      body: widget.pageWidget,
     );
   }
 }

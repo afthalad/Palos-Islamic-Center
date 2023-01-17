@@ -1,6 +1,5 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
-import 'package:al_sahabah/screens/settingisidepage.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -39,79 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       endDrawer: const EndDrawer(),
-      drawer: Drawer(
-        backgroundColor: const Color(0xFF0D50A3),
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-                child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  CircleAvatar(
-                    maxRadius: 50,
-                    backgroundImage: NetworkImage(
-                        'https://thumbs.dreamstime.com/b/arabic-muslim-man-beard-smiling-36429753.jpg'),
-                  ),
-                  Text(
-                    'Username',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
-                  )
-                ],
-              ),
-            )),
-            const DrawerList(
-              title: 'About us',
-              icon: Icons.question_mark,
-              pageWidget: AboutUsPageWidget(),
-            ),
-            const DrawerList(
-              title: 'Contact us',
-              icon: Icons.phone,
-              pageWidget: ContaceusDetailsPageWidget(),
-            ),
-            const DrawerList(
-              title: 'Membership',
-              pageWidget: Center(child: Text('Membership')),
-              icon: Icons.card_membership,
-            ),
-            DrawerList(
-              title: 'Newsletter Signup',
-              icon: Icons.newspaper,
-              pageWidget: NewsletterPageWidget(
-                  formKey: _formKey, mHeight: mHeight, mWidth: mWidth),
-            ),
-            DrawerList(
-                title: 'Volunteer Signup',
-                icon: Icons.volunteer_activism,
-                pageWidget: Center(
-                  child: SignUpPageWidget(
-                    formKey: _formKey,
-                    mHeight: mHeight,
-                    mWidth: mWidth,
-                    pageTitle: 'Sign Up for Volunteer',
-                    pageSubTitle:
-                        "Fill out your information below and Join us in making a positive impact in your community!",
-                    buttonText: 'Sign up',
-                  ),
-                )),
-            DrawerList(
-              title: 'Setting',
-              icon: Icons.settings,
-              pageWidget: SettingPageScreen(),
-            ),
-            const DrawerList(
-              title: 'Logout/Sign in',
-              pageWidget: Center(child: Text('Logout/Sign in')),
-              icon: Icons.logout,
-            ),
-          ],
-        ),
-      ),
+      drawer: StartDrawer(formKey: _formKey, mHeight: mHeight, mWidth: mWidth),
       body: Column(
         children: [
           ImageSlideshow(
