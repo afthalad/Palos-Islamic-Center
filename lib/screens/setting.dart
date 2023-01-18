@@ -207,11 +207,6 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                 },
               ),
             ),
-            const SettingOptionWidget(
-                settingName: 'Puttalam',
-                settingSubtitle: 'Current Praye time location',
-                settingIcon: Icons.location_on,
-                pageWidget: LocationPrayerTimingsScreen())
           ],
         ),
       ]),

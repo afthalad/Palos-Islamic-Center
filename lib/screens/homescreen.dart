@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   fit: BoxFit.cover,
                 ),
                 Image.network(
-                 homescreen_slideshow_image2,
+                  homescreen_slideshow_image2,
                   fit: BoxFit.cover,
                 )
               ]),
@@ -95,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               MFeaturesCard1(mWidth: mWidth, mHeight: mHeight),
               MFeaturesCard2(mWidth: mWidth, mHeight: mHeight),
+              MFeaturesCard3(mWidth: mWidth, mHeight: mHeight),
             ],
           ),
         ],

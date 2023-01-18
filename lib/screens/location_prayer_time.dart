@@ -12,6 +12,12 @@ class LocationPrayerTimingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: const Color(0xFF66B35A),
+        centerTitle: true,
+        title: const Text("Puttalam"),
+      ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(

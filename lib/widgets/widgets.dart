@@ -366,6 +366,41 @@ class MFeaturesCard2 extends StatelessWidget {
   }
 }
 
+class MFeaturesCard3 extends StatelessWidget {
+  const MFeaturesCard3({
+    Key? key,
+    required this.mWidth,
+    required this.mHeight,
+  }) : super(key: key);
+
+  final double mWidth;
+  final double mHeight;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/location_prayer_time_screen');
+              },
+              child: FeaturesCard(
+                mWidth: mWidth,
+                mHeight: mHeight,
+                featuresIcon: 'images/icons-visit.png',
+                featuresTitle: 'Location timing',
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
 //Event card__
 class Events extends StatelessWidget {
   const Events({
@@ -981,7 +1016,7 @@ class StartDrawer extends StatelessWidget {
               buttonText: 'Sign up',
             ),
           ),
-          DrawerList(
+          const DrawerList(
             title: 'Setting',
             icon: Icons.settings,
             pageWidget: SettingPageScreen(),
