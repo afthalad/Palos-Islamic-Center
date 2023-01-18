@@ -1,3 +1,4 @@
+import 'package:al_sahabah/screens/location_prayer_time.dart';
 import 'package:al_sahabah/screens/prayer_timing.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -182,7 +183,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                                 borderRadius: BorderRadius.circular(-10)),
                           ),
                           onPressed: () {},
-                          child: Text(
+                          child: const Text(
                             'Save settings',
                             style: TextStyle(fontSize: 18),
                           ),
@@ -205,13 +206,12 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                   });
                 },
               ),
-              pageWidget: Text('asd'),
             ),
             const SettingOptionWidget(
                 settingName: 'Puttalam',
                 settingSubtitle: 'Current Praye time location',
                 settingIcon: Icons.location_on,
-                pageWidget: PrayerTimingsScreen())
+                pageWidget: LocationPrayerTimingsScreen())
           ],
         ),
       ]),

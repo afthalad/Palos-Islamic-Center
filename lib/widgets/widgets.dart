@@ -267,9 +267,9 @@ class MFeaturesCard2 extends StatelessWidget {
   final double mWidth;
   final double mHeight;
   static const List<Tab> _tabs = [
-     Tab(text: 'Categries'),
-     Tab(text: 'My Questions'),
-     Tab(text: 'FAQ'),
+    Tab(text: 'Categries'),
+    Tab(text: 'My Questions'),
+    Tab(text: 'FAQ'),
   ];
   TabController? _tabController;
 
@@ -282,8 +282,7 @@ class MFeaturesCard2 extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                launchUrl(
-                    Uri.parse(m_features_card2_facebook_web_url));
+                launchUrl(Uri.parse(m_features_card2_facebook_web_url));
               },
               child: FeaturesCard(
                 mWidth: mWidth,
@@ -294,8 +293,7 @@ class MFeaturesCard2 extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                launchUrl(
-                    Uri.parse(m_features_card2_youtube_web_url));
+                launchUrl(Uri.parse(m_features_card2_youtube_web_url));
               },
               child: FeaturesCard(
                 mWidth: mWidth,
@@ -306,8 +304,7 @@ class MFeaturesCard2 extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                launchUrl(
-                    Uri.parse(m_features_card2_instagram_web_url));
+                launchUrl(Uri.parse(m_features_card2_instagram_web_url));
               },
               child: FeaturesCard(
                 mWidth: mWidth,
@@ -683,7 +680,7 @@ class EndDrawer extends StatelessWidget {
                     colorFilter: ColorFilter.mode(
                         Colors.black.withOpacity(0.6), BlendMode.darken),
                     fit: BoxFit.cover,
-                    image:  NetworkImage(end_drawer_header_bgimage),
+                    image: NetworkImage(end_drawer_header_bgimage),
                   ),
                 ),
                 padding: const EdgeInsets.all(10),
@@ -725,13 +722,13 @@ class SettingOptionWidget extends StatefulWidget {
   final String settingSubtitle;
   final IconData settingIcon;
   final Widget? trailingWidget;
-  final Widget pageWidget;
+  final Widget? pageWidget;
   const SettingOptionWidget({
     Key? key,
     required this.settingName,
     required this.settingSubtitle,
     required this.settingIcon,
-    required this.pageWidget,
+    this.pageWidget,
     this.trailingWidget,
   }) : super(key: key);
 
@@ -751,26 +748,29 @@ class _SettingOptionWidgetState extends State<SettingOptionWidget> {
         ),
       ),
       child: ListTile(
-          onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SettingPagesScreen(
-                    appBarTitle: widget.settingName,
-                    pageWidget: widget.pageWidget,
-                  ),
-                ),
-              ),
-          leading: Icon(
-            widget.settingIcon,
-            color: const Color(0xFF0D50A3),
-            size: 35,
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SettingPagesScreen(
+              appBarTitle: widget.settingName,
+              pageWidget: widget.pageWidget!,
+            ),
           ),
-          title: Text(widget.settingName),
-          subtitle: Text(
-            widget.settingSubtitle,
-            style: const TextStyle(fontSize: 12,),
+        ),
+        leading: Icon(
+          widget.settingIcon,
+          color: const Color(0xFF0D50A3),
+          size: 35,
+        ),
+        title: Text(widget.settingName),
+        subtitle: Text(
+          widget.settingSubtitle,
+          style: const TextStyle(
+            fontSize: 12,
           ),
-          trailing: widget.trailingWidget,),
+        ),
+        trailing: widget.trailingWidget,
+      ),
     );
   }
 }
@@ -938,15 +938,12 @@ class StartDrawer extends StatelessWidget {
               child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children:  [
-                 CircleAvatar(
+              children: [
+                CircleAvatar(
                   maxRadius: 50,
                   backgroundImage: NetworkImage(start_drawer_header_userimage),
                 ),
-                Text(
-                  start_drawer_username,
-                  style: start_drawer_username_tstyle
-                )
+                Text(start_drawer_username, style: start_drawer_username_tstyle)
               ],
             ),
           )),
@@ -1023,8 +1020,7 @@ class NewsSlideWidget extends StatelessWidget {
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
                   Colors.black.withOpacity(0.7), BlendMode.darken),
-              image:  NetworkImage(
-                  news_slide_widget_news_image),
+              image: NetworkImage(news_slide_widget_news_image),
             ),
           ),
         ),
@@ -1032,17 +1028,15 @@ class NewsSlideWidget extends StatelessWidget {
           onTap: () {
             Navigator.pushNamed(context, '/news_inner_screen');
           },
-          child:   Padding(
-            padding:  const EdgeInsets.symmetric(vertical: 10),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
             child: ListTile(
               title: Text(
-               news_slide_widget_title,
+                news_slide_widget_title,
                 style: news_slide_widget_title_tstyle,
               ),
-              subtitle: Text(
-                news_slide_widget_subtitle,
-                style: news_slide_widget_subtitle_tstyle
-              ),
+              subtitle: Text(news_slide_widget_subtitle,
+                  style: news_slide_widget_subtitle_tstyle),
             ),
           ),
         ),
@@ -1070,18 +1064,13 @@ class NewsListtileWidget extends StatelessWidget {
             side: const BorderSide(color: Colors.black12, width: 1),
             borderRadius: BorderRadius.circular(12),
           ),
-          title:  Text(
-           news_list_tile_widget_title,
-            style: news_list_tile_widget_title_tstyle
-          ),
+          title: Text(news_list_tile_widget_title,
+              style: news_list_tile_widget_title_tstyle),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Text(
-               news_slide_widget_description,
-                maxLines: 2,
-                style: news_slide_widget_description_tstyle
-              ),
+              Text(news_slide_widget_description,
+                  maxLines: 2, style: news_slide_widget_description_tstyle),
               Text(
                 news_slide_widget_date,
                 style: news_slide_widget_date_tstyle,
@@ -1097,10 +1086,9 @@ class NewsListtileWidget extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child:  Image(
+              child: Image(
                   fit: BoxFit.fill,
-                  image: NetworkImage(news_list_tile_widget_news_image)
-                ),
+                  image: NetworkImage(news_list_tile_widget_news_image)),
             ),
           ),
         ),
@@ -1143,8 +1131,9 @@ class AskTheImamCategories extends StatelessWidget {
                         itemCount: 3,
                         itemBuilder: (BuildContext context, int index) {
                           return const Questions(
-                              appBarTitle: 'My Questions',
-                              pageWidget: FAQInnerScreen(),);
+                            appBarTitle: 'My Questions',
+                            pageWidget: FAQInnerScreen(),
+                          );
                         },
                       ),
               ),
@@ -1155,7 +1144,7 @@ class AskTheImamCategories extends StatelessWidget {
           Container(
             height: MediaQuery.of(context).size.height * 0.2,
             decoration: BoxDecoration(
-              borderRadius:const  BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10), topRight: Radius.circular(10)),
               image: DecorationImage(
                 image: NetworkImage(imageUrl),
@@ -1170,7 +1159,7 @@ class AskTheImamCategories extends StatelessWidget {
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.black12),
                       color: Colors.white,
-                      borderRadius:const BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(10),
                           bottomRight: Radius.circular(10))),
                   height: 60,
@@ -1180,10 +1169,8 @@ class AskTheImamCategories extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          catName,
-                          style: ask_the_imam_question_cat_name_tstyle
-                        ),
+                        Text(catName,
+                            style: ask_the_imam_question_cat_name_tstyle),
                         Text(
                           noQuesntions,
                         ),
@@ -1222,8 +1209,8 @@ class Questions extends StatelessWidget {
           )),
       child: Card(
         shape: RoundedRectangleBorder(
-          side: const  BorderSide(
-            color:  Color.fromARGB(8, 19, 19, 19),
+          side: const BorderSide(
+            color: Color.fromARGB(8, 19, 19, 19),
           ),
           borderRadius: BorderRadius.circular(5),
         ),
@@ -1239,7 +1226,7 @@ class Questions extends StatelessWidget {
                 style: ask_the_imam_question_date_tstyle,
               ),
               Text(
-               ask_the_imam_question,
+                ask_the_imam_question,
                 maxLines: 2,
                 style: ask_the_imam_question_tstyle,
               ),
