@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math' show pi;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,8 +27,9 @@ class _QiblahCompassState extends State<QiblahCompass> {
       await FlutterQiblah.requestPermissions();
       final s = await FlutterQiblah.checkLocationStatus();
       _locationStreamController.sink.add(s);
-    } else
+    } else {
       _locationStreamController.sink.add(locationStatus);
+    }
   }
 
   @override
@@ -38,12 +38,12 @@ class _QiblahCompassState extends State<QiblahCompass> {
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   _locationStreamController.close();
-  //   FlutterQiblah().dispose();
-  // }
+  @override
+  void dispose() {
+    super.dispose();
+    _locationStreamController.close();
+    FlutterQiblah().dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
