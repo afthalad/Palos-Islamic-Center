@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class LocationErrorWidget extends StatelessWidget {
   final String? error;
@@ -29,7 +30,8 @@ class LocationErrorWidget extends StatelessWidget {
           const SizedBox(height: 32),
           ElevatedButton(
             child: const Text("Retry"),
-            onPressed: () {
+            onPressed: () async {
+              await Geolocator.requestPermission();
               if (callback != null) callback!();
             },
           )

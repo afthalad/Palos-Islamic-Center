@@ -38,12 +38,12 @@ class _QiblahCompassState extends State<QiblahCompass> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _locationStreamController.close();
-    FlutterQiblah().dispose();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   _locationStreamController.close();
+  //   FlutterQiblah().dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

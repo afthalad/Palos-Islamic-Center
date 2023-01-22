@@ -18,7 +18,6 @@ class _MyAppState extends State<QiblaScreen> {
         backgroundColor: const Color(0xFF66B35A),
         centerTitle: true,
         title: const Text('Qibla'),
-        
       ),
       body: FutureBuilder(
         future: _deviceSupport,
