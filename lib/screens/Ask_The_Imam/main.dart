@@ -46,7 +46,7 @@ class AskTheImamScreen extends StatelessWidget {
                     catDescription:
                         "Fiqh of the family is an Islamic law branch that deals with marriage, divorce, and family issues. It covers rights, responsibilities and procedures based on Quran and Hadith.",
                     imageUrl:
-                        "https://www.islamicfinder.org/news/preview-title/post673_title_20220201_094909.png/673",
+                        "https://images.unsplash.com/photo-1603985350088-a109ff85ee36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80",
                     noQuesntions: '1',
                   ),
                   AskTheImamCategories(
@@ -54,7 +54,7 @@ class AskTheImamScreen extends StatelessWidget {
                     catDescription:
                         "Delve into the study of Hadith and its significance in preserving the teachings of Prophet Muhammad in Islamic tradition",
                     imageUrl:
-                        "https://media.islamicity.org/wp-content/uploads/2021/03/best-books-of-hadith.jpg",
+                        "https://images.unsplash.com/photo-1551095581-a8e5b4b28558?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1331&q=80",
                     noQuesntions: '6',
                   ),
                   AskTheImamCategories(
@@ -62,7 +62,7 @@ class AskTheImamScreen extends StatelessWidget {
                     catDescription:
                         "I'tikaf is a spiritual practice in Islam where a person retreats to a mosque for a certain number of days for intense worship and devotion to God. It's typically done during the last ten days of Ramadan but can also be done at other times of the year. The goal is to increase closeness to God and purify the soul.",
                     imageUrl:
-                        "https://www.isra.org.au/wp-content/uploads/2021/04/2.png",
+                        "https://images.unsplash.com/photo-1570206916435-745fc43bb9c1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
                     noQuesntions: '2',
                   ),
                   AskTheImamCategories(
@@ -78,7 +78,7 @@ class AskTheImamScreen extends StatelessWidget {
                     catDescription:
                         "Addressing common questions and concerns related to the management and maintenance of Mosques",
                     imageUrl:
-                        "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fG1vc3F1ZXxlbnwwfHwwfHw%3D&w=1000&q=80",
+                        "https://images.unsplash.com/photo-1512970648279-ff3398568f77?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1176&q=80",
                     noQuesntions: '6',
                   ),
                   AskTheImamCategories(

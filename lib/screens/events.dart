@@ -33,11 +33,8 @@ class _EventsScreenState extends State<EventsScreen> {
                   ),
                   padding: const EdgeInsets.all(5),
                   child: Column(
-                    children:  [
-                      Text(
-                        event_screen_date,
-                        style: event_screen_date_tstyle
-                      ),
+                    children: [
+                      Text(event_screen_date, style: event_screen_date_tstyle),
                       Text(
                         event_screen_month,
                         style: event_screen_month_tstyle,
@@ -50,7 +47,7 @@ class _EventsScreenState extends State<EventsScreen> {
                 trailing: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: const Image(
-                    image: AssetImage('images/duhr.png'),
+                    image: AssetImage('images/events.png'),
                   ),
                 ),
               );
