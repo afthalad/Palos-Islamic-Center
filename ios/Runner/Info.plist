@@ -4,7 +4,7 @@
 <dict>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>The application may does or does not use this feature</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription </key>
+	<key>NSLocationWhenInUseUsageDescription </key>
 	<string>The application may use this feature</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>

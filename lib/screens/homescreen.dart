@@ -2,6 +2,8 @@
 
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
@@ -28,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Builder(
             builder: (BuildContext scaffoldContext) {
               return IconButton(
-                icon: Icon(Icons
+                icon: const Icon(Icons
                     .notifications_active_rounded), // Replace with your desired icon
                 onPressed: () {
                   Scaffold.of(scaffoldContext).openEndDrawer();
@@ -60,7 +62,59 @@ class _HomeScreenState extends State<HomeScreen> {
                   fit: BoxFit.cover,
                 )
               ]),
-          MSalahTime(mHeight: mHeight, mWidth: mWidth),
+          ImageSlideshow(
+            height: mHeight * 0.11,
+            initialPage: 1,
+            autoPlayInterval: 10,
+            indicatorRadius: 0,
+            isLoop: true,
+            children: [
+              MSalahTime(mHeight: mHeight, mWidth: mWidth),
+              Container(
+                padding: const EdgeInsets.all(10),
+                height: mHeight * 0.11,
+                color: Colors.black,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Asr at   03.41 PM',
+                          style: mSalah_time_subtitle_tstyle,
+                        ),
+                        Text(
+                          "Remining time 01 : 34 : 02",
+                          style: mSalah_time_title_tstyle,
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white30,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, "/prayer_time_screen");
+                        },
+                        child: Text(
+                          "see more",
+                          style: mSalah_time_subtitle_tstyle,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
           ImageSlideshow(
             height: mHeight * 0.2,
             width: double.infinity,

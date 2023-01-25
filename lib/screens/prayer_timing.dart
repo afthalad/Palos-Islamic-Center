@@ -12,24 +12,22 @@ class PrayerTimingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: AppBar(
+      appBar: AppBar(
         elevation: 1,
         backgroundColor: const Color(0xFF66B35A),
         centerTitle: true,
         title: const Text('Prayer Time'),
-        
       ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            colorFilter:
-                ColorFilter.mode(Colors.black.withOpacity(0.6), BlendMode.darken),
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.6), BlendMode.darken),
             fit: BoxFit.cover,
-            image:  NetworkImage(
-                prayer_timing_screen_bgimage),
+            image: NetworkImage(prayer_timing_screen_bgimage),
           ),
         ),
-        child: const ImageSlideshow(
+        child: ImageSlideshow(
           height: double.infinity,
           children: [
             PrayeTimeTable(),

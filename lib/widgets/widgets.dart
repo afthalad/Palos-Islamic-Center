@@ -48,7 +48,7 @@ class SalahTime extends StatelessWidget {
 }
 
 //Main Salah Time Widget__
-class MSalahTime extends StatelessWidget {
+class MSalahTime extends StatefulWidget {
   const MSalahTime({
     Key? key,
     required this.mHeight,
@@ -59,9 +59,16 @@ class MSalahTime extends StatelessWidget {
   final double mWidth;
 
   @override
+  State<MSalahTime> createState() => _MSalahTimeState();
+}
+
+class _MSalahTimeState extends State<MSalahTime> {
+  int currentScreen = 1;
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      // height: mHeight * 0.2,
+      height: widget.mHeight * 0.11,
       color: mSalah_time_container_color,
       child: Column(
         children: [
@@ -69,27 +76,27 @@ class MSalahTime extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               SalahTime(
-                mWidth: mWidth * 0.3,
+                mWidth: widget.mWidth * 0.3,
                 salahTitle: 'Subah',
                 salahTime: '05.22 am',
               ),
               SalahTime(
-                mWidth: mWidth * 0.3,
+                mWidth: widget.mWidth * 0.3,
                 salahTitle: 'Duhr',
                 salahTime: '6.02 an',
               ),
               SalahTime(
-                mWidth: mWidth * 0.3,
+                mWidth: widget.mWidth * 0.3,
                 salahTitle: 'Asr',
                 salahTime: '12.42 pm',
               ),
               SalahTime(
-                mWidth: mWidth * 0.3,
+                mWidth: widget.mWidth * 0.3,
                 salahTitle: 'Magrib',
                 salahTime: '05.22 am',
               ),
               SalahTime(
-                mWidth: mWidth * 0.3,
+                mWidth: widget.mWidth * 0.3,
                 salahTitle: 'Isha',
                 salahTime: '6.02 an',
               ),

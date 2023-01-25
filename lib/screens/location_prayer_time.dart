@@ -27,7 +27,7 @@ class LocationPrayerTimingsScreen extends StatelessWidget {
             image: NetworkImage(prayer_timing_screen_bgimage),
           ),
         ),
-        child: const ImageSlideshow(
+        child: ImageSlideshow(
           height: double.infinity,
           children: [
             PrayeTimeTable(),
