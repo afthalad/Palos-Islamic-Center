@@ -1,7 +1,11 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+// import 'dart:async';
+import 'dart:async';
+
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
+import 'package:flip_board/flip_widget.dart';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -20,6 +24,12 @@ class _HomeScreenState extends State<HomeScreen> {
     var mHeight = MediaQuery.of(context).size.height;
     var mWidth = MediaQuery.of(context).size.width;
     final _formKey = GlobalKey<FormState>();
+    var spinController = StreamController<int>.broadcast();
+    bool containerClicked = false;
+    int nextSpinValue = 0;
+    int? widgetIndex = 0;
+
+    void spin() => spinController.add(++nextSpinValue);
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -62,58 +72,33 @@ class _HomeScreenState extends State<HomeScreen> {
                   fit: BoxFit.cover,
                 )
               ]),
-          ImageSlideshow(
-            height: mHeight * 0.11,
-            initialPage: 1,
-            autoPlayInterval: 10,
-            indicatorRadius: 0,
-            isLoop: true,
-            children: [
-              MSalahTime(mHeight: mHeight, mWidth: mWidth),
-              Container(
-                padding: const EdgeInsets.all(10),
-                height: mHeight * 0.11,
-                color: Colors.black,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Asr at   03.41 PM',
-                          style: mSalah_time_subtitle_tstyle,
-                        ),
-                        Text(
-                          "Remining time 01 : 34 : 02",
-                          style: mSalah_time_title_tstyle,
-                        ),
-                      ],
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white30,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, "/prayer_time_screen");
-                        },
-                        child: Text(
-                          "see more",
-                          style: mSalah_time_subtitle_tstyle,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
+          FlipWidget(
+            initialValue: nextSpinValue,
+            itemStream: spinController.stream,
+            flipType: FlipType.spinFlip,
+            itemBuilder: (_, index) {
+              return GestureDetector(
+                  onTap: (() async {
+                    if (!containerClicked) {
+                      containerClicked = true;
+                      widgetIndex = index as int?;
+                      if (widgetIndex! < 2) {
+                        spin();
+                      } else {
+                        nextSpinValue = 0;
+                        spinController.add(nextSpinValue);
+                      }
+                      await Future.delayed(const Duration(milliseconds: 500));
+                      containerClicked = false;
+                    }
+                  }),
+                  child: index == 0
+                      ? SalahTimeRemingWidget(mHeight: mHeight)
+                      : index == 1
+                          ? MSalahTime(mHeight: mHeight, mWidth: mWidth)
+                          : JummahPrayerTimesWidget(mHeight: mHeight));
+            },
+            flipDirection: AxisDirection.up,
           ),
           ImageSlideshow(
             height: mHeight * 0.2,
@@ -150,6 +135,66 @@ class _HomeScreenState extends State<HomeScreen> {
               MFeaturesCard1(mWidth: mWidth, mHeight: mHeight),
               MFeaturesCard2(mWidth: mWidth, mHeight: mHeight),
               MFeaturesCard3(mWidth: mWidth, mHeight: mHeight),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class JummahPrayerTimesWidget extends StatelessWidget {
+  const JummahPrayerTimesWidget({
+    Key? key,
+    required this.mHeight,
+  }) : super(key: key);
+
+  final double mHeight;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: mHeight * 0.11,
+      color: mSalah_time_container_color,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Dars Al Jumah", style: mSalah_time_title_tstyle),
+                    Text("11.30 am", style: mSalah_time_subtitle_tstyle),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("First khutbah", style: mSalah_time_title_tstyle),
+                    Text("12.00 pm", style: mSalah_time_subtitle_tstyle),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("second khutbah", style: mSalah_time_title_tstyle),
+                    Text("01.30 pm", style: mSalah_time_subtitle_tstyle),
+                  ],
+                ),
+              )
             ],
           ),
         ],

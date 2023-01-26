@@ -108,6 +108,68 @@ class _MSalahTimeState extends State<MSalahTime> {
   }
 }
 
+//Remaining salah time Widget__
+class SalahTimeRemingWidget extends StatefulWidget {
+  const SalahTimeRemingWidget({
+    Key? key,
+    required this.mHeight,
+  }) : super(key: key);
+
+  final double mHeight;
+
+  @override
+  State<SalahTimeRemingWidget> createState() => _SalahTimeRemingWidgetState();
+}
+
+class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      height: widget.mHeight * 0.11,
+      color: mSalah_time_container_color,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Asr at   03.41 PM',
+                style: mSalah_time_subtitle_tstyle,
+              ),
+              Text(
+                "Remining time 01 : 34 : 02",
+                style: mSalah_time_title_tstyle,
+              ),
+            ],
+          ),
+          Container(
+            padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.white30,
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, "/prayer_time_screen");
+              },
+              child: Text(
+                "see more",
+                style: mSalah_time_subtitle_tstyle,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
 //Features Card__
 class FeaturesCard extends StatelessWidget {
   final String featuresIcon;
