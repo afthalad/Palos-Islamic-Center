@@ -4,10 +4,9 @@
 import 'dart:async';
 
 import 'package:al_sahabah/const/const.dart';
+import 'package:al_sahabah/models/redirects.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:flip_board/flip_widget.dart';
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
@@ -21,6 +20,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    @override
+    void initState() {
+      Redirects.drawerList();
+      super.initState();
+    }
+
     var mHeight = MediaQuery.of(context).size.height;
     var mWidth = MediaQuery.of(context).size.width;
     final _formKey = GlobalKey<FormState>();
@@ -51,7 +56,30 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       endDrawer: const EndDrawer(),
-      drawer: StartDrawer(formKey: _formKey, mHeight: mHeight, mWidth: mWidth),
+      drawer: Builder(
+        builder: (context) {
+          return FutureBuilder<bool>(
+            future: Redirects.drawerList(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return snapshot.data!
+                    ? SignedInStartDrawer(
+                        formKey: _formKey,
+                        mHeight: mHeight,
+                        mWidth: mWidth,
+                      )
+                    : StartDrawer(
+                        formKey: _formKey,
+                        mHeight: mHeight,
+                        mWidth: mWidth,
+                      );
+              } else {
+                return CircularProgressIndicator();
+              }
+            },
+          );
+        },
+      ),
       body: Column(
         children: [
           ImageSlideshow(
@@ -135,66 +163,6 @@ class _HomeScreenState extends State<HomeScreen> {
               MFeaturesCard1(mWidth: mWidth, mHeight: mHeight),
               MFeaturesCard2(mWidth: mWidth, mHeight: mHeight),
               MFeaturesCard3(mWidth: mWidth, mHeight: mHeight),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class JummahPrayerTimesWidget extends StatelessWidget {
-  const JummahPrayerTimesWidget({
-    Key? key,
-    required this.mHeight,
-  }) : super(key: key);
-
-  final double mHeight;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: mHeight * 0.11,
-      color: mSalah_time_container_color,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("Dars Al Jumah", style: mSalah_time_title_tstyle),
-                    Text("11.30 am", style: mSalah_time_subtitle_tstyle),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("First khutbah", style: mSalah_time_title_tstyle),
-                    Text("12.00 pm", style: mSalah_time_subtitle_tstyle),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("second khutbah", style: mSalah_time_title_tstyle),
-                    Text("01.30 pm", style: mSalah_time_subtitle_tstyle),
-                  ],
-                ),
-              )
             ],
           ),
         ],

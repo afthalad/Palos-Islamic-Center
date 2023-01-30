@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:al_sahabah/const/const.dart';
+import 'package:al_sahabah/models/auth.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/categories_inner.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/faq_inner.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/main.dart';
@@ -583,11 +584,15 @@ class DrawerList extends StatelessWidget {
 class FormTextField extends StatelessWidget {
   final String hintText;
   final String validatorText;
+  TextEditingController? controller;
+  TextInputType? textInputType;
 
-  const FormTextField({
+  FormTextField({
     Key? key,
     required this.hintText,
     required this.validatorText,
+    this.controller,
+    this.textInputType,
   }) : super(key: key);
 
   @override
@@ -595,6 +600,8 @@ class FormTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
+        keyboardType: textInputType,
+        controller: controller,
         validator: (value) {
           if (value == null || value.isEmpty) {
             return validatorText;
@@ -709,6 +716,67 @@ class PrayeTimeTable extends StatelessWidget {
                 );
               },
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Jummah time widget
+class JummahPrayerTimesWidget extends StatelessWidget {
+  const JummahPrayerTimesWidget({
+    Key? key,
+    required this.mHeight,
+  }) : super(key: key);
+
+  final double mHeight;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: mHeight * 0.11,
+      color: mSalah_time_container_color,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Dars Al Jumah", style: mSalah_time_title_tstyle),
+                    Text("11.30 am", style: mSalah_time_subtitle_tstyle),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("First khutbah", style: mSalah_time_title_tstyle),
+                    Text("12.00 pm", style: mSalah_time_subtitle_tstyle),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("second khutbah", style: mSalah_time_title_tstyle),
+                    Text("01.30 pm", style: mSalah_time_subtitle_tstyle),
+                  ],
+                ),
+              )
+            ],
           ),
         ],
       ),
@@ -1095,10 +1163,114 @@ class StartDrawer extends StatelessWidget {
             icon: Icons.person,
             pageWidget: SigninScreen(),
           ),
+          InkWell(
+              onTap: () async {
+                Auth(context).signOut();
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.white12, width: 0.5),
+                  ),
+                ),
+                child: ListTile(
+                  title: Text(
+                    "Logout",
+                    style: drawer_title_tstyle,
+                  ),
+                  leading: Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+}
+
+// Signed in start drawer__
+class SignedInStartDrawer extends StatelessWidget {
+  const SignedInStartDrawer({
+    Key? key,
+    required GlobalKey<FormState> formKey,
+    required this.mHeight,
+    required this.mWidth,
+  })  : _formKey = formKey,
+        super(key: key);
+
+  final GlobalKey<FormState> _formKey;
+  final double mHeight;
+  final double mWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      backgroundColor: const Color(0xFF0D50A3),
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+              child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CircleAvatar(
+                  maxRadius: 50,
+                  backgroundImage: NetworkImage(start_drawer_header_userimage),
+                ),
+                Text(start_drawer_username, style: start_drawer_username_tstyle)
+              ],
+            ),
+          )),
           const DrawerList(
-            title: 'Logout',
-            icon: Icons.logout,
+            title: 'About us',
+            icon: Icons.question_mark,
+            pageWidget: AboutUsPage(),
           ),
+          const DrawerList(
+            title: 'Contact us',
+            icon: Icons.phone,
+            pageWidget: ContaceusDetailsScreen(),
+          ),
+          const DrawerList(
+            title: 'Membership',
+            pageWidget: Center(child: Text('Membership')),
+            icon: Icons.card_membership,
+          ),
+          DrawerList(
+            title: 'Newsletter Signup',
+            icon: Icons.newspaper,
+            pageWidget: NewsletterScreen(
+                formKey: _formKey, mHeight: mHeight, mWidth: mWidth),
+          ),
+          const DrawerList(
+            title: 'Setting',
+            icon: Icons.settings,
+            pageWidget: SettingPageScreen(),
+          ),
+          InkWell(
+              onTap: () async {
+                Auth(context).signOut();
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.white12, width: 0.5),
+                  ),
+                ),
+                child: ListTile(
+                  title: Text(
+                    "Logout",
+                    style: drawer_title_tstyle,
+                  ),
+                  leading: Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
+                ),
+              )),
         ],
       ),
     );

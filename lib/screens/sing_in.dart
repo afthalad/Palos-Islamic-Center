@@ -1,5 +1,4 @@
-// ignore_for_file: avoid_print
-
+import 'package:al_sahabah/models/auth.dart';
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/widgets/sing_in_slide_banner.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +14,12 @@ class _SigninScreenState extends State<SigninScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool singInProcess = false;
   bool passWordVisible = true;
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    Auth authentication = Auth(context);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -70,6 +72,7 @@ class _SigninScreenState extends State<SigninScreen> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 2),
                             child: TextFormField(
+                              controller: _email,
                               keyboardType: TextInputType.emailAddress,
                               onChanged: ((value) {}),
                               validator: ((value) {
@@ -87,6 +90,7 @@ class _SigninScreenState extends State<SigninScreen> {
                               padding: const EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 2),
                               child: TextFormField(
+                                controller: _password,
                                 obscureText: passWordVisible,
                                 validator: (value) {
                                   if (value!.isEmpty) {
@@ -114,12 +118,24 @@ class _SigninScreenState extends State<SigninScreen> {
                           singInProcess == true
                               ? const CircularProgressIndicator()
                               : GestureDetector(
-                                  onTap: () async {},
+                                  onTap: () async {
+                                    setState(() {
+                                      singInProcess = !singInProcess;
+                                    });
+                                    await authentication.signIn(
+                                      _email.text,
+                                      _password.text,
+                                    );
+                                    setState(() {
+                                      singInProcess = !singInProcess;
+                                    });
+                                  },
                                   child: Container(
                                     decoration: const BoxDecoration(
                                       color: const Color(0xFF0D50A3),
                                     ),
-                                    child: Center(
+                                    // ignore: sort_child_properties_last
+                                    child: const Center(
                                       child: Text(
                                         'Get Start',
                                         style: TextStyle(color: Colors.white),

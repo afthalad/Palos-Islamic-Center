@@ -1,3 +1,4 @@
+import 'package:al_sahabah/models/auth.dart';
 import 'package:al_sahabah/screens/events.dart';
 import 'package:al_sahabah/screens/homescreen.dart';
 import 'package:al_sahabah/screens/live_stream.dart';
@@ -10,6 +11,7 @@ import 'package:al_sahabah/screens/qibla/qibla_screen.dart';
 import 'package:al_sahabah/screens/sing_in.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/home_screen',
       routes: {
         '/home_screen': (context) => const HomeScreen(),
-        '/singin_screen': (context) => const SigninScreen(),
+        '/signin_screen': (context) => const SigninScreen(),
         '/news_inner_screen': (context) => const NewsInnerScreen(),
         '/masjidh_services_screen': (context) => const MasjidhServicesScreen(),
         '/events_screen': (context) => const EventsScreen(),

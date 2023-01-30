@@ -1,15 +1,38 @@
+import 'dart:convert';
 import 'package:al_sahabah/const/const.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-// Events screen
 class EventsScreen extends StatefulWidget {
-  const EventsScreen({super.key});
+  const EventsScreen({Key, key}) : super(key: key);
 
   @override
-  State<EventsScreen> createState() => _EventsScreenState();
+  _EventsScreenState createState() => _EventsScreenState();
 }
 
 class _EventsScreenState extends State<EventsScreen> {
+  List<Event> events = [];
+
+  void getHttp() async {
+    try {
+      var response =
+          await Dio().get('http://52.90.175.175/api/events/get?page=1');
+      setState(() {
+        events = (response.data["data"]["data"] as List)
+            .map((i) => Event.fromJson(i))
+            .toList();
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    getHttp();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,37 +43,38 @@ class _EventsScreenState extends State<EventsScreen> {
           title: const Text('Events'),
         ),
         body: ListView.builder(
-            itemCount: 10,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                leading: Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      opacity: 0.1,
-                      image: AssetImage('images/icon-calendar.png'),
-                    ),
-                  ),
-                  padding: const EdgeInsets.all(5),
-                  child: Column(
-                    children: [
-                      Text(event_screen_date, style: event_screen_date_tstyle),
-                      Text(
-                        event_screen_month,
-                        style: event_screen_month_tstyle,
-                      ),
-                    ],
-                  ),
-                ),
-                title: Text(event_screen_event_name),
-                subtitle: Text(event_screen_time),
-                trailing: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: const Image(
-                    image: AssetImage('images/events.png'),
-                  ),
-                ),
-              );
-            }));
+          itemCount: events.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(events[index].title),
+            );
+          },
+        ));
+  }
+}
+
+class Event {
+  // final int id;
+  final String title;
+  // final String start;
+  // final String end;
+  // final String description;
+
+  Event({
+    // {required this.id,
+    required this.title,
+    // required this.start,
+    // required this.end,
+    // required this.description
+  });
+
+  factory Event.fromJson(Map<String, dynamic> json) {
+    return Event(
+      // id: json['id'],
+      title: json['title'],
+      // start: json['start'],
+      // end: json['end'],
+      // description: json['description'],
+    );
   }
 }
