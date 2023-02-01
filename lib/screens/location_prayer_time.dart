@@ -1,4 +1,5 @@
 import 'package:al_sahabah/const/const.dart';
+// import 'package:al_sahabah/screens/prayer_time.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -30,8 +31,8 @@ class LocationPrayerTimingsScreen extends StatelessWidget {
         child: ImageSlideshow(
           height: double.infinity,
           children: [
-            PrayeTimeTable(),
-            PrayeTimeTable(),
+            Text("dataasds")
+            // PrayeTimeTable(),
           ],
         ),
       ),

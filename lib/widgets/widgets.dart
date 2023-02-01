@@ -1,20 +1,30 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables
 
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/models/auth.dart';
+import 'package:al_sahabah/models/prayer_time_by_date.dart';
+import 'package:al_sahabah/models/user_get.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/categories_inner.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/faq_inner.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/main.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/question_inner.dart';
 import 'package:al_sahabah/screens/about_us.dart';
 import 'package:al_sahabah/screens/contact_us.dart';
-import 'package:al_sahabah/screens/events.dart';
+import 'package:al_sahabah/screens/faq.dart';
+
+import 'package:al_sahabah/screens/news.dart';
+import 'package:al_sahabah/screens/news_inner.dart';
 import 'package:al_sahabah/screens/newsletter.dart';
 import 'package:al_sahabah/screens/setting.dart';
 import 'package:al_sahabah/screens/volunteer_sign_up.dart';
 import 'package:al_sahabah/screens/sing_in.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../models/events.dart';
 
 //Salah Times___
 class SalahTime extends StatelessWidget {
@@ -65,6 +75,33 @@ class MSalahTime extends StatefulWidget {
 
 class _MSalahTimeState extends State<MSalahTime> {
   int currentScreen = 1;
+  Dio dio = Dio();
+  static List<PrayerTimeClass> prayerTime = [];
+  static String currentDate = "";
+
+  Future<void> fetchPrayerTime() async {
+    String year = DateTime.now().year.toString();
+    String month = DateTime.now().month.toString().padLeft(2, '0');
+    String day = DateTime.now().day.toString().padLeft(2, '0');
+
+    currentDate = "$year-$month-$day";
+
+    Response response =
+        await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
+
+    if (response.data["data"] != null) {
+      setState(() {
+        prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
+      });
+    }
+    print(prayerTime);
+  }
+
+  @override
+  void initState() {
+    fetchPrayerTime();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,36 +110,43 @@ class _MSalahTimeState extends State<MSalahTime> {
       color: mSalah_time_container_color,
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              SalahTime(
-                mWidth: widget.mWidth * 0.3,
-                salahTitle: 'Subah',
-                salahTime: '05.22 am',
-              ),
-              SalahTime(
-                mWidth: widget.mWidth * 0.3,
-                salahTitle: 'Duhr',
-                salahTime: '6.02 an',
-              ),
-              SalahTime(
-                mWidth: widget.mWidth * 0.3,
-                salahTitle: 'Asr',
-                salahTime: '12.42 pm',
-              ),
-              SalahTime(
-                mWidth: widget.mWidth * 0.3,
-                salahTitle: 'Magrib',
-                salahTime: '05.22 am',
-              ),
-              SalahTime(
-                mWidth: widget.mWidth * 0.3,
-                salahTitle: 'Isha',
-                salahTime: '6.02 an',
-              ),
-            ],
-          ),
+          // ElevatedButton(
+          //     onPressed: () {
+          //       fetchPrayerTime();
+          //     },
+          //     child: Text("asds")),
+          prayerTime.isEmpty
+              ? Text("")
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SalahTime(
+                      mWidth: widget.mWidth * 0.3,
+                      salahTitle: 'Subah',
+                      salahTime: prayerTime[0].fajir,
+                    ),
+                    SalahTime(
+                      mWidth: widget.mWidth * 0.3,
+                      salahTitle: 'Duhr',
+                      salahTime: prayerTime[0].dhuhar,
+                    ),
+                    SalahTime(
+                      mWidth: widget.mWidth * 0.3,
+                      salahTitle: 'Asr',
+                      salahTime: prayerTime[0].asr,
+                    ),
+                    SalahTime(
+                      mWidth: widget.mWidth * 0.3,
+                      salahTitle: 'Magrib',
+                      salahTime: prayerTime[0].magrib,
+                    ),
+                    SalahTime(
+                      mWidth: widget.mWidth * 0.3,
+                      salahTitle: 'Isha',
+                      salahTime: prayerTime[0].isha,
+                    ),
+                  ],
+                ),
         ],
       ),
     );
@@ -472,7 +516,7 @@ class MFeaturesCard3 extends StatelessWidget {
 }
 
 //Event card__
-class Events extends StatelessWidget {
+class Events extends StatefulWidget {
   const Events({
     Key? key,
     required this.mHeight,
@@ -489,6 +533,11 @@ class Events extends StatelessWidget {
   final String eventName;
 
   @override
+  State<Events> createState() => _EventsState();
+}
+
+class _EventsState extends State<Events> {
+  @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
@@ -498,8 +547,8 @@ class Events extends StatelessWidget {
         padding: const EdgeInsets.only(top: 10),
         child: Stack(children: [
           Container(
-            height: mHeight * 0.3,
-            width: mWidth * 1,
+            height: widget.mHeight * 0.3,
+            width: widget.mWidth * 1,
             margin: const EdgeInsets.symmetric(
               horizontal: 10,
             ),
@@ -508,7 +557,7 @@ class Events extends StatelessWidget {
                 colorFilter: ColorFilter.mode(
                     Colors.black.withOpacity(0.3), BlendMode.darken),
                 fit: BoxFit.cover,
-                image: AssetImage(image),
+                image: AssetImage(widget.image),
               ),
               borderRadius: BorderRadius.circular(15),
             ),
@@ -520,14 +569,14 @@ class Events extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  eventDateTime,
+                  widget.eventDateTime,
                   style: const TextStyle(
                     fontSize: 15,
                     color: Colors.white,
                   ),
                 ),
                 Text(
-                  eventName,
+                  widget.eventName,
                   style: const TextStyle(
                     fontSize: 30,
                     color: Colors.white,
@@ -616,112 +665,6 @@ class FormTextField extends StatelessWidget {
 }
 
 // Prayer Time Table
-class PrayeTimeTable extends StatelessWidget {
-  const PrayeTimeTable({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.05,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                prayer_Time_table_islamic_month,
-                style: prayer_time_table_islamic_month_tstyle,
-              ),
-              Column(
-                children: const [
-                  Text(
-                    'Asr',
-                    style: TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                  Text(
-                    'Remaining Time',
-                    style: TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                  Text(
-                    '2:14:23',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              const Text(
-                'Sunrise\n7.19 AM',
-                style: TextStyle(color: Colors.white, fontSize: 13),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.05,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text(''),
-              const Text(''),
-              Text(
-                'ATHAN',
-                style: prayer_time_table_heading_tstyle,
-              ),
-              Text(
-                'IQAMAH',
-                style: prayer_time_table_heading_tstyle,
-              ),
-            ],
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  shape: Border(
-                    bottom: BorderSide(color: Colors.black12),
-                  ),
-                  leading: Icon(
-                    Icons.sunny_snowing,
-                    color: Colors.white,
-                  ),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        'Fajr',
-                        style: TextStyle(color: Colors.white, fontSize: 13),
-                      ),
-                      Text(
-                        '5.56am',
-                        style: TextStyle(color: Colors.white, fontSize: 13),
-                      ),
-                      Text(
-                        '6.26am',
-                        style: TextStyle(color: Colors.white, fontSize: 13),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 // Jummah time widget
 class JummahPrayerTimesWidget extends StatelessWidget {
@@ -1135,12 +1078,6 @@ class StartDrawer extends StatelessWidget {
             icon: Icons.card_membership,
           ),
           DrawerList(
-            title: 'Newsletter Signup',
-            icon: Icons.newspaper,
-            pageWidget: NewsletterScreen(
-                formKey: _formKey, mHeight: mHeight, mWidth: mWidth),
-          ),
-          DrawerList(
             title: 'Volunteer Signup',
             icon: Icons.volunteer_activism,
             pageWidget: VolunteerSignUpPageScreen(
@@ -1163,27 +1100,6 @@ class StartDrawer extends StatelessWidget {
             icon: Icons.person,
             pageWidget: SigninScreen(),
           ),
-          InkWell(
-              onTap: () async {
-                Auth(context).signOut();
-              },
-              child: Container(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Colors.white12, width: 0.5),
-                  ),
-                ),
-                child: ListTile(
-                  title: Text(
-                    "Logout",
-                    style: drawer_title_tstyle,
-                  ),
-                  leading: Icon(
-                    Icons.logout,
-                    color: Colors.white,
-                  ),
-                ),
-              )),
         ],
       ),
     );
@@ -1191,7 +1107,7 @@ class StartDrawer extends StatelessWidget {
 }
 
 // Signed in start drawer__
-class SignedInStartDrawer extends StatelessWidget {
+class SignedInStartDrawer extends StatefulWidget {
   const SignedInStartDrawer({
     Key? key,
     required GlobalKey<FormState> formKey,
@@ -1203,6 +1119,26 @@ class SignedInStartDrawer extends StatelessWidget {
   final GlobalKey<FormState> _formKey;
   final double mHeight;
   final double mWidth;
+
+  @override
+  State<SignedInStartDrawer> createState() => _SignedInStartDrawerState();
+}
+
+class _SignedInStartDrawerState extends State<SignedInStartDrawer> {
+  String? userName;
+  getName() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString("name");
+    });
+  }
+
+  @override
+  void initState() {
+    Userget().fetchUsers();
+    getName();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1218,9 +1154,11 @@ class SignedInStartDrawer extends StatelessWidget {
               children: [
                 CircleAvatar(
                   maxRadius: 50,
-                  backgroundImage: NetworkImage(start_drawer_header_userimage),
+                  backgroundImage: NetworkImage(Userget.image ??
+                      "https://az-pe.com/wp-content/uploads/2018/05/kemptons-blank-profile-picture.jpg"),
                 ),
-                Text(start_drawer_username, style: start_drawer_username_tstyle)
+                Text(userName ?? "loading...",
+                    style: start_drawer_username_tstyle)
               ],
             ),
           )),
@@ -1243,7 +1181,9 @@ class SignedInStartDrawer extends StatelessWidget {
             title: 'Newsletter Signup',
             icon: Icons.newspaper,
             pageWidget: NewsletterScreen(
-                formKey: _formKey, mHeight: mHeight, mWidth: mWidth),
+                formKey: widget._formKey,
+                mHeight: widget.mHeight,
+                mWidth: widget.mWidth),
           ),
           const DrawerList(
             title: 'Setting',
@@ -1265,7 +1205,7 @@ class SignedInStartDrawer extends StatelessWidget {
                     "Logout",
                     style: drawer_title_tstyle,
                   ),
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.logout,
                     color: Colors.white,
                   ),
@@ -1277,56 +1217,133 @@ class SignedInStartDrawer extends StatelessWidget {
   }
 }
 
-//News Slide Widget__
-class NewsSlideWidget extends StatelessWidget {
-  const NewsSlideWidget({
+//News Slide Widget0__
+class NewsSlideWidget0 extends StatelessWidget {
+  const NewsSlideWidget0({
     Key? key,
+    required this.news,
   }) : super(key: key);
+
+  final List<News> news;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomRight,
-      children: [
-        Container(
-          width: double.infinity,
-          height: MediaQuery.of(context).size.height * 0.3,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.7), BlendMode.darken),
-              image: NetworkImage(news_slide_widget_news_image),
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: () {
-            Navigator.pushNamed(context, '/news_inner_screen');
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: ListTile(
-              title: Text(
-                news_slide_widget_title,
-                style: news_slide_widget_title_tstyle,
+    return news.isEmpty
+        ? const Center(child: CircularProgressIndicator())
+        : Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.3,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.7), BlendMode.darken),
+                    image: NetworkImage(news[0].images[0]),
+                  ),
+                ),
               ),
-              subtitle: Text(news_slide_widget_subtitle,
-                  style: news_slide_widget_subtitle_tstyle),
-            ),
-          ),
-        ),
-      ],
-    );
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NewsInnerScreen(
+                            title: news[0].title,
+                            date: news[0].date,
+                            image: news[0].images[0],
+                            content: parse(news[0].content).body!.text,
+                          ),
+                        ));
+                  },
+                  child: ListTile(
+                    title: Text(
+                      news[0].title,
+                      style: news_slide_widget_title_tstyle,
+                    ),
+                    subtitle: Text(news[0].date,
+                        style: news_slide_widget_subtitle_tstyle),
+                  ),
+                ),
+              ),
+            ],
+          );
+  }
+}
+
+//News Slide Widget1__
+class NewsSlideWidget1 extends StatelessWidget {
+  const NewsSlideWidget1({
+    Key? key,
+    required this.news,
+  }) : super(key: key);
+
+  final List<News> news;
+
+  @override
+  Widget build(BuildContext context) {
+    return news.isEmpty
+        ? const Center(child: CircularProgressIndicator())
+        : Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.3,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.7), BlendMode.darken),
+                    image: NetworkImage(news[1].images[0]),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NewsInnerScreen(
+                            title: news[1].title,
+                            date: news[1].date,
+                            image: news[1].images[0],
+                            content: parse(news[1].content).body!.text,
+                          ),
+                        ));
+                  },
+                  child: ListTile(
+                    title: Text(
+                      news[1].title,
+                      style: news_slide_widget_title_tstyle,
+                    ),
+                    subtitle: Text(news[1].date,
+                        style: news_slide_widget_subtitle_tstyle),
+                  ),
+                ),
+              ),
+            ],
+          );
   }
 }
 
 //News List Tle Widget__
-class NewsListtileWidget extends StatelessWidget {
+class NewsListtileWidget extends StatefulWidget {
   const NewsListtileWidget({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<NewsListtileWidget> createState() => _NewsListtileWidgetState();
+}
+
+class _NewsListtileWidgetState extends State<NewsListtileWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -1397,22 +1414,13 @@ class AskTheImamCategories extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => AskTheImamCategoriesScreen(
-                appBarTitle: catName,
-                catDescription: catDescription,
-                pageWidget: noQuesntions == "0"
-                    ? Center(
-                        child: Text(ask_the_imam_no_question_alert),
-                      )
-                    : ListView.builder(
-                        itemCount: 3,
-                        itemBuilder: (BuildContext context, int index) {
-                          return const Questions(
-                            appBarTitle: 'My Questions',
-                            pageWidget: FAQInnerScreen(),
-                          );
-                        },
-                      ),
-              ),
+                  appBarTitle: catName,
+                  catDescription: catDescription,
+                  pageWidget: noQuesntions == "0"
+                      ? Center(
+                          child: Text(ask_the_imam_no_question_alert),
+                        )
+                      : const Text("data")),
             ),
           );
         },
@@ -1456,81 +1464,6 @@ class AskTheImamCategories extends StatelessWidget {
             ],
           )
         ]),
-      ),
-    );
-  }
-}
-
-// Ask the imam - Questions widget__
-class Questions extends StatelessWidget {
-  final String appBarTitle;
-  final Widget pageWidget;
-  const Questions({
-    Key? key,
-    required this.appBarTitle,
-    required this.pageWidget,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (() => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => QuestionsInnerScreen(
-                appBarTittle: appBarTitle,
-                pageWidget: pageWidget,
-              ),
-            ),
-          )),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          side: const BorderSide(
-            color: Color.fromARGB(8, 19, 19, 19),
-          ),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        elevation: 0,
-        child: ListTile(
-          contentPadding: const EdgeInsets.all(10),
-          title: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                ask_the_imam_question_date,
-                style: ask_the_imam_question_date_tstyle,
-              ),
-              Text(
-                ask_the_imam_question,
-                maxLines: 2,
-                style: ask_the_imam_question_tstyle,
-              ),
-            ],
-          ),
-          trailing: SizedBox(
-            width: 80,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                SizedBox(height: double.maxFinite),
-                Text(
-                  'Read More',
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: const Color(0xFF0D50A3),
-                  ),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 10,
-                  color: const Color(0xFF0D50A3),
-                )
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }

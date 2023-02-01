@@ -1,5 +1,5 @@
-import 'dart:convert';
-import 'package:al_sahabah/const/const.dart';
+// ignore_for_file: avoid_print, library_private_types_in_public_api
+import 'package:al_sahabah/models/events.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +12,7 @@ class EventsScreen extends StatefulWidget {
 
 class _EventsScreenState extends State<EventsScreen> {
   List<Event> events = [];
-
-  void getHttp() async {
+  void getEvents() async {
     try {
       var response =
           await Dio().get('http://52.90.175.175/api/events/get?page=1');
@@ -29,52 +28,59 @@ class _EventsScreenState extends State<EventsScreen> {
 
   @override
   void initState() {
-    getHttp();
+    getEvents();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          elevation: 1,
-          backgroundColor: const Color(0xFF66B35A),
-          centerTitle: true,
-          title: const Text('Events'),
-        ),
-        body: ListView.builder(
-          itemCount: events.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(events[index].title),
-            );
-          },
-        ));
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: const Color(0xFF66B35A),
+        centerTitle: true,
+        title: const Text('Events'),
+      ),
+      body: events.isEmpty
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: EventGet.events.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  contentPadding: const EdgeInsets.all(20),
+                  title: Text(events[index].title),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(EventGet.events[index].description),
+                      Text("${events[index].start} - ${events[index].end}"),
+                    ],
+                  ),
+                );
+              },
+            ),
+    );
   }
 }
 
 class Event {
-  // final int id;
   final String title;
-  // final String start;
-  // final String end;
-  // final String description;
+  final String start;
+  final String end;
+  final String description;
 
-  Event({
-    // {required this.id,
-    required this.title,
-    // required this.start,
-    // required this.end,
-    // required this.description
-  });
+  Event(
+      {required this.title,
+      required this.start,
+      required this.end,
+      required this.description});
 
   factory Event.fromJson(Map<String, dynamic> json) {
     return Event(
-      // id: json['id'],
       title: json['title'],
-      // start: json['start'],
-      // end: json['end'],
-      // description: json['description'],
+      start: json['start'],
+      end: json['end'],
+      description: json['description'],
     );
   }
 }

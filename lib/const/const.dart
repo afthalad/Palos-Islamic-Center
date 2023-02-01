@@ -101,9 +101,12 @@ String news_slide_widget_description =
 String news_list_tile_widget_news_image =
     'https://www.aljazeera.com/wp-content/uploads/2022/07/000_32DR44P-1.jpg?resize=770%2C513&quality=80';
 
-TextStyle news_slide_widget_date_tstyle = const TextStyle(fontSize: 10);
-TextStyle news_list_tile_widget_title_tstyle =
-    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold);
+TextStyle news_slide_widget_date_tstyle =
+    const TextStyle(fontSize: 10, height: 2);
+TextStyle news_list_tile_widget_title_tstyle = const TextStyle(
+  fontSize: 14,
+  fontWeight: FontWeight.bold,
+);
 TextStyle news_slide_widget_description_tstyle =
     const TextStyle(overflow: TextOverflow.ellipsis, fontSize: 11);
 
@@ -156,8 +159,13 @@ String contactus_screen_profile_post = 'President and Chairman of the board';
 String contactus_screen_profile_email = 'ojammal@mosquefoundation.org';
 String contactus_screen_profile_phone = '(708)430-567';
 TextStyle contactus_screen_profile_name_tstyle =
-    const TextStyle(fontSize: 13, fontWeight: FontWeight.bold);
-TextStyle contactus_screen_profile_tstyle = const TextStyle(fontSize: 12);
+    const TextStyle(fontSize: 25, fontWeight: FontWeight.bold);
+TextStyle contactus_screen_profile_tstyle = const TextStyle(fontSize: 20);
+TextStyle contactus_screen_profile_tstyle1 = const TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.bold,
+);
+TextStyle contactus_screen_profile_tstyl21 = const TextStyle(fontSize: 20);
 
 // Events screen
 String event_screen_date = '20th';
@@ -211,6 +219,17 @@ String newsletter_screen_buttontext = 'Subscribe';
 TextStyle newsletter_screen_title_tstyle =
     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 TextStyle newsletter_screen_buttontext_tstyle = const TextStyle(fontSize: 20);
+
+// Unsubscribe Newsletter screen
+String un_newsletter_screen_title = 'Confirm your email address';
+String un_newsletter_screen_subtitle =
+    'Subscribe to our updates right in your inbox.';
+// String newsletter_screen_hintext = 'Email';
+// String newsletter_screen_validetext = 'Please enter email to subscribe';
+// String newsletter_screen_buttontext = 'Subscribe';
+// TextStyle newsletter_screen_title_tstyle =
+//     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+// TextStyle newsletter_screen_buttontext_tstyle = const TextStyle(fontSize: 20);
 
 //Prayer timings screen
 String prayer_timing_screen_bgimage =

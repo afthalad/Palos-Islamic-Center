@@ -1,11 +1,36 @@
 import 'package:al_sahabah/const/const.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
 
 //About us page screen
-class AboutUsPage extends StatelessWidget {
-  const AboutUsPage({
-    Key? key,
-  }) : super(key: key);
+class AboutUsPage extends StatefulWidget {
+  const AboutUsPage({Key? key}) : super(key: key);
+
+  @override
+  State<AboutUsPage> createState() => _AboutUsPageState();
+}
+
+class _AboutUsPageState extends State<AboutUsPage> {
+  dynamic aboutUsText = "";
+  getAboutUs() async {
+    try {
+      var response =
+          await Dio().get('http://52.90.175.175/api/static-content/about');
+      setState(() {
+        aboutUsText = response.data["data"];
+      });
+    } catch (e) {
+      rethrow;
+    }
+    return null;
+  }
+
+  @override
+  void initState() {
+    getAboutUs();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,34 +39,20 @@ class AboutUsPage extends StatelessWidget {
         elevation: 1,
         backgroundColor: const Color(0xFF66B35A),
         centerTitle: true,
-        title: Text("About us"),
+        title: const Text("About us"),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children:  [
-              Text(
-               aboutus_screen_heading_1,
-                style: aboutus_screen_heading_tstyle,
-              ),
-              Text(
-                aboutus_screen_paragraph_1,
-              ),
-              Text(
-                aboutus_screen_heading_2,
-                style: aboutus_screen_heading_tstyle,
-              ),
-              Text(
-               aboutus_screen_paragraph_2,
-              ),
-              Text(
-              aboutus_screen_heading_3,
-                style: aboutus_screen_heading_tstyle,
-              ),
-              Text(
-                  aboutus_screen_paragraph_3),
+            children: [
+              aboutUsText == ""
+                  ? const Center(child: CircularProgressIndicator())
+                  : Text(
+                      parse(aboutUsText).body!.text,
+                      style: aboutus_screen_heading_tstyle,
+                    ),
             ],
           ),
         ),

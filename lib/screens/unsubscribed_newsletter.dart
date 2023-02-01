@@ -2,11 +2,10 @@ import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 //News letter screen
-class NewsletterScreen extends StatefulWidget {
-  const NewsletterScreen({
+class UnSubNewsletterScreen extends StatefulWidget {
+  const UnSubNewsletterScreen({
     Key? key,
     required GlobalKey<FormState> formKey,
     required this.mHeight,
@@ -19,14 +18,13 @@ class NewsletterScreen extends StatefulWidget {
   final double mWidth;
 
   @override
-  State<NewsletterScreen> createState() => _NewsletterScreenState();
+  State<UnSubNewsletterScreen> createState() => _NewsletterScreenState();
 }
 
-class _NewsletterScreenState extends State<NewsletterScreen> {
+class _NewsletterScreenState extends State<UnSubNewsletterScreen> {
   final TextEditingController _email = TextEditingController();
   bool isProcess = false;
   Dio dio = Dio();
-  String? email;
   newslettePost(email) async {
     setState(() {
       isProcess = true;
@@ -46,51 +44,6 @@ class _NewsletterScreenState extends State<NewsletterScreen> {
           backgroundColor: Colors.white,
           content: Text(
             "Successfully registered to newsletter",
-            style: TextStyle(color: Colors.green),
-          ),
-        ),
-      );
-      Navigator.pushNamed(context, "/home_screen");
-    } else {
-      print(response.data["massage"]);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          duration: Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text(
-            "Something wen wrong. Please try again",
-            style: TextStyle(color: Colors.red),
-          ),
-        ),
-      );
-    }
-    setState(() {
-      isProcess = false;
-    });
-  }
-
-  unSubNewslettePost(email) async {
-    setState(() {
-      isProcess = true;
-    });
-
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      email = prefs.getString("email");
-    });
-
-    var response = await dio.post(
-        "http://52.90.175.175/api/news-letter/unsubscribe",
-        data: {"email": email});
-
-    if (response.statusCode == 200 && response.data["error"] == 0) {
-      print("Successfully unsubscribed to newsletter $email");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          duration: Duration(seconds: 3),
-          backgroundColor: Colors.white,
-          content: Text(
-            "Successfully unsubscribed to newsletter",
             style: TextStyle(color: Colors.green),
           ),
         ),
@@ -138,7 +91,7 @@ class _NewsletterScreenState extends State<NewsletterScreen> {
                 child: const Image(image: AssetImage('images/email.png')),
               ),
               Text(
-                newsletter_screen_title,
+                un_newsletter_screen_title,
                 style: newsletter_screen_title_tstyle,
               ),
               Text(newsletter_screen_subtitle),
@@ -171,11 +124,6 @@ class _NewsletterScreenState extends State<NewsletterScreen> {
                         ),
                       ),
                     ),
-              TextButton(
-                  onPressed: () {
-                    unSubNewslettePost("email");
-                  },
-                  child: Text("unsubscribe"))
             ],
           ),
         ),
