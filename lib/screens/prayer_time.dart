@@ -5,21 +5,22 @@ import 'package:al_sahabah/const/const.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:intl/intl.dart';
 
 class PrayerTimeClass {
   String date;
   String week;
-  String fajir;
-  String sunrise;
-  String dhuhar;
-  String asr;
-  String magrib;
-  String isha;
-  String fajir_iqamath;
-  String dhuhar_iqamath;
-  String asr_iqamath;
-  String magrib_iqamath;
-  String isha_iqamath;
+  var fajir;
+  var sunrise;
+  var dhuhar;
+  var asr;
+  var magrib;
+  var isha;
+  var fajir_iqamath;
+  var dhuhar_iqamath;
+  var asr_iqamath;
+  var magrib_iqamath;
+  var isha_iqamath;
 
   PrayerTimeClass({
     required this.date,
@@ -66,19 +67,23 @@ class PrayerTimingsScreen extends StatefulWidget {
 
 class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
   Dio dio = Dio();
-  List<PrayerTimeClass> prayerTime = [];
+  static List<PrayerTimeClass> prayerTime = [];
   String currentDate = "";
+
+  var time = DateTime.now();
 
   Future fetchPrayerTime() async {
     String year = DateTime.now().year.toString();
     String month = DateTime.now().month.toString().padLeft(2, '0');
     String day = DateTime.now().day.toString().padLeft(2, '0');
-
+    var time = DateTime.now();
     setState(() {
       currentDate = "$year-$month-$day";
     });
+
+    // include current data in admin panel $currentDate
     Response response =
-        await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
+        await dio.get("http://52.90.175.175/api/prayer-time/get/2023-02-01");
 
     if (response.data["data"] != null) {
       setState(() {
@@ -115,7 +120,7 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
           height: double.infinity,
           children: [
             prayerTime.isEmpty
-                ? Center(child: CircularProgressIndicator())
+                ? CircularProgressIndicator()
                 : Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Column(

@@ -1,15 +1,17 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_interpolation_to_compose_strings
 
 // import 'dart:async';
 import 'dart:async';
 
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/models/redirects.dart';
+import 'package:al_sahabah/screens/prayer_time.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:dio/dio.dart';
 import 'package:flip_board/flip_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,10 +36,39 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Dio dio = Dio();
+  static List<PrayerTimeClass> prayerTime = [];
+  String currentDate = "";
+  var time = DateTime.now();
+  String? cPrayerName;
+
+  Future fetchPrayerTime() async {
+    String year = DateTime.now().year.toString();
+    String month = DateTime.now().month.toString().padLeft(2, '0');
+    String day = DateTime.now().day.toString().padLeft(2, '0');
+    var time = DateTime.now();
+    setState(() {
+      currentDate = "$year-$month-$day";
+    });
+
+    // include current data in admin panel $currentDate
+    Response response =
+        await dio.get("http://52.90.175.175/api/prayer-time/get/2023-02-01");
+
+    if (response.data["data"] != null) {
+      setState(() {
+        prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
+      });
+    }
+  }
+
+  func() {}
+
   @override
   void initState() {
     Redirects.drawerList();
     getEvents();
+    fetchPrayerTime();
     super.initState();
   }
 
@@ -137,7 +168,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                   }),
                   child: index == 0
-                      ? SalahTimeRemingWidget(mHeight: mHeight)
+                      ? SalahTimeRemingWidget(
+                          mHeight: mHeight,
+                        )
                       : index == 1
                           ? MSalahTime(mHeight: mHeight, mWidth: mWidth)
                           : JummahPrayerTimesWidget(mHeight: mHeight));
