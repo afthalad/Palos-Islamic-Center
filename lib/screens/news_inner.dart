@@ -22,6 +22,12 @@ class _NewsInnerScreenState extends State<NewsInnerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: const Color(0xFF66B35A),
+        centerTitle: true,
+        title: const Text('News'),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

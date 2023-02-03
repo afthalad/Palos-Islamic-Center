@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
 // Ask the imam - FAQ inner screen
-class FAQInnerScreen extends StatefulWidget {
-  String? userId;
+class MyQuestionInnerScreen extends StatefulWidget {
   String date;
   String questions;
   String answer;
-  FAQInnerScreen({
+  String name;
+  MyQuestionInnerScreen({
     Key? key,
-    this.userId,
     required this.date,
     required this.questions,
     required this.answer,
+    required this.name,
   }) : super(key: key);
 
   @override
-  State<FAQInnerScreen> createState() => _FAQInnerScreenState();
+  State<MyQuestionInnerScreen> createState() => _MyQuestionInnerScreenState();
 }
 
-class _FAQInnerScreenState extends State<FAQInnerScreen> {
+class _MyQuestionInnerScreenState extends State<MyQuestionInnerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,8 +45,8 @@ class _FAQInnerScreenState extends State<FAQInnerScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.userId ?? "user",
-                      style: const TextStyle(fontSize: 10),
+                      widget.name,
+                      style: const TextStyle(fontSize: 12),
                     ),
                     Text(
                       widget.date,
@@ -71,9 +71,9 @@ class _FAQInnerScreenState extends State<FAQInnerScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.answer == ""
-                          ? "Not yet answered"
-                          : widget.answer),
+                      widget.answer == ""
+                          ? Text("Not yet answered. Please be petients")
+                          : Text(widget.answer),
                     ],
                   ),
                 ),

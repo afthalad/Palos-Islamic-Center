@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables
 
+import 'dart:async';
+
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/models/auth.dart';
 import 'package:al_sahabah/models/prayer_time_by_date.dart';
@@ -7,6 +9,7 @@ import 'package:al_sahabah/models/user_get.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/categories_inner.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/faq_inner.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/main.dart';
+import 'package:al_sahabah/screens/Ask_The_Imam/my_question.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/question_inner.dart';
 import 'package:al_sahabah/screens/about_us.dart';
 import 'package:al_sahabah/screens/contact_us.dart';
@@ -15,6 +18,7 @@ import 'package:al_sahabah/screens/faq.dart';
 import 'package:al_sahabah/screens/news.dart';
 import 'package:al_sahabah/screens/news_inner.dart';
 import 'package:al_sahabah/screens/newsletter.dart';
+import 'package:al_sahabah/screens/screen.dart';
 import 'package:al_sahabah/screens/setting.dart';
 import 'package:al_sahabah/screens/volunteer_sign_up.dart';
 import 'package:al_sahabah/screens/sing_in.dart';
@@ -88,14 +92,13 @@ class _MSalahTimeState extends State<MSalahTime> {
     currentDate = "$year-$month-$day";
 //include current date n admin panel
     Response response =
-        await dio.get("http://52.90.175.175/api/prayer-time/get/2023-02-01");
+        await dio.get("http://52.90.175.175/api/prayer-time/get/2023-02-03");
 
     if (response.data["data"] != null) {
       setState(() {
         prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
       });
     }
-    print(prayerTime);
   }
 
   @override
@@ -175,6 +178,7 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
   String cPrayerName = "";
   var cPrayerTime = "";
   var remingTime;
+  Timer? _timer;
 
   Future fetchPrayerTime() async {
     String year = DateTime.now().year.toString();
@@ -187,12 +191,11 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
 
     // include current data in admin panel $currentDate
     Response response =
-        await dio.get("http://52.90.175.175/api/prayer-time/get/2023-02-01");
+        await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
 
     if (response.data["data"] != null) {
-      setState(() {
-        prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
-      });
+      prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
+
       DateTime fajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
           "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].fajir}");
       DateTime dhuhrTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
@@ -206,31 +209,40 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
       DateTime now = DateTime.now();
 
       if (now.isBefore(fajirTime)) {
-        cPrayerName = "Fajr";
-        cPrayerTime = DateFormat.Hms().format(fajirTime);
-        remingTime = fajirTime.difference(now);
+        setState(() {
+          cPrayerName = "Fajr";
+          cPrayerTime = DateFormat.Hms().format(fajirTime);
+          remingTime = fajirTime.difference(now);
+        });
       } else if (now.isAfter(fajirTime) && now.isBefore(dhuhrTime)) {
-        cPrayerName = "Duhur";
-        cPrayerTime = DateFormat.Hms().format(dhuhrTime);
-        remingTime = dhuhrTime.difference(now).toString().split('.')[0];
+        setState(() {
+          cPrayerName = "Duhur";
+          cPrayerTime = DateFormat.Hms().format(dhuhrTime);
+          remingTime = dhuhrTime.difference(now).toString().split('.')[0];
+        });
       } else if (now.isAfter(dhuhrTime) && now.isBefore(asrTime)) {
-        cPrayerName = "Asr";
-        cPrayerTime = DateFormat.Hms().format(asrTime);
-        remingTime = asrTime.difference(now);
+        setState(() {
+          cPrayerName = "Asr";
+          cPrayerTime = DateFormat.Hms().format(asrTime);
+          remingTime = asrTime.difference(now);
+        });
       } else if (now.isAfter(asrTime) && now.isBefore(magribTime)) {
-        cPrayerName = "Magrib";
-        cPrayerTime = DateFormat.Hms().format(magribTime);
-        remingTime = magribTime.difference(now);
+        setState(() {
+          cPrayerName = "Magrib";
+          cPrayerTime = DateFormat.Hms().format(magribTime);
+          remingTime = magribTime.difference(now);
+        });
       } else if (now.isAfter(magribTime) && now.isBefore(ishaTime)) {
-        cPrayerName = "Isha";
-        cPrayerTime = DateFormat.Hms().format(ishaTime);
-        remingTime = ishaTime.difference(now);
+        setState(() {
+          cPrayerName = "Isha";
+          cPrayerTime = DateFormat.Hms().format(ishaTime);
+          remingTime = ishaTime.difference(now);
+        });
       } else {
-        cPrayerName = "Fajr";
+        setState(() {
+          cPrayerName = "Fajr";
+        });
       }
-
-      // print(cPrayerTime.runtimeType);
-      print(remingTime);
     }
   }
 
@@ -238,6 +250,9 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
   void initState() {
     fetchPrayerTime();
     super.initState();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {});
+    });
   }
 
   @override
@@ -260,9 +275,12 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
                       style: mSalah_time_subtitle_tstyle,
                     ),
                     Text(
-                      "Remining time ${remingTime}",
-                      style: mSalah_time_title_tstyle,
-                    ),
+                        remingTime != null
+                            ? _timer == null
+                                ? '0'
+                                : 'Remining time : ${(remingTime.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((remingTime.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(remingTime.inSeconds - _timer!.tick) % 60}'
+                            : "0",
+                        style: mSalah_time_title_tstyle),
                   ],
                 ),
           Container(
@@ -1104,7 +1122,7 @@ class _DrawerPagesScreenState extends State<SettingPagesScreen> {
 }
 
 // Start drawer__
-class StartDrawer extends StatelessWidget {
+class StartDrawer extends StatefulWidget {
   const StartDrawer({
     Key? key,
     required GlobalKey<FormState> formKey,
@@ -1117,6 +1135,11 @@ class StartDrawer extends StatelessWidget {
   final double mHeight;
   final double mWidth;
 
+  @override
+  State<StartDrawer> createState() => _StartDrawerState();
+}
+
+class _StartDrawerState extends State<StartDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -1156,9 +1179,9 @@ class StartDrawer extends StatelessWidget {
             title: 'Volunteer Signup',
             icon: Icons.volunteer_activism,
             pageWidget: VolunteerSignUpPageScreen(
-              formKey: _formKey,
-              mHeight: mHeight,
-              mWidth: mWidth,
+              formKey: widget._formKey,
+              mHeight: widget.mHeight,
+              mWidth: widget.mWidth,
               pageTitle: 'Sign Up for Volunteer',
               pageSubTitle:
                   "Fill out your information below and Join us in making a positive impact in your community!",
@@ -1466,7 +1489,8 @@ class _NewsListtileWidgetState extends State<NewsListtileWidget> {
 }
 
 // ASk the imam - Categories widget__
-class AskTheImamCategories extends StatelessWidget {
+class AskTheImamCategories extends StatefulWidget {
+  var catId;
   final String catName;
   String? catDescription;
   final String imageUrl;
@@ -1474,10 +1498,48 @@ class AskTheImamCategories extends StatelessWidget {
   AskTheImamCategories({
     Key? key,
     required this.catName,
+    required this.catId,
     this.catDescription,
     required this.imageUrl,
     required this.noQuesntions,
   }) : super(key: key);
+
+  @override
+  State<AskTheImamCategories> createState() => _AskTheImamCategoriesState();
+}
+
+class _AskTheImamCategoriesState extends State<AskTheImamCategories> {
+  Dio dio = Dio();
+  var userToken;
+  List<Question> question = [];
+  Future fetchCategoriess() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      Dio dio = Dio();
+      dio.options.headers["Authorization"] = "Bearer $token";
+      dio.options.headers["Accept"] = "application/json";
+      dio.options.headers["Content-Type"] = "application/json";
+
+      Response response = await dio
+          .get("http://52.90.175.175/api/questions/get/${widget.catId}?page=1");
+      var data = response.data["data"]["data"] as List;
+
+      setState(() {
+        question = data.map((d) => Question.fromJson(d)).toList();
+        userToken = prefs.getString("token");
+      });
+    } catch (ex) {
+      rethrow;
+    }
+  }
+
+  @override
+  void initState() {
+    fetchCategoriess();
+    print("User toke : ${userToken}");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1489,13 +1551,75 @@ class AskTheImamCategories extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => AskTheImamCategoriesScreen(
-                  appBarTitle: catName,
-                  catDescription: catDescription,
-                  pageWidget: noQuesntions == "0"
-                      ? Center(
-                          child: Text(ask_the_imam_no_question_alert),
-                        )
-                      : const Text("data")),
+                appBarTitle: widget.catName,
+                catDescription: widget.catDescription,
+                pageWidget: ListView.builder(
+                  itemCount: question.length,
+                  itemBuilder: (BuildContext context, int i) {
+                    return InkWell(
+                      onTap: (() => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FAQInnerScreen(
+                                date: question[i].date,
+                                questions: question[i].question,
+                                answer: question[i].answer,
+                              ),
+                            ),
+                          )),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                            color: Color.fromARGB(8, 19, 19, 19),
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        elevation: 0,
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.all(10),
+                          title: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                question[i].date.toString(),
+                                style: ask_the_imam_question_date_tstyle,
+                              ),
+                              Text(
+                                question[i].question,
+                                maxLines: 2,
+                                style: ask_the_imam_question_tstyle,
+                              ),
+                            ],
+                          ),
+                          trailing: SizedBox(
+                            width: 80,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: const [
+                                SizedBox(height: double.maxFinite),
+                                Text(
+                                  'Read More',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: Color(0xFF0D50A3),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 10,
+                                  color: Color(0xFF0D50A3),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
           );
         },
@@ -1506,7 +1630,7 @@ class AskTheImamCategories extends StatelessWidget {
               borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10), topRight: Radius.circular(10)),
               image: DecorationImage(
-                image: NetworkImage(imageUrl),
+                image: NetworkImage(widget.imageUrl),
                 fit: BoxFit.cover,
               ),
             ),
@@ -1528,10 +1652,10 @@ class AskTheImamCategories extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(catName,
+                        Text(widget.catName,
                             style: ask_the_imam_question_cat_name_tstyle),
                         Text(
-                          noQuesntions,
+                          widget.noQuesntions,
                         ),
                       ],
                     ),
@@ -1540,6 +1664,25 @@ class AskTheImamCategories extends StatelessWidget {
           )
         ]),
       ),
+    );
+  }
+}
+
+class Question {
+  String question;
+  String answer;
+  var date;
+  Question({
+    required this.question,
+    required this.answer,
+    required this.date,
+  });
+
+  factory Question.fromJson(Map<String, dynamic> json) {
+    return Question(
+      question: json["question"] ?? "",
+      answer: json["answer"] ?? "",
+      date: json["created_at"] ?? "",
     );
   }
 }

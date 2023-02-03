@@ -3,7 +3,6 @@
 // import 'dart:async';
 import 'dart:async';
 
-import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/models/redirects.dart';
 import 'package:al_sahabah/screens/prayer_time.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
@@ -11,7 +10,6 @@ import 'package:dio/dio.dart';
 import 'package:flip_board/flip_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
-import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -41,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String currentDate = "";
   var time = DateTime.now();
   String? cPrayerName;
-
+  var image;
   Future fetchPrayerTime() async {
     String year = DateTime.now().year.toString();
     String month = DateTime.now().month.toString().padLeft(2, '0');
@@ -53,22 +51,39 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // include current data in admin panel $currentDate
     Response response =
-        await dio.get("http://52.90.175.175/api/prayer-time/get/2023-02-01");
+        await dio.get("http://52.90.175.175/api/prayer-time/get/2023-02-05");
 
     if (response.data["data"] != null) {
       setState(() {
         prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
       });
     }
+
+    print(prayerTime[0].asr);
   }
 
-  func() {}
+  List<String> headerImages = [];
+  func() async {
+    Response response =
+        await dio.get("http://52.90.175.175/api/static-content/header-content");
+
+    if (response.statusCode == 200) {
+      var images = response.data['data'];
+
+      images.forEach((image) {
+        headerImages.add(image);
+      });
+    } else {
+      throw Exception('Failed to load header images');
+    }
+  }
 
   @override
   void initState() {
     Redirects.drawerList();
     getEvents();
     fetchPrayerTime();
+    func();
     super.initState();
   }
 
@@ -81,6 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
     bool containerClicked = false;
     int nextSpinValue = 0;
     int? widgetIndex = 0;
+
     void spin() => spinController.add(++nextSpinValue);
     return Scaffold(
       appBar: AppBar(
@@ -129,24 +145,22 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          ImageSlideshow(
-              width: double.infinity,
-              height: mHeight * 0.28,
-              initialPage: 0,
-              indicatorColor: Colors.grey,
-              indicatorBackgroundColor: Colors.white,
-              autoPlayInterval: 1500,
-              isLoop: true,
-              children: [
-                Image.network(
-                  homescreen_slideshow_image1,
-                  fit: BoxFit.cover,
-                ),
-                Image.network(
-                  homescreen_slideshow_image2,
-                  fit: BoxFit.cover,
-                )
-              ]),
+          headerImages.isEmpty
+              ? const CircularProgressIndicator()
+              : ImageSlideshow(
+                  width: double.infinity,
+                  height: mHeight * 0.28,
+                  initialPage: 0,
+                  indicatorColor: Colors.grey,
+                  indicatorBackgroundColor: Colors.white,
+                  // autoPlayInterval: 1500,
+                  // isLoop: true,
+                  children: headerImages.map((e) {
+                    return Image.network(
+                      "http://52.90.175.175/$e",
+                      fit: BoxFit.cover,
+                    );
+                  }).toList()),
           FlipWidget(
             initialValue: nextSpinValue,
             itemStream: spinController.stream,
@@ -177,6 +191,39 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             flipDirection: AxisDirection.up,
           ),
+
+          // FlipWidget(
+          //   initialValue: nextSpinValue,
+          //   itemStream: spinController.stream,
+          //   flipType: FlipType.spinFlip,
+          //   itemBuilder: (_, index) {
+          //     return GestureDetector(
+          //         onTap: (() async {
+          //           if (!containerClicked) {
+          //             containerClicked = true;
+          //             widgetIndex = index as int?;
+          //             if (widgetIndex! < 2) {
+          //               spin();
+          //             } else {
+          //               nextSpinValue = 0;
+          //               spinController.add(nextSpinValue);
+          //             }
+          //             await Future.delayed(const Duration(milliseconds: 500));
+          //             containerClicked = false;
+          //           }
+          //         }),
+          //         child: index == 0
+          //             ? MSalahTime(mHeight: mHeight, mWidth: mWidth)
+          //             : index == 1
+          //                 ? MSalahTime(mHeight: mHeight, mWidth: mWidth)
+          //                 : index != 0
+          //                     ? SalahTimeRemingWidget(
+          //                         mHeight: mHeight,
+          //                       )
+          //                     : MSalahTime(mHeight: mHeight, mWidth: mWidth));
+          //   },
+          //   flipDirection: AxisDirection.up,
+          // ),
           ImageSlideshow(
             height: mHeight * 0.2,
             width: double.infinity,

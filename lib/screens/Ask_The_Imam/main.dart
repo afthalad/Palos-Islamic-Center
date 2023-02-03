@@ -1,9 +1,11 @@
 import 'package:al_sahabah/screens/Ask_The_Imam/ask_question.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/faq_inner.dart';
+import 'package:al_sahabah/screens/Ask_The_Imam/myquestion.dart';
 import 'package:al_sahabah/screens/faq.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //Ask the imam - main screen
 class AskTheImamScreen extends StatefulWidget {
@@ -24,23 +26,33 @@ class AskTheImamScreen extends StatefulWidget {
 
 class _AskTheImamScreenState extends State<AskTheImamScreen> {
   Dio dio = Dio();
+  var userToken;
 
   List<Categories> categories = [];
 
-  Future<void> fetchCategoriess() async {
+  Future fetchCategoriess() async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("token");
+    print(token);
+    Dio dio = Dio();
+    dio.options.headers["Authorization"] = "Bearer $token";
+    dio.options.headers["Accept"] = "application/json";
+    dio.options.headers["Content-Type"] = "application/json";
+
     Response response =
         await dio.get("http://52.90.175.175/api/questions/categories");
-
     var data = response.data["data"]["data"] as List;
 
     setState(() {
       categories = data.map((d) => Categories.fromJson(d)).toList();
+      userToken = token;
     });
   }
 
   @override
   void initState() {
     fetchCategoriess();
+
     super.initState();
   }
 
@@ -71,28 +83,31 @@ class _AskTheImamScreenState extends State<AskTheImamScreen> {
                 itemCount: categories.length,
                 itemBuilder: (BuildContext context, int i) {
                   return AskTheImamCategories(
+                    catId: categories[i].id,
                     catName: categories[i].name,
                     catDescription: categories[i].description,
                     imageUrl: categories[i].image,
                     noQuesntions: categories[i].questions.toString(),
                   );
-                  ;
                 },
               ),
-              const Questions()
+              const MyQuestions(),
+              FaqQuestions()
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const AskTheQuestionScreen()));
-          },
-          backgroundColor: Colors.green,
-          child: const Icon(Icons.note_alt_rounded),
-        ),
+        floatingActionButton: userToken == null
+            ? const Text("")
+            : FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AskTheQuestionScreen()));
+                },
+                backgroundColor: Colors.green,
+                child: const Icon(Icons.note_alt_rounded),
+              ),
       ),
     );
   }

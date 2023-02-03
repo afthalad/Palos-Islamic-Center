@@ -18,13 +18,16 @@ class Auth {
     final prefs = await SharedPreferences.getInstance();
 
     if (response.statusCode == 200 && response.data['error'] == 0) {
-      var token = response.data["data"]["token"];
-      var email = response.data["data"]["user"]["email"];
-      var name = response.data["data"]["user"]["name"];
+      var token = await response.data["data"]["token"];
+      var email = await response.data["data"]["user"]["email"];
+      var name = await response.data["data"]["user"]["name"];
       prefs.setString("token", token);
       prefs.setString("email", email);
       prefs.setString("name", name);
       prefs.setBool("loggedin", true);
+
+      print(prefs.getBool("newsletter"));
+      print(prefs.getString("email"));
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -55,6 +58,7 @@ class Auth {
   void signOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool("loggedin", false);
+    await prefs.setString("token", "");
     await prefs.clear();
 
     Navigator.pushNamed(context, "/home_screen");
@@ -93,6 +97,17 @@ class Auth {
     });
 
     if (response.statusCode == 200 && response.data["error"] == 0) {
+      var response = await dio.post(
+          "http://52.90.175.175/api/news-letter/subscribe",
+          data: {"email": email});
+
+      if (response.statusCode == 200 && response.data["error"] == 0) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool("newsletter", true);
+        await prefs.setString("email", email);
+        print("successfully add this email $email to our newsletter");
+      } else {}
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           duration: Duration(seconds: 3),

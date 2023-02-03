@@ -16,11 +16,12 @@ class _EventsScreenState extends State<EventsScreen> {
     try {
       var response =
           await Dio().get('http://52.90.175.175/api/events/get?page=1');
+      var data = response.data["data"]["data"] as List;
       setState(() {
-        events = (response.data["data"]["data"] as List)
-            .map((i) => Event.fromJson(i))
-            .toList();
+        events = data.map((i) => Event.fromJson(i)).toList();
       });
+
+      print(events);
     } catch (e) {
       print(e);
     }
@@ -41,10 +42,16 @@ class _EventsScreenState extends State<EventsScreen> {
         centerTitle: true,
         title: const Text('Events'),
       ),
+      // body: ListView.builder(
+      //   itemCount: events.length,
+      //   itemBuilder: (BuildContext context, int i) {
+      //     return ListTile(title: Text(events[i].title),subtitle: Text(events[i].),);
+      //   },
+      // ),
       body: events.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
-              itemCount: EventGet.events.length,
+              itemCount: events.length,
               itemBuilder: (context, index) {
                 return ListTile(
                   contentPadding: const EdgeInsets.all(20),
@@ -52,7 +59,7 @@ class _EventsScreenState extends State<EventsScreen> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(EventGet.events[index].description),
+                      Text(events[index].description),
                       Text("${events[index].start} - ${events[index].end}"),
                     ],
                   ),

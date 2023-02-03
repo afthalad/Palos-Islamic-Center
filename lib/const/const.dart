@@ -211,13 +211,12 @@ TextStyle news_inner_screen_date_tstyle =
 
 // Newsletter screen
 String newsletter_screen_title = 'Subscribe Newsletter';
-String newsletter_screen_subtitle =
-    'Subscribe to our updates right in your inbox.';
+String newsletter_screen_subtitle = 'to unscubscribe please confirm your email';
 String newsletter_screen_hintext = 'Email';
 String newsletter_screen_validetext = 'Please enter email to subscribe';
 String newsletter_screen_buttontext = 'Subscribe';
 TextStyle newsletter_screen_title_tstyle =
-    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold);
 TextStyle newsletter_screen_buttontext_tstyle = const TextStyle(fontSize: 20);
 
 // Unsubscribe Newsletter screen

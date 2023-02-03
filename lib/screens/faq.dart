@@ -3,34 +3,45 @@ import 'package:al_sahabah/screens/Ask_The_Imam/faq_inner.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-// Ask the imam - Questions screen
-class Questions extends StatefulWidget {
-  const Questions({
+// Ask the imam - FaqQuestions screen
+class FaqQuestions extends StatefulWidget {
+  FaqQuestions({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<Questions> createState() => _QuestionsState();
+  State<FaqQuestions> createState() => _FaqQuestionsState();
 }
 
-class _QuestionsState extends State<Questions> {
+class _FaqQuestionsState extends State<FaqQuestions> {
   Dio dio = Dio();
   List<FaqQuestion> faqQuestion = [];
 
-  Future<void> fetchFaqQuestions() async {
+  Future<void> fetchFaqFaqQuestions() async {
     Response response =
         await dio.get("http://52.90.175.175/api/faqs/get?page=1");
 
     var data = response.data["data"]["data"] as List;
-
     setState(() {
       faqQuestion = data.map((d) => FaqQuestion.fromJson(d)).toList();
     });
+
+    // try {
+    //   List<FaqQuestion> faqQuestionList = [];
+    //   for (var d in data) {
+    //     if (d['is_private'] == 0) {
+    //       faqQuestionList.add(await FaqQuestion.fromJson(d));
+    //     }
+    //   }
+    //   setState(() {
+    //     faqQuestion = faqQuestionList;
+    //   });
+    // } catch (e) {}
   }
 
   @override
   void initState() {
-    fetchFaqQuestions();
+    fetchFaqFaqQuestions();
     super.initState();
   }
 
@@ -48,7 +59,7 @@ class _QuestionsState extends State<Questions> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => FAQInnerScreen(
-                              userId: faqQuestion[i].userId.toString(),
+                              userId: "user",
                               date: faqQuestion[i].date,
                               questions: faqQuestion[i].question,
                               answer: faqQuestion[i].answer,
@@ -113,26 +124,21 @@ class _QuestionsState extends State<Questions> {
 }
 
 class FaqQuestion {
-  int userId;
   String question;
   String answer;
-  String category;
+
   String date;
 
   FaqQuestion({
     required this.question,
-    required this.userId,
     required this.answer,
-    required this.category,
     required this.date,
   });
 
   factory FaqQuestion.fromJson(Map<String, dynamic> json) {
     return FaqQuestion(
-      userId: json["user_id"] ?? "",
       question: json["question"] ?? "",
       answer: json["answer"] ?? "",
-      category: json["category"] ?? "",
       date: json["created_at"] ?? "",
     );
   }

@@ -1,4 +1,6 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, unnecessary_string_interpolations
+
+import 'dart:async';
 
 import 'package:al_sahabah/const/const.dart';
 // import 'package:al_sahabah/models/prayer_time_by_date.dart';
@@ -69,8 +71,11 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
   Dio dio = Dio();
   static List<PrayerTimeClass> prayerTime = [];
   String currentDate = "";
-
   var time = DateTime.now();
+  String cPrayerName = "";
+  var cPrayerTime = "";
+  var remingTime;
+  Timer? _timer;
 
   Future fetchPrayerTime() async {
     String year = DateTime.now().year.toString();
@@ -83,12 +88,58 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
 
     // include current data in admin panel $currentDate
     Response response =
-        await dio.get("http://52.90.175.175/api/prayer-time/get/2023-02-01");
+        await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
 
     if (response.data["data"] != null) {
-      setState(() {
-        prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
-      });
+      prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
+
+      DateTime fajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
+          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].fajir}");
+      DateTime dhuhrTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
+          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].dhuhar}");
+      DateTime asrTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
+          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].asr}");
+      DateTime magribTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
+          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].magrib}");
+      DateTime ishaTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
+          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].isha}");
+      DateTime now = DateTime.now();
+
+      if (now.isBefore(fajirTime)) {
+        setState(() {
+          cPrayerName = "Fajr";
+          cPrayerTime = DateFormat.Hms().format(fajirTime);
+          remingTime = fajirTime.difference(now);
+        });
+      } else if (now.isAfter(fajirTime) && now.isBefore(dhuhrTime)) {
+        setState(() {
+          cPrayerName = "Duhur";
+          cPrayerTime = DateFormat.Hms().format(dhuhrTime);
+          remingTime = dhuhrTime.difference(now).toString().split('.')[0];
+        });
+      } else if (now.isAfter(dhuhrTime) && now.isBefore(asrTime)) {
+        setState(() {
+          cPrayerName = "Asr";
+          cPrayerTime = DateFormat.Hms().format(asrTime);
+          remingTime = asrTime.difference(now);
+        });
+      } else if (now.isAfter(asrTime) && now.isBefore(magribTime)) {
+        setState(() {
+          cPrayerName = "Magrib";
+          cPrayerTime = DateFormat.Hms().format(magribTime);
+          remingTime = magribTime.difference(now);
+        });
+      } else if (now.isAfter(magribTime) && now.isBefore(ishaTime)) {
+        setState(() {
+          cPrayerName = "Isha";
+          cPrayerTime = DateFormat.Hms().format(ishaTime);
+          remingTime = ishaTime.difference(now);
+        });
+      } else {
+        setState(() {
+          cPrayerName = "Fajr";
+        });
+      }
     }
   }
 
@@ -96,6 +147,9 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
   void initState() {
     fetchPrayerTime();
     super.initState();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {});
+    });
   }
 
   @override
@@ -139,17 +193,21 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
                             Column(
                               children: [
                                 Text(
-                                  'Asr',
-                                  style: TextStyle(
+                                  '$cPrayerName',
+                                  style: const TextStyle(
                                       color: Colors.white, fontSize: 15),
                                 ),
-                                Text(
+                                const Text(
                                   'Remaining Time',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 15),
                                 ),
                                 Text(
-                                  "23-12",
+                                  remingTime != null
+                                      ? _timer == null
+                                          ? '0'
+                                          : '${(remingTime.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((remingTime.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(remingTime.inSeconds - _timer!.tick) % 60}'
+                                      : "0",
                                   style: TextStyle(
                                     color: Colors.red,
                                     fontSize: 20,
@@ -160,8 +218,8 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
                             ),
                             Text(
                               'Sunrise\n${prayerTime[0].sunrise}',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 13),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 13),
                             ),
                           ],
                         ),
