@@ -115,7 +115,7 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
         setState(() {
           cPrayerName = "Duhur";
           cPrayerTime = DateFormat.Hms().format(dhuhrTime);
-          remingTime = dhuhrTime.difference(now).toString().split('.')[0];
+          remingTime = dhuhrTime.difference(now);
         });
       } else if (now.isAfter(dhuhrTime) && now.isBefore(asrTime)) {
         setState(() {
@@ -157,7 +157,7 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: const Color(0xFF66B35A),
+        backgroundColor: Color.fromARGB(255, 67, 25, 3),
         centerTitle: true,
         title: const Text('Prayer Time'),
       ),

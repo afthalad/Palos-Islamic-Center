@@ -115,7 +115,7 @@ class _AskTheQuestionScreenState extends State<AskTheQuestionScreen> {
         appBar: AppBar(
           title: Text('Ask Questions'),
           elevation: 1,
-          backgroundColor: const Color(0xFF66B35A),
+          backgroundColor: appBarColor,
           centerTitle: true,
         ),
         body: Form(
@@ -213,7 +213,7 @@ class _AskTheQuestionScreenState extends State<AskTheQuestionScreen> {
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(10),
                           elevation: 0,
-                          backgroundColor: const Color(0xFF0D50A3),
+                          backgroundColor: sec,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(-10)),
                         ),

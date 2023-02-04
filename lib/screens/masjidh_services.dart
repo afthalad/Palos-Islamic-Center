@@ -36,7 +36,7 @@ class _MasjidhServicesScreenState extends State<MasjidhServicesScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: const Color(0xFF66B35A),
+        backgroundColor: appBarColor,
         centerTitle: true,
         title: const Text('Majish Services'),
       ),

@@ -102,13 +102,13 @@ class _MyQuestionsState extends State<MyQuestions> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
-                                children: const [
+                                children: [
                                   SizedBox(height: double.maxFinite),
                                   Text(
                                     'Read More',
                                     style: TextStyle(
                                       fontSize: 10,
-                                      color: Color(0xFF0D50A3),
+                                      color: sec,
                                     ),
                                   ),
                                   Icon(

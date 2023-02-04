@@ -131,8 +131,8 @@ class _SigninScreenState extends State<SigninScreen> {
                                     });
                                   },
                                   child: Container(
-                                    decoration: const BoxDecoration(
-                                      color: const Color(0xFF0D50A3),
+                                    decoration: BoxDecoration(
+                                      color: sec,
                                     ),
                                     // ignore: sort_child_properties_last
                                     child: const Center(

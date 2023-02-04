@@ -24,7 +24,7 @@ class _NewsInnerScreenState extends State<NewsInnerScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: const Color(0xFF66B35A),
+        backgroundColor: appBarColor,
         centerTitle: true,
         title: const Text('News'),
       ),

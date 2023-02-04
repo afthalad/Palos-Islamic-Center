@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_print, library_private_types_in_public_api
+import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/models/events.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class _EventsScreenState extends State<EventsScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: const Color(0xFF66B35A),
+        backgroundColor: appBarColor,
         centerTitle: true,
         title: const Text('Events'),
       ),

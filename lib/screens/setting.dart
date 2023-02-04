@@ -1,3 +1,4 @@
+import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/screens/location_prayer_time.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: const Color(0xFF66B35A),
+        backgroundColor: appBarColor,
         centerTitle: true,
         title: const Text("Settings"),
       ),
@@ -95,7 +96,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(10),
                         elevation: 0,
-                        backgroundColor: const Color(0xFF0D50A3),
+                        backgroundColor: sec,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(-10)),
                       ),
@@ -177,7 +178,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.all(10),
                             elevation: 0,
-                            backgroundColor: const Color(0xFF0D50A3),
+                            backgroundColor: sec,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(-10)),
                           ),

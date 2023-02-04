@@ -1,3 +1,4 @@
+import 'package:al_sahabah/const/const.dart';
 import 'package:flutter/material.dart';
 
 class DrawerPagesScreen extends StatefulWidget {
@@ -21,7 +22,7 @@ class _DrawerPagesScreenState extends State<DrawerPagesScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: const Color(0xFF66B35A),
+        backgroundColor: appBarColor,
         centerTitle: true,
         title: Text(widget.appBarTitle),
       ),

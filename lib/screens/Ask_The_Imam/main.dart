@@ -1,3 +1,4 @@
+import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/ask_question.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/faq_inner.dart';
 import 'package:al_sahabah/screens/Ask_The_Imam/myquestion.dart';
@@ -63,11 +64,11 @@ class _AskTheImamScreenState extends State<AskTheImamScreen> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 1,
-          backgroundColor: const Color(0xFF66B35A),
+          backgroundColor: appBarColor,
           centerTitle: true,
           title: const Text('Ask the imam'),
           bottom: TabBar(
-            indicatorColor: const Color(0xFF0D50A3).withOpacity(0.3),
+            indicatorColor: sec.withOpacity(0.3),
             tabs: widget._tabs,
           ),
         ),
@@ -105,7 +106,7 @@ class _AskTheImamScreenState extends State<AskTheImamScreen> {
                       MaterialPageRoute(
                           builder: (context) => const AskTheQuestionScreen()));
                 },
-                backgroundColor: Colors.green,
+                backgroundColor: sec,
                 child: const Icon(Icons.note_alt_rounded),
               ),
       ),

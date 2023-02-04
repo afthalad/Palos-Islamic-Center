@@ -96,19 +96,19 @@ class _FaqQuestionsState extends State<FaqQuestions> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: const [
+                            children: [
                               SizedBox(height: double.maxFinite),
                               Text(
                                 'Read More',
                                 style: TextStyle(
                                   fontSize: 10,
-                                  color: Color(0xFF0D50A3),
+                                  color: sec,
                                 ),
                               ),
                               Icon(
                                 Icons.arrow_forward_ios,
                                 size: 10,
-                                color: Color(0xFF0D50A3),
+                                color: sec,
                               )
                             ],
                           ),

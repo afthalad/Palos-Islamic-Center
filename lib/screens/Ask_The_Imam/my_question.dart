@@ -1,3 +1,4 @@
+import 'package:al_sahabah/const/const.dart';
 import 'package:flutter/material.dart';
 
 // Ask the imam - FAQ inner screen
@@ -24,7 +25,7 @@ class _MyQuestionInnerScreenState extends State<MyQuestionInnerScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: const Color(0xFF66B35A),
+        backgroundColor: appBarColor,
         centerTitle: true,
         title: Text("Question"),
       ),

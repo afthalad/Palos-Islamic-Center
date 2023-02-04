@@ -92,7 +92,7 @@ class _MSalahTimeState extends State<MSalahTime> {
     currentDate = "$year-$month-$day";
 //include current date n admin panel
     Response response =
-        await dio.get("http://52.90.175.175/api/prayer-time/get/2023-02-03");
+        await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
 
     if (response.data["data"] != null) {
       setState(() {
@@ -177,7 +177,8 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
   var time = DateTime.now();
   String cPrayerName = "";
   var cPrayerTime = "";
-  var remingTime;
+  Duration? remingTime;
+  var remingTimee;
   Timer? _timer;
 
   Future fetchPrayerTime() async {
@@ -218,7 +219,7 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
         setState(() {
           cPrayerName = "Duhur";
           cPrayerTime = DateFormat.Hms().format(dhuhrTime);
-          remingTime = dhuhrTime.difference(now).toString().split('.')[0];
+          remingTime = dhuhrTime.difference(now);
         });
       } else if (now.isAfter(dhuhrTime) && now.isBefore(asrTime)) {
         setState(() {
@@ -241,6 +242,8 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
       } else {
         setState(() {
           cPrayerName = "Fajr";
+          cPrayerTime = DateFormat.Hms().format(fajirTime);
+          remingTime = ishaTime.difference(now);
         });
       }
     }
@@ -249,9 +252,15 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
   @override
   void initState() {
     fetchPrayerTime();
+
     super.initState();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {});
+      setState(() {
+        // remingTimee = parseDuration();
+      });
+      print(remingTime.runtimeType);
+      print(remingTime as Duration);
+      print(currentDate);
     });
   }
 
@@ -278,7 +287,7 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
                         remingTime != null
                             ? _timer == null
                                 ? '0'
-                                : 'Remining time : ${(remingTime.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((remingTime.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(remingTime.inSeconds - _timer!.tick) % 60}'
+                                : 'Remining time : ${(remingTime!.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((remingTime!.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(remingTime!.inSeconds - _timer!.tick) % 60}'
                             : "0",
                         style: mSalah_time_title_tstyle),
                   ],
@@ -843,9 +852,9 @@ class NotificatonNewsCard extends StatelessWidget {
             ),
           ),
           child: ListTile(
-            leading: const Icon(
+            leading: Icon(
               Icons.notifications_active_sharp,
-              color: Color(0xFF0D50A3),
+              color: sec,
             ),
             title: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -967,7 +976,7 @@ class _SettingOptionWidgetState extends State<SettingOptionWidget> {
         ),
         leading: Icon(
           widget.settingIcon,
-          color: const Color(0xFF0D50A3),
+          color: sec,
           size: 35,
         ),
         title: Text(widget.settingName),
@@ -1112,7 +1121,7 @@ class _DrawerPagesScreenState extends State<SettingPagesScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: const Color(0xFF66B35A),
+        backgroundColor: appBarColor,
         centerTitle: true,
         title: Text(widget.appBarTitle),
       ),
@@ -1143,7 +1152,7 @@ class _StartDrawerState extends State<StartDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: const Color(0xFF0D50A3),
+      backgroundColor: sec,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -1241,7 +1250,7 @@ class _SignedInStartDrawerState extends State<SignedInStartDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: const Color(0xFF0D50A3),
+      backgroundColor: sec,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -1597,19 +1606,19 @@ class _AskTheImamCategoriesState extends State<AskTheImamCategories> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: const [
+                              children: [
                                 SizedBox(height: double.maxFinite),
                                 Text(
                                   'Read More',
                                   style: TextStyle(
                                     fontSize: 10,
-                                    color: Color(0xFF0D50A3),
+                                    color: appBarColor,
                                   ),
                                 ),
                                 Icon(
                                   Icons.arrow_forward_ios,
                                   size: 10,
-                                  color: Color(0xFF0D50A3),
+                                  color: sec,
                                 )
                               ],
                             ),

@@ -165,7 +165,7 @@ class _NewsletterScreenState extends State<NewsletterScreen> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 1,
-          backgroundColor: const Color(0xFF66B35A),
+          backgroundColor: appBarColor,
           centerTitle: true,
           title: const Text("News Letter"),
         ),
@@ -260,7 +260,7 @@ class _NewsletterScreenState extends State<NewsletterScreen> {
                                 style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.all(10),
                                   elevation: 0,
-                                  backgroundColor: const Color(0xFF0D50A3),
+                                  backgroundColor: sec,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(-10)),
                                 ),

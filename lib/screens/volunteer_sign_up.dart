@@ -1,3 +1,4 @@
+import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/models/auth.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:dio/dio.dart';
@@ -56,7 +57,7 @@ class _VolunteerSignUpPageScreenState extends State<VolunteerSignUpPageScreen> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 1,
-          backgroundColor: const Color(0xFF66B35A),
+          backgroundColor: appBarColor,
           centerTitle: true,
           title: const Text("Volunteer sing up"),
         ),
@@ -129,7 +130,7 @@ class _VolunteerSignUpPageScreenState extends State<VolunteerSignUpPageScreen> {
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(10),
                               elevation: 0,
-                              backgroundColor: const Color(0xFF0D50A3),
+                              backgroundColor: sec,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(-10)),
                             ),

@@ -2,6 +2,10 @@
 
 import 'package:flutter/material.dart';
 
+// Color appBarColor = Color.fromARGB(255, 67, 25, 3);
+Color appBarColor = const Color(0xFFCF962F);
+Color sec = const Color(0xFF441A05);
+
 var textFormDecoration = InputDecoration(
   focusedBorder: const OutlineInputBorder(
     borderSide: BorderSide(width: 1, color: Color.fromARGB(115, 155, 153, 153)),
@@ -12,7 +16,7 @@ var textFormDecoration = InputDecoration(
 );
 
 // MSalah Time
-Color mSalah_time_container_color = const Color(0xFF66B35A);
+Color mSalah_time_container_color = appBarColor;
 TextStyle mSalah_time_title_tstyle =
     const TextStyle(color: Colors.white, fontSize: 15);
 TextStyle mSalah_time_subtitle_tstyle = const TextStyle(
@@ -175,12 +179,6 @@ String event_screen_event_name = 'Sister Class';
 TextStyle event_screen_date_tstyle =
     const TextStyle(fontSize: 15, fontWeight: FontWeight.bold);
 TextStyle event_screen_month_tstyle = const TextStyle(fontSize: 13);
-
-// Home screen
-String homescreen_slideshow_image1 =
-    'https://images.unsplash.com/photo-1597734187998-e1931acfe2ed?ixlib=rb-4ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bWFzamlkfGVufDB8fDB8fA%3D%3D&w=1000&q=80';
-String homescreen_slideshow_image2 =
-    'https://images.unsplash.com/photo-1519818187420-8e49de7adeef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=327&q=80';
 
 // Live stream screen
 String live_stream_screen_video_iframe = '''

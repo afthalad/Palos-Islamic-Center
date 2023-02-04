@@ -1,3 +1,4 @@
+import 'package:al_sahabah/const/const.dart';
 import 'package:flutter/material.dart';
 
 //Ask the imam - Categories in screen
@@ -17,7 +18,7 @@ class AskTheImamCategoriesScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: const Color(0xFF66B35A),
+        backgroundColor: appBarColor,
         centerTitle: true,
         title: Text(appBarTitle),
       ),

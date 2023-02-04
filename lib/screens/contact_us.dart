@@ -37,7 +37,7 @@ class _ContaceusDetailsScreenState extends State<ContaceusDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: const Color(0xFF66B35A),
+        backgroundColor: appBarColor,
         centerTitle: true,
         title: const Text("Contact us"),
       ),
