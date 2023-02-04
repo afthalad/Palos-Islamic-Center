@@ -120,7 +120,7 @@ class _MSalahTimeState extends State<MSalahTime> {
           //     },
           //     child: Text("asds")),
           prayerTime.isEmpty
-              ? Text("")
+              ? Text("Loading...")
               : Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [

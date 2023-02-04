@@ -134,11 +134,18 @@ class _HomeScreenState extends State<HomeScreen> {
               child: SalahTimeRemingWidget(
                 mHeight: mHeight,
               )),
-          AnimatedOpacity(
-              curve: Curves.fastOutSlowIn,
-              duration: const Duration(milliseconds: 700),
-              opacity: _showSecondSide ? 1 : 0,
-              child: MSalahTime(mHeight: mHeight, mWidth: mWidth)),
+          Stack(children: [
+            AnimatedOpacity(
+                curve: Curves.fastOutSlowIn,
+                duration: const Duration(milliseconds: 700),
+                opacity: _showSecondSide ? 1 : 0,
+                child: MSalahTime(mHeight: mHeight, mWidth: mWidth)),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/prayer_time_screen');
+                },
+                child: Text("data"))
+          ]),
           AnimatedOpacity(
               curve: Curves.fastOutSlowIn,
               duration: const Duration(milliseconds: 700),
@@ -220,44 +227,71 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     }).toList()),
           ),
-          // FlipWidget(
-          //   initialValue: nextSpinValue,
-          //   itemStream: spinController.stream,
-          //   flipType: FlipType.spinFlip,
-          //   itemBuilder: (_, index) {
-          //     return GestureDetector(
-          //         onTap: (() async {
-          //           if (!containerClicked) {
-          //             containerClicked = true;
-          //             widgetIndex = index as int?;
-          //             if (widgetIndex! < 2) {
-          //               spin();
-          //             } else {
-          //               nextSpinValue = 0;
-          //               spinController.add(nextSpinValue);
-          //             }
-          //             await Future.delayed(const Duration(milliseconds: 500));
-          //             containerClicked = false;
-          //           }
-          //         }),
-          //         child: index == 0
-          //             ? SalahTimeRemingWidget(
-          //                 mHeight: mHeight,
-          //               )
-          //             : index == 1
-          //                 ? MSalahTime(mHeight: mHeight, mWidth: mWidth)
-          //                 : JummahPrayerTimesWidget(mHeight: mHeight));
-          //   },
-          //   flipDirection: AxisDirection.up,
-          // ),
-          Center(
-            child: SizedBox(
-              height: 90,
-              width: double.infinity,
-              // constraints: BoxConstraints.tight(size),
-              child: _buildFlipAnimation(),
-            ),
+          FlipWidget(
+            initialValue: nextSpinValue,
+            itemStream: spinController.stream,
+            flipType: FlipType.spinFlip,
+            itemBuilder: (_, index) {
+              return GestureDetector(
+                  onTap: (() async {
+                    // if (!containerClicked) {
+                    //   containerClicked = true;
+                    //   // switch (wid) {
+                    //   //   case value:
+                    //   //     break;
+                    //   //   default:
+                    //   // }
+                    //   widgetIndex = index as int?;
+                    //   if (widgetIndex! < 2) {
+                    //     spin();
+                    //   } else {
+                    //     nextSpinValue = 0;
+                    //     spinController.add(nextSpinValue);
+                    //   }
+                    //   await Future.delayed(const Duration(milliseconds: 500));
+                    //   containerClicked = false;
+                    // }
+                    Timer.periodic(Duration(seconds: 5), (timer) async {
+                      if (nextSpinValue >= 3) {
+                        setState(() {
+                          nextSpinValue = 0;
+                        });
+                      }
+                      print(nextSpinValue);
+                      spin();
+
+                      // if (!containerClicked) {
+                      //   containerClicked = true;
+                      //   widgetIndex = (widgetIndex! + 1) % 3;
+                      //   if (widgetIndex! < 2) {
+                      //     spin();
+                      //   } else {
+                      //     nextSpinValue = 0;
+                      //     spinController.add(nextSpinValue);
+                      //   }
+                      //   Future.delayed(const Duration(milliseconds: 500));
+                      //   containerClicked = false;
+                      // }
+                    });
+                  }),
+                  child: index == 0
+                      ? SalahTimeRemingWidget(mHeight: mHeight)
+                      : index == 1
+                          ? MSalahTime(mHeight: mHeight, mWidth: mWidth)
+                          : index == 2
+                              ? JummahPrayerTimesWidget(mHeight: mHeight)
+                              : SalahTimeRemingWidget(mHeight: mHeight));
+            },
+            flipDirection: AxisDirection.up,
           ),
+          // Center(
+          //   child: SizedBox(
+          //     height: 90,
+          //     width: double.infinity,
+          //     // constraints: BoxConstraints.tight(size),
+          //     child: _buildFlipAnimation(),
+          //   ),
+          // ),
           // FlipWidget(
           //   initialValue: nextSpinValue,
           //   itemStream: spinController.stream,
