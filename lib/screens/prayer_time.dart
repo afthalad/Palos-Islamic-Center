@@ -70,11 +70,14 @@ class PrayerTimingsScreen extends StatefulWidget {
 class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
   Dio dio = Dio();
   static List<PrayerTimeClass> prayerTime = [];
-  String currentDate = "";
+  static List<PrayerTimeClass> prayerTimeNexDay = [];
   var time = DateTime.now();
-  String cPrayerName = "";
   var cPrayerTime = "";
   var remingTime;
+  String currentDate = "";
+  String nextDayDate = "";
+
+  String cPrayerName = "";
   Timer? _timer;
 
   Future fetchPrayerTime() async {
@@ -143,9 +146,29 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
     }
   }
 
+  Future fetchPrayerTimeNExDay() async {
+    String year = DateTime.now().year.toString();
+    String month = DateTime.now().month.toString().padLeft(2, '0');
+    String day =
+        DateTime.now().add(Duration(days: 1)).day.toString().padLeft(2, '0');
+    var time = DateTime.now();
+    setState(() {
+      nextDayDate = "$year-$month-$day";
+    });
+
+    // include current data in admin panel $currentDate
+    Response response =
+        await dio.get("http://52.90.175.175/api/prayer-time/get/$nextDayDate");
+
+    if (response.data["data"] != null) {
+      prayerTimeNexDay.add(PrayerTimeClass.fromJson(response.data["data"]));
+    }
+  }
+
   @override
   void initState() {
     fetchPrayerTime();
+    fetchPrayerTimeNExDay();
     super.initState();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {});
@@ -170,107 +193,207 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
             image: NetworkImage(prayer_timing_screen_bgimage),
           ),
         ),
-        child: ImageSlideshow(
-          height: double.infinity,
-          children: [
-            prayerTime.isEmpty
-                ? CircularProgressIndicator()
-                : Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.05,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "$currentDate\nToday",
-                              style: prayer_time_table_islamic_month_tstyle,
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  '$cPrayerName',
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                ),
-                                const Text(
-                                  'Remaining Time',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                ),
-                                Text(
-                                  remingTime != null
-                                      ? _timer == null
-                                          ? '0'
-                                          : '${(remingTime.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((remingTime.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(remingTime.inSeconds - _timer!.tick) % 60}'
-                                      : "0",
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+        child: prayerTime.isEmpty
+            ? CircularProgressIndicator()
+            : ImageSlideshow(
+                height: double.infinity,
+                children: [
+                  prayerTime.isEmpty
+                      ? Center(child: CircularProgressIndicator())
+                      : Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "$currentDate\nToday",
+                                    style:
+                                        prayer_time_table_islamic_month_tstyle,
                                   ),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              'Sunrise\n${prayerTime[0].sunrise}',
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 13),
-                            ),
-                          ],
+                                  Column(
+                                    children: [
+                                      Text(
+                                        '$cPrayerName',
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 15),
+                                      ),
+                                      const Text(
+                                        'Remaining Time',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 15),
+                                      ),
+                                      Text(
+                                        remingTime != null
+                                            ? _timer == null
+                                                ? '0'
+                                                : '${(remingTime.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((remingTime.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(remingTime.inSeconds - _timer!.tick) % 60}'
+                                            : "0",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    'Sunrise\n${prayerTime[0].sunrise}',
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 13),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Text(''),
+                                  const Text(''),
+                                  Text(
+                                    'ATHAN',
+                                    style: prayer_time_table_heading_tstyle,
+                                  ),
+                                  Text(
+                                    'IQAMAH',
+                                    style: prayer_time_table_heading_tstyle,
+                                  ),
+                                ],
+                              ),
+                              PrayerimeRow(
+                                  prayerTime: prayerTime[0].fajir,
+                                  prayerName: "Fajr ",
+                                  iqamathTime: prayerTime[0].fajir_iqamath),
+                              PrayerimeRow(
+                                  prayerTime: prayerTime[0].sunrise,
+                                  prayerName: "Sunrise",
+                                  iqamathTime: "                   "),
+                              PrayerimeRow(
+                                  prayerTime: prayerTime[0].dhuhar,
+                                  prayerName: "Dhuhar",
+                                  iqamathTime: prayerTime[0].dhuhar_iqamath),
+                              PrayerimeRow(
+                                  prayerTime: prayerTime[0].asr,
+                                  prayerName: "Asr   ",
+                                  iqamathTime: prayerTime[0].asr_iqamath),
+                              PrayerimeRow(
+                                  prayerTime: prayerTime[0].magrib,
+                                  prayerName: "Magrib",
+                                  iqamathTime: prayerTime[0].magrib_iqamath),
+                              PrayerimeRow(
+                                  prayerTime: prayerTime[0].isha,
+                                  prayerName: "Isha  ",
+                                  iqamathTime: prayerTime[0].isha_iqamath),
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.05,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Text(''),
-                            const Text(''),
-                            Text(
-                              'ATHAN',
-                              style: prayer_time_table_heading_tstyle,
-                            ),
-                            Text(
-                              'IQAMAH',
-                              style: prayer_time_table_heading_tstyle,
-                            ),
-                          ],
-                        ),
-                        PrayerimeRow(
-                            prayerTime: prayerTime[0].fajir,
-                            prayerName: "Fajr ",
-                            iqamathTime: prayerTime[0].fajir_iqamath),
-                        PrayerimeRow(
-                            prayerTime: prayerTime[0].sunrise,
-                            prayerName: "Sunrise",
-                            iqamathTime: "                   "),
-                        PrayerimeRow(
-                            prayerTime: prayerTime[0].dhuhar,
-                            prayerName: "Dhuhar",
-                            iqamathTime: prayerTime[0].dhuhar_iqamath),
-                        PrayerimeRow(
-                            prayerTime: prayerTime[0].asr,
-                            prayerName: "Asr   ",
-                            iqamathTime: prayerTime[0].asr_iqamath),
-                        PrayerimeRow(
-                            prayerTime: prayerTime[0].magrib,
-                            prayerName: "Magrib",
-                            iqamathTime: prayerTime[0].magrib_iqamath),
-                        PrayerimeRow(
-                            prayerTime: prayerTime[0].isha,
-                            prayerName: "Isha  ",
-                            iqamathTime: prayerTime[0].isha_iqamath),
-                      ],
-                    ),
-                  )
-          ],
-        ),
+                  prayerTimeNexDay.isEmpty
+                      ? Center(child: CircularProgressIndicator())
+                      : Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "$nextDayDate\nTomorrow",
+                                    style:
+                                        prayer_time_table_islamic_month_tstyle,
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        '$cPrayerName',
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 15),
+                                      ),
+                                      const Text(
+                                        'Remaining Time',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    'Sunrise\n${prayerTimeNexDay[0].sunrise}',
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 13),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Text(''),
+                                  const Text(''),
+                                  Text(
+                                    'ATHAN',
+                                    style: prayer_time_table_heading_tstyle,
+                                  ),
+                                  Text(
+                                    'IQAMAH',
+                                    style: prayer_time_table_heading_tstyle,
+                                  ),
+                                ],
+                              ),
+                              PrayerimeRow(
+                                  prayerTime: prayerTimeNexDay[0].fajir,
+                                  prayerName: "Fajr ",
+                                  iqamathTime:
+                                      prayerTimeNexDay[0].fajir_iqamath),
+                              PrayerimeRow(
+                                  prayerTime: prayerTimeNexDay[0].sunrise,
+                                  prayerName: "Sunrise",
+                                  iqamathTime: "                   "),
+                              PrayerimeRow(
+                                  prayerTime: prayerTimeNexDay[0].dhuhar,
+                                  prayerName: "Dhuhar",
+                                  iqamathTime:
+                                      prayerTimeNexDay[0].dhuhar_iqamath),
+                              PrayerimeRow(
+                                  prayerTime: prayerTimeNexDay[0].asr,
+                                  prayerName: "Asr   ",
+                                  iqamathTime: prayerTimeNexDay[0].asr_iqamath),
+                              PrayerimeRow(
+                                  prayerTime: prayerTimeNexDay[0].magrib,
+                                  prayerName: "Magrib",
+                                  iqamathTime:
+                                      prayerTimeNexDay[0].magrib_iqamath),
+                              PrayerimeRow(
+                                  prayerTime: prayerTimeNexDay[0].isha,
+                                  prayerName: "Isha  ",
+                                  iqamathTime:
+                                      prayerTimeNexDay[0].isha_iqamath),
+                            ],
+                          ),
+                        )
+                ],
+              ),
       ),
     );
   }

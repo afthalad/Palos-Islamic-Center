@@ -3,6 +3,7 @@ import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/models/events.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 class EventsScreen extends StatefulWidget {
   const EventsScreen({Key, key}) : super(key: key);
@@ -13,19 +14,31 @@ class EventsScreen extends StatefulWidget {
 
 class _EventsScreenState extends State<EventsScreen> {
   List<Event> events = [];
+  int currentPage = 1;
+
+  Dio dio = Dio();
+
   void getEvents() async {
     try {
-      var response =
-          await Dio().get('http://52.90.175.175/api/events/get?page=1');
+      var response = await Dio()
+          .get('http://52.90.175.175/api/events/get?page=$currentPage');
       var data = response.data["data"]["data"] as List;
       setState(() {
-        events = data.map((i) => Event.fromJson(i)).toList();
+        events.addAll(data.map((i) => Event.fromJson(i)).toList());
       });
 
       print(events);
     } catch (e) {
       print(e);
     }
+  }
+
+  void loadNextPage() {
+    setState(() {
+      currentPage++;
+    });
+    print(currentPage);
+    getEvents();
   }
 
   @override
@@ -43,29 +56,26 @@ class _EventsScreenState extends State<EventsScreen> {
         centerTitle: true,
         title: const Text('Events'),
       ),
-      // body: ListView.builder(
-      //   itemCount: events.length,
-      //   itemBuilder: (BuildContext context, int i) {
-      //     return ListTile(title: Text(events[i].title),subtitle: Text(events[i].),);
-      //   },
-      // ),
       body: events.isEmpty
           ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: events.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  contentPadding: const EdgeInsets.all(20),
-                  title: Text(events[index].title),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(events[index].description),
-                      Text("${events[index].start} - ${events[index].end}"),
-                    ],
-                  ),
-                );
-              },
+          : LazyLoadScrollView(
+              onEndOfPage: () => loadNextPage(),
+              child: ListView.builder(
+                itemCount: events.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    contentPadding: const EdgeInsets.all(20),
+                    title: Text(events[index].title),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(events[index].description),
+                        Text("${events[index].start} - ${events[index].end}"),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
     );
   }

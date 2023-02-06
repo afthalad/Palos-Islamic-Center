@@ -6,11 +6,11 @@ import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/models/auth.dart';
 import 'package:al_sahabah/models/prayer_time_by_date.dart';
 import 'package:al_sahabah/models/user_get.dart';
-import 'package:al_sahabah/screens/Ask_The_Imam/categories_inner.dart';
-import 'package:al_sahabah/screens/Ask_The_Imam/faq_inner.dart';
-import 'package:al_sahabah/screens/Ask_The_Imam/main.dart';
-import 'package:al_sahabah/screens/Ask_The_Imam/my_question.dart';
-import 'package:al_sahabah/screens/Ask_The_Imam/question_inner.dart';
+import 'package:al_sahabah/screens/ask_the_imam/categories_inner.dart';
+import 'package:al_sahabah/screens/ask_the_imam/faq_inner.dart';
+import 'package:al_sahabah/screens/ask_the_imam/main.dart';
+import 'package:al_sahabah/screens/ask_the_imam/my_question.dart';
+import 'package:al_sahabah/screens/ask_the_imam/question_inner.dart';
 import 'package:al_sahabah/screens/about_us.dart';
 import 'package:al_sahabah/screens/contact_us.dart';
 import 'package:al_sahabah/screens/faq.dart';
@@ -18,8 +18,7 @@ import 'package:al_sahabah/screens/faq.dart';
 import 'package:al_sahabah/screens/news.dart';
 import 'package:al_sahabah/screens/news_inner.dart';
 import 'package:al_sahabah/screens/newsletter.dart';
-import 'package:al_sahabah/screens/screen.dart';
-import 'package:al_sahabah/screens/setting.dart';
+import 'package:al_sahabah/screens/settings/setting.dart';
 import 'package:al_sahabah/screens/volunteer_sign_up.dart';
 import 'package:al_sahabah/screens/sing_in.dart';
 import 'package:dio/dio.dart';
@@ -28,8 +27,6 @@ import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../models/events.dart';
 
 //Salah Times___
 class SalahTime extends StatelessWidget {
@@ -254,18 +251,15 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
     fetchPrayerTime();
 
     super.initState();
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        // remingTimee = parseDuration();
-      });
-      print(remingTime.runtimeType);
-      print(remingTime as Duration);
-      print(currentDate);
-    });
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {});
   }
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () {
+      setState(() {});
+      print(currentDate);
+    });
     return Container(
       padding: const EdgeInsets.all(10),
       height: widget.mHeight * 0.11,
@@ -933,174 +927,6 @@ class EndDrawer extends StatelessWidget {
   }
 }
 
-// Setting Page Widget__
-class SettingOptionWidget extends StatefulWidget {
-  final String settingName;
-  final String settingSubtitle;
-  final IconData settingIcon;
-  final Widget? trailingWidget;
-  final Widget? pageWidget;
-  const SettingOptionWidget({
-    Key? key,
-    required this.settingName,
-    required this.settingSubtitle,
-    required this.settingIcon,
-    this.pageWidget,
-    this.trailingWidget,
-  }) : super(key: key);
-
-  @override
-  State<SettingOptionWidget> createState() => _SettingOptionWidgetState();
-}
-
-class _SettingOptionWidgetState extends State<SettingOptionWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Colors.black12),
-        ),
-      ),
-      child: ListTile(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SettingPagesScreen(
-              appBarTitle: widget.settingName,
-              pageWidget: widget.pageWidget!,
-            ),
-          ),
-        ),
-        leading: Icon(
-          widget.settingIcon,
-          color: sec,
-          size: 35,
-        ),
-        title: Text(widget.settingName),
-        subtitle: Text(
-          widget.settingSubtitle,
-          style: const TextStyle(
-            fontSize: 12,
-          ),
-        ),
-        trailing: widget.trailingWidget,
-      ),
-    );
-  }
-}
-
-// Athan Setting Wdget__
-class AthanSettings extends StatefulWidget {
-  final String name;
-  final List<String> dropDownOptions;
-  String? dropdownValue;
-  AthanSettings({
-    required this.name,
-    required this.dropDownOptions,
-    this.dropdownValue,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<AthanSettings> createState() => _AthanSettingsState();
-}
-
-class _AthanSettingsState extends State<AthanSettings> {
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-        contentPadding: const EdgeInsets.all(10),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Container(width: 63, child: Text(widget.name)),
-            DropdownButton<String>(
-              value: widget.dropdownValue,
-              onChanged: (newValue) {
-                setState(() {
-                  widget.dropdownValue = newValue!;
-                });
-              },
-              items: widget.dropDownOptions
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-          ],
-        ));
-  }
-}
-
-//Iqamah Setting Widget__
-class IqamahSettings extends StatefulWidget {
-  final String name;
-  final List<String> dropDownOptions;
-  String? dropdownValue;
-  IqamahSettings({
-    required this.name,
-    required this.dropDownOptions,
-    this.dropdownValue,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<IqamahSettings> createState() => _IqamahSettingsState();
-}
-
-class _IqamahSettingsState extends State<IqamahSettings> {
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: const EdgeInsets.all(10),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Container(
-            width: 61,
-            child: Text(widget.name),
-          ),
-          const SizedBox(
-            width: 30,
-          ),
-          DropdownButton<String>(
-            value: widget.dropdownValue,
-            onChanged: (newValue) {
-              setState(() {
-                widget.dropdownValue = newValue!;
-              });
-            },
-            items: widget.dropDownOptions
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-          const SizedBox(
-            width: 30,
-          ),
-          Expanded(
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.122,
-              margin: const EdgeInsets.only(bottom: 20),
-              child: TextFormField(
-                initialValue: '10',
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
 //Setting page screen__
 class SettingPagesScreen extends StatefulWidget {
   final String appBarTitle;
@@ -1524,19 +1350,14 @@ class _AskTheImamCategoriesState extends State<AskTheImamCategories> {
   Future fetchCategoriess() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString("token");
-      Dio dio = Dio();
-      dio.options.headers["Authorization"] = "Bearer $token";
-      dio.options.headers["Accept"] = "application/json";
-      dio.options.headers["Content-Type"] = "application/json";
 
       Response response = await dio
           .get("http://52.90.175.175/api/questions/get/${widget.catId}?page=1");
+
       var data = response.data["data"]["data"] as List;
 
       setState(() {
-        question = data.map((d) => Question.fromJson(d)).toList();
-        userToken = prefs.getString("token");
+        question.addAll(data.map((i) => Question.fromJson(i)).toList());
       });
     } catch (ex) {
       rethrow;
@@ -1546,7 +1367,6 @@ class _AskTheImamCategoriesState extends State<AskTheImamCategories> {
   @override
   void initState() {
     fetchCategoriess();
-    print("User toke : ${userToken}");
     super.initState();
   }
 

@@ -1,7 +1,7 @@
 import 'package:al_sahabah/const/const.dart';
-import 'package:al_sahabah/screens/Ask_The_Imam/ask_question.dart';
-import 'package:al_sahabah/screens/Ask_The_Imam/faq_inner.dart';
-import 'package:al_sahabah/screens/Ask_The_Imam/myquestion.dart';
+import 'package:al_sahabah/screens/ask_the_imam/ask_question.dart';
+import 'package:al_sahabah/screens/ask_the_imam/faq_inner.dart';
+import 'package:al_sahabah/screens/ask_the_imam/myquestion.dart';
 import 'package:al_sahabah/screens/faq.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:dio/dio.dart';

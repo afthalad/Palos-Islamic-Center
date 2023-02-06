@@ -1,5 +1,5 @@
 import 'package:al_sahabah/const/const.dart';
-import 'package:al_sahabah/screens/Ask_The_Imam/my_question.dart';
+import 'package:al_sahabah/screens/ask_the_imam/my_question.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

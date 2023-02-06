@@ -10,8 +10,11 @@ import 'package:al_sahabah/screens/sing_in.dart';
 import 'package:al_sahabah/screens/splashs.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+// import 'package:native_notify/native_notify.dart';
 
 void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // NativeNotify.initialize(2537, 'co4HxKVDmJz9LZ37E0OfBc', null, null);
   runApp(const MyApp());
 }
 

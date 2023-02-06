@@ -41,9 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var time = DateTime.now();
   String? cPrayerName;
   var image;
-  bool _showFirstSide = false;
-  bool _showSecondSide = false;
-  bool _showThirdSide = false;
+
   Future fetchPrayerTime() async {
     String year = DateTime.now().year.toString();
     String month = DateTime.now().month.toString().padLeft(2, '0');
@@ -82,24 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _switchCard() {
-    setState(() {
-      if (_showFirstSide) {
-        _showFirstSide = !_showFirstSide;
-        _showSecondSide = true;
-        _showFirstSide = false;
-      } else if (_showSecondSide) {
-        _showSecondSide = !_showSecondSide;
-        _showThirdSide = true;
-        _showFirstSide = false;
-      } else if (_showThirdSide) {
-        _showThirdSide = !_showThirdSide;
-        _showFirstSide = true;
-        _showSecondSide = false;
-      }
-    });
-  }
-
   @override
   void initState() {
     Redirects.drawerList();
@@ -107,9 +87,6 @@ class _HomeScreenState extends State<HomeScreen> {
     fetchPrayerTime();
     func();
     super.initState();
-    _showFirstSide = true;
-    _showSecondSide = false;
-    _showThirdSide = false;
   }
 
   @override
@@ -123,37 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
     int? widgetIndex = 0;
 
     void spin() => spinController.add(++nextSpinValue);
-    Widget _buildFlipAnimation() {
-      return GestureDetector(
-        onTap: _switchCard,
-        child: Stack(children: [
-          AnimatedOpacity(
-              curve: Curves.fastOutSlowIn,
-              duration: const Duration(milliseconds: 700),
-              opacity: _showFirstSide ? 1 : 0,
-              child: SalahTimeRemingWidget(
-                mHeight: mHeight,
-              )),
-          Stack(children: [
-            AnimatedOpacity(
-                curve: Curves.fastOutSlowIn,
-                duration: const Duration(milliseconds: 700),
-                opacity: _showSecondSide ? 1 : 0,
-                child: MSalahTime(mHeight: mHeight, mWidth: mWidth)),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/prayer_time_screen');
-                },
-                child: Text("data"))
-          ]),
-          AnimatedOpacity(
-              curve: Curves.fastOutSlowIn,
-              duration: const Duration(milliseconds: 700),
-              opacity: _showThirdSide ? 1 : 0,
-              child: JummahPrayerTimesWidget(mHeight: mHeight))
-        ]),
-      );
-    }
 
     return Scaffold(
       appBar: AppBar(

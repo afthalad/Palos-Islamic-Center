@@ -26,8 +26,8 @@ class Auth {
       prefs.setString("name", name);
       prefs.setBool("loggedin", true);
 
-      print(prefs.getBool("newsletter"));
-      print(prefs.getString("email"));
+      // print(prefs.getBool("newsletter"));
+      // print(prefs.getString("email"));
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

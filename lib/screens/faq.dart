@@ -1,7 +1,8 @@
 import 'package:al_sahabah/const/const.dart';
-import 'package:al_sahabah/screens/Ask_The_Imam/faq_inner.dart';
+import 'package:al_sahabah/screens/ask_the_imam/faq_inner.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 // Ask the imam - FaqQuestions screen
 class FaqQuestions extends StatefulWidget {
@@ -16,27 +17,16 @@ class FaqQuestions extends StatefulWidget {
 class _FaqQuestionsState extends State<FaqQuestions> {
   Dio dio = Dio();
   List<FaqQuestion> faqQuestion = [];
+  int currentPage = 1;
 
   Future<void> fetchFaqFaqQuestions() async {
     Response response =
-        await dio.get("http://52.90.175.175/api/faqs/get?page=1");
+        await dio.get("http://52.90.175.175/api/faqs/get?page=$currentPage");
 
     var data = response.data["data"]["data"] as List;
     setState(() {
-      faqQuestion = data.map((d) => FaqQuestion.fromJson(d)).toList();
+      faqQuestion.addAll(data.map((i) => FaqQuestion.fromJson(i)).toList());
     });
-
-    // try {
-    //   List<FaqQuestion> faqQuestionList = [];
-    //   for (var d in data) {
-    //     if (d['is_private'] == 0) {
-    //       faqQuestionList.add(await FaqQuestion.fromJson(d));
-    //     }
-    //   }
-    //   setState(() {
-    //     faqQuestion = faqQuestionList;
-    //   });
-    // } catch (e) {}
   }
 
   @override
@@ -45,12 +35,20 @@ class _FaqQuestionsState extends State<FaqQuestions> {
     super.initState();
   }
 
+  void loadNextPage() {
+    setState(() {
+      currentPage++;
+    });
+    fetchFaqFaqQuestions();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: faqQuestion.isEmpty
           ? const Center(child: CircularProgressIndicator.adaptive())
-          : Expanded(
+          : LazyLoadScrollView(
+              onEndOfPage: () => loadNextPage(),
               child: ListView.builder(
                 itemCount: faqQuestion.length,
                 itemBuilder: (BuildContext context, int i) {
