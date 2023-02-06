@@ -44,80 +44,88 @@ class _FaqQuestionsState extends State<FaqQuestions> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: faqQuestion.isEmpty
-          ? const Center(child: CircularProgressIndicator.adaptive())
-          : LazyLoadScrollView(
-              onEndOfPage: () => loadNextPage(),
-              child: ListView.builder(
-                itemCount: faqQuestion.length,
-                itemBuilder: (BuildContext context, int i) {
-                  return InkWell(
-                    onTap: (() => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FAQInnerScreen(
-                              userId: "user",
-                              date: faqQuestion[i].date,
-                              questions: faqQuestion[i].question,
-                              answer: faqQuestion[i].answer,
+    return faqQuestion.isEmpty
+        ? Text("data")
+        : Expanded(
+            child: faqQuestion.isEmpty
+                ? Center(
+                    child: Container(
+                        height: 50,
+                        width: 50,
+                        child: CircularProgressIndicator()))
+                : LazyLoadScrollView(
+                    onEndOfPage: () => loadNextPage(),
+                    child: ListView.builder(
+                      itemCount: faqQuestion.length,
+                      itemBuilder: (BuildContext context, int i) {
+                        return InkWell(
+                          onTap: (() => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FAQInnerScreen(
+                                    userId: "user",
+                                    date: faqQuestion[i].date,
+                                    questions: faqQuestion[i].question,
+                                    answer: faqQuestion[i].answer,
+                                  ),
+                                ),
+                              )),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                color: Color.fromARGB(8, 19, 19, 19),
+                              ),
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                          ),
-                        )),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: const BorderSide(
-                          color: Color.fromARGB(8, 19, 19, 19),
-                        ),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      elevation: 0,
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(10),
-                        title: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              faqQuestion[i].date.toString(),
-                              style: ask_the_imam_question_date_tstyle,
-                            ),
-                            Text(
-                              faqQuestion[i].question,
-                              maxLines: 2,
-                              style: ask_the_imam_question_tstyle,
-                            ),
-                          ],
-                        ),
-                        trailing: SizedBox(
-                          width: 80,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              SizedBox(height: double.maxFinite),
-                              Text(
-                                'Read More',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: sec,
+                            elevation: 0,
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.all(10),
+                              title: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    faqQuestion[i].date.toString(),
+                                    style: ask_the_imam_question_date_tstyle,
+                                  ),
+                                  Text(
+                                    faqQuestion[i].question,
+                                    maxLines: 2,
+                                    style: ask_the_imam_question_tstyle,
+                                  ),
+                                ],
+                              ),
+                              trailing: SizedBox(
+                                width: 80,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    SizedBox(height: double.maxFinite),
+                                    Text(
+                                      'Read More',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: sec,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 10,
+                                      color: sec,
+                                    )
+                                  ],
                                 ),
                               ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 10,
-                                color: sec,
-                              )
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            ),
-    );
+                  ),
+          );
   }
 }
 
