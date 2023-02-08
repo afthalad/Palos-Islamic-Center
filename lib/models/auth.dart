@@ -84,6 +84,8 @@ class Auth {
     required password,
     required cpassword,
   }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
     var response = await dio.post("http://52.90.175.175/api/register", data: {
       "email": email,
       "name": name,
@@ -118,7 +120,7 @@ class Auth {
           ),
         ),
       );
-      Navigator.pushNamed(context, "/home_screen");
+      Navigator.pushNamed(context, "/signin_screen");
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

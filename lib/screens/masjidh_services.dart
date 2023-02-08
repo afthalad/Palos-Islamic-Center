@@ -38,23 +38,23 @@ class _MasjidhServicesScreenState extends State<MasjidhServicesScreen> {
         elevation: 1,
         backgroundColor: appBarColor,
         centerTitle: true,
-        title: const Text('Majish Services'),
+        title: const Text('Masjidh Services'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              masjidhServicesText == ""
-                  ? const Center(child: CircularProgressIndicator())
-                  : Text(
+      body: masjidhServicesText == ""
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.all(10),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
                       parse(masjidhServicesText).body!.text,
                     ),
-            ],
-          ),
-        ),
-      ),
+                  ],
+                ),
+              ),
+            ),
     );
   }
 }

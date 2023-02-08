@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, unused_field
 
 import 'dart:async';
-
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/models/auth.dart';
 import 'package:al_sahabah/models/prayer_time_by_date.dart';
@@ -9,12 +8,8 @@ import 'package:al_sahabah/models/user_get.dart';
 import 'package:al_sahabah/screens/ask_the_imam/categories_inner.dart';
 import 'package:al_sahabah/screens/ask_the_imam/faq_inner.dart';
 import 'package:al_sahabah/screens/ask_the_imam/main.dart';
-import 'package:al_sahabah/screens/ask_the_imam/my_question.dart';
-import 'package:al_sahabah/screens/ask_the_imam/question_inner.dart';
 import 'package:al_sahabah/screens/about_us.dart';
 import 'package:al_sahabah/screens/contact_us.dart';
-import 'package:al_sahabah/screens/faq.dart';
-
 import 'package:al_sahabah/screens/news.dart';
 import 'package:al_sahabah/screens/news_inner.dart';
 import 'package:al_sahabah/screens/newsletter.dart';
@@ -87,7 +82,7 @@ class _MSalahTimeState extends State<MSalahTime> {
     String day = DateTime.now().day.toString().padLeft(2, '0');
 
     currentDate = "$year-$month-$day";
-//include current date n admin panel
+    //include current date  admin panel
     Response response =
         await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
 
@@ -109,16 +104,11 @@ class _MSalahTimeState extends State<MSalahTime> {
     return Container(
       height: widget.mHeight * 0.11,
       color: mSalah_time_container_color,
-      child: Column(
-        children: [
-          // ElevatedButton(
-          //     onPressed: () {
-          //       fetchPrayerTime();
-          //     },
-          //     child: Text("asds")),
-          prayerTime.isEmpty
-              ? Text("Loading...")
-              : Row(
+      child: prayerTime.isEmpty
+          ? const Center(child: Text("Loading..."))
+          : Column(
+              children: [
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     SalahTime(
@@ -148,165 +138,100 @@ class _MSalahTimeState extends State<MSalahTime> {
                     ),
                   ],
                 ),
-        ],
-      ),
+              ],
+            ),
     );
   }
 }
 
-//Remaining salah time Widget__
 class SalahTimeRemingWidget extends StatefulWidget {
   const SalahTimeRemingWidget({
     Key? key,
     required this.mHeight,
+    required this.cPrayerName,
+    required this.cPrayerTime,
   }) : super(key: key);
 
   final double mHeight;
+  final cPrayerName;
+  final cPrayerTime;
 
   @override
   State<SalahTimeRemingWidget> createState() => _SalahTimeRemingWidgetState();
 }
 
 class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
-  Dio dio = Dio();
-  static List<PrayerTimeClass> prayerTime = [];
-  String currentDate = "";
-  var time = DateTime.now();
-  String cPrayerName = "";
-  var cPrayerTime = "";
-  Duration? remingTime;
-  var remingTimee;
   Timer? _timer;
+  var reminingTime;
 
-  Future fetchPrayerTime() async {
-    String year = DateTime.now().year.toString();
-    String month = DateTime.now().month.toString().padLeft(2, '0');
-    String day = DateTime.now().day.toString().padLeft(2, '0');
-    var time = DateTime.now();
+  func() async {
+    DateTime now = DateTime.now();
+    var now2 = DateFormat.Hms().format(now);
+    var time = await DateFormat("HH:mm:ss").parse("${widget.cPrayerTime}");
+    var time2 = DateFormat("HH:mm:ss").parse("$now2");
+    var diff = time.difference(time2);
     setState(() {
-      currentDate = "$year-$month-$day";
+      reminingTime = diff;
     });
-
-    // include current data in admin panel $currentDate
-    Response response =
-        await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
-
-    if (response.data["data"] != null) {
-      prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
-
-      DateTime fajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].fajir}");
-      DateTime dhuhrTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].dhuhar}");
-      DateTime asrTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].asr}");
-      DateTime magribTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].magrib}");
-      DateTime ishaTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].isha}");
-      DateTime now = DateTime.now();
-
-      if (now.isBefore(fajirTime)) {
-        setState(() {
-          cPrayerName = "Fajr";
-          cPrayerTime = DateFormat.Hms().format(fajirTime);
-          remingTime = fajirTime.difference(now);
-        });
-      } else if (now.isAfter(fajirTime) && now.isBefore(dhuhrTime)) {
-        setState(() {
-          cPrayerName = "Duhur";
-          cPrayerTime = DateFormat.Hms().format(dhuhrTime);
-          remingTime = dhuhrTime.difference(now);
-        });
-      } else if (now.isAfter(dhuhrTime) && now.isBefore(asrTime)) {
-        setState(() {
-          cPrayerName = "Asr";
-          cPrayerTime = DateFormat.Hms().format(asrTime);
-          remingTime = asrTime.difference(now);
-        });
-      } else if (now.isAfter(asrTime) && now.isBefore(magribTime)) {
-        setState(() {
-          cPrayerName = "Magrib";
-          cPrayerTime = DateFormat.Hms().format(magribTime);
-          remingTime = magribTime.difference(now);
-        });
-      } else if (now.isAfter(magribTime) && now.isBefore(ishaTime)) {
-        setState(() {
-          cPrayerName = "Isha";
-          cPrayerTime = DateFormat.Hms().format(ishaTime);
-          remingTime = ishaTime.difference(now);
-        });
-      } else {
-        setState(() {
-          cPrayerName = "Fajr";
-          cPrayerTime = DateFormat.Hms().format(fajirTime);
-          remingTime = ishaTime.difference(now);
-        });
-      }
-    }
   }
 
   @override
   void initState() {
-    fetchPrayerTime();
-
     super.initState();
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {});
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {});
+    func();
   }
 
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () {
       setState(() {});
-      print(currentDate);
     });
     return Container(
       padding: const EdgeInsets.all(10),
       height: widget.mHeight * 0.11,
       color: mSalah_time_container_color,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          remingTime == null
-              ? Text("")
-              : Column(
+      child: reminingTime == null
+          ? const Center(child: Text("Loading..."))
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${cPrayerName} at  ${cPrayerTime}',
+                      '${widget.cPrayerName} at  ${widget.cPrayerTime}',
                       style: mSalah_time_subtitle_tstyle,
                     ),
                     Text(
-                        remingTime != null
-                            ? _timer == null
-                                ? '0'
-                                : 'Remining time : ${(remingTime!.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((remingTime!.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(remingTime!.inSeconds - _timer!.tick) % 60}'
-                            : "0",
-                        style: mSalah_time_title_tstyle),
+                      'Remining time : ${(reminingTime.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((reminingTime.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(reminingTime.inSeconds - _timer!.tick) % 60}',
+                      style: mSalah_time_title_tstyle,
+                    ),
                   ],
                 ),
-          Container(
-            padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.white30,
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(50),
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.white30,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/prayer_time_screen");
+                    },
+                    child: Text(
+                      "see more",
+                      style: mSalah_time_subtitle_tstyle,
+                    ),
+                  ),
+                )
+              ],
             ),
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, "/prayer_time_screen");
-              },
-              child: Text(
-                "see more",
-                style: mSalah_time_subtitle_tstyle,
-              ),
-            ),
-          )
-        ],
-      ),
     );
   }
 }

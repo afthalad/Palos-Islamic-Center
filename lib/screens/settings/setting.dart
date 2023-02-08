@@ -77,7 +77,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                     builder: (context) => const AthanSettingPageScreen()),
               ),
               leading: Icon(
-                Icons.handshake,
+                Icons.mosque,
                 color: sec,
                 size: 35,
               ),
@@ -109,7 +109,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                     builder: (context) => const IqamaSettingPageScreen()),
               ),
               leading: Icon(
-                Icons.handshake,
+                Icons.notifications_active,
                 color: sec,
                 size: 35,
               ),

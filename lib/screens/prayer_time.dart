@@ -107,6 +107,8 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
       DateTime ishaTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
           "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].isha}");
       DateTime now = DateTime.now();
+      DateTime nextDayFajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
+          "${DateTime.now().toString().substring(0, 10)} ${prayerTimeNexDay[0].fajir}");
 
       if (now.isBefore(fajirTime)) {
         setState(() {
@@ -138,9 +140,17 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
           cPrayerTime = DateFormat.Hms().format(ishaTime);
           remingTime = ishaTime.difference(now);
         });
-      } else {
+      } else if (now.isAfter(ishaTime) && now.isBefore(nextDayFajirTime)) {
         setState(() {
           cPrayerName = "Fajr";
+          cPrayerTime = DateFormat.Hms().format(nextDayFajirTime);
+          remingTime = ishaTime.difference(now);
+        });
+      } else {
+        setState(() {
+          cPrayerName = "Prayer";
+          cPrayerTime = "Time";
+          remingTime = 0;
         });
       }
     }
@@ -167,10 +177,10 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
 
   @override
   void initState() {
-    fetchPrayerTime();
     fetchPrayerTimeNExDay();
+    fetchPrayerTime();
     super.initState();
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {});
     });
   }
@@ -180,26 +190,26 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: Color.fromARGB(255, 67, 25, 3),
+        backgroundColor: const Color.fromARGB(255, 67, 25, 3),
         centerTitle: true,
         title: const Text('Prayer Time'),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.6), BlendMode.darken),
-            fit: BoxFit.cover,
-            image: NetworkImage(prayer_timing_screen_bgimage),
-          ),
-        ),
-        child: prayerTime.isEmpty
-            ? CircularProgressIndicator()
-            : ImageSlideshow(
+      body: prayerTime.isEmpty
+          ? const Center(child: CircularProgressIndicator())
+          : Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.6), BlendMode.darken),
+                  fit: BoxFit.cover,
+                  image: AssetImage(prayer_timing_screen_bgimage),
+                ),
+              ),
+              child: ImageSlideshow(
                 height: double.infinity,
                 children: [
                   prayerTime.isEmpty
-                      ? Center(child: CircularProgressIndicator())
+                      ? const Center(child: CircularProgressIndicator())
                       : Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Column(
@@ -326,11 +336,6 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
                                         style: const TextStyle(
                                             color: Colors.white, fontSize: 15),
                                       ),
-                                      const Text(
-                                        'Remaining Time',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 15),
-                                      ),
                                     ],
                                   ),
                                   Text(
@@ -394,7 +399,7 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
                         )
                 ],
               ),
-      ),
+            ),
     );
   }
 }

@@ -45,14 +45,16 @@ class _FaqQuestionsState extends State<FaqQuestions> {
   @override
   Widget build(BuildContext context) {
     return faqQuestion.isEmpty
-        ? Text("data")
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
         : Expanded(
             child: faqQuestion.isEmpty
                 ? Center(
                     child: Container(
                         height: 50,
                         width: 50,
-                        child: CircularProgressIndicator()))
+                        child: const CircularProgressIndicator()))
                 : LazyLoadScrollView(
                     onEndOfPage: () => loadNextPage(),
                     child: ListView.builder(

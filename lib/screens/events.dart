@@ -58,23 +58,29 @@ class _EventsScreenState extends State<EventsScreen> {
       ),
       body: events.isEmpty
           ? const Center(child: CircularProgressIndicator())
-          : LazyLoadScrollView(
-              onEndOfPage: () => loadNextPage(),
-              child: ListView.builder(
-                itemCount: events.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    contentPadding: const EdgeInsets.all(20),
-                    title: Text(events[index].title),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(events[index].description),
-                        Text("${events[index].start} - ${events[index].end}"),
-                      ],
-                    ),
-                  );
-                },
+          : Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: LazyLoadScrollView(
+                onEndOfPage: () => loadNextPage(),
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => const Divider(
+                    color: Colors.black26,
+                  ),
+                  itemCount: events.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      contentPadding: const EdgeInsets.all(20),
+                      title: Text(events[index].title),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(events[index].description),
+                          Text("${events[index].start} - ${events[index].end}"),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
     );

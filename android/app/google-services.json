@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "360806897515",
+    "project_id": "furqaand-c1aa3",
+    "storage_bucket": "furqaand-c1aa3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360806897515:android:c2e956390124c632535e2e",
+        "android_client_info": {
+          "package_name": "com.PalosIslamicCenter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360806897515-1aneco0qitvjgi12ojl39lrf0o39eufd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiAwsWfu67OZCEinKIs4lLu8Fmx1XGEkE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360806897515-1aneco0qitvjgi12ojl39lrf0o39eufd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

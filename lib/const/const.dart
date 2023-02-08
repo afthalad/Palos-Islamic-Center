@@ -229,5 +229,4 @@ String un_newsletter_screen_subtitle =
 // TextStyle newsletter_screen_buttontext_tstyle = const TextStyle(fontSize: 20);
 
 //Prayer timings screen
-String prayer_timing_screen_bgimage =
-    'https://static.vecteezy.com/system/resources/previews/006/998/428/original/islamic-design-for-background-ramadan-kareem-banner-mosque-silhouette-design-illustration-ramadan-kareem-s-design-is-similar-to-greetings-invitations-templates-or-backgrounds-free-vector.jpg';
+String prayer_timing_screen_bgimage = 'images/prayerTime.png';
