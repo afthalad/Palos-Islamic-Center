@@ -40,7 +40,7 @@ void main() async {
   );
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('Got a message whilst in the foreground!');
-    print('Message asdas: ${message.data}');
+    print('Message asdasdsadaas: ${message.data}');
 
     if (message.notification != null) {
       print('Message also contained a notification: ${message.notification}');
