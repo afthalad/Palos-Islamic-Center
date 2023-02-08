@@ -326,7 +326,7 @@ class MFeaturesCard1 extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, '/eventss_screen');
+                Navigator.pushNamed(context, '/events_screen');
               },
               child: FeaturesCard(
                 mWidth: mWidth,
@@ -537,8 +537,8 @@ class MFeaturesCard3 extends StatelessWidget {
 }
 
 //Event card__
-class Eventss extends StatefulWidget {
-  const Eventss({
+class Events extends StatefulWidget {
+  const Events({
     Key? key,
     required this.mHeight,
     required this.mWidth,
@@ -554,15 +554,15 @@ class Eventss extends StatefulWidget {
   final String eventName;
 
   @override
-  State<Eventss> createState() => _EventssState();
+  State<Events> createState() => _EventsState();
 }
 
-class _EventssState extends State<Eventss> {
+class _EventsState extends State<Events> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/eventss_screen');
+        Navigator.pushNamed(context, '/events_screen');
       },
       child: Padding(
         padding: const EdgeInsets.only(top: 10),

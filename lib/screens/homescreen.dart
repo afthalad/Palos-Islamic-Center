@@ -40,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var remingTime;
 
   List<PrayerTimeClass> prayerTime = [];
+  List<PrayerTimeClass> prayerTimeNexDay = [];
   List<String> headerImages = [];
   List<Event> events = [];
   var spinController = StreamController<int>.broadcast();
@@ -94,74 +95,96 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  nextDayPrayerTimeGet() async {
+  // nextDayPrayerTimeGet() async {
+  //   String year = DateTime.now().year.toString();
+  //   String month = DateTime.now().month.toString().padLeft(2, '0');
+  //   String day = DateTime.now().day.toString().padLeft(2, '0');
+  //   // var time = DateTime.now();
+  //   setState(() {
+  //     currentDate = "$year-$month-$day";
+  //   });
+
+  //   // include current data in admin panel $currentDate
+  //   Response response =
+  //       await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
+
+  //   if (response.data["data"] != null) {
+  //     setState(() {
+  //       prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
+  //     });
+
+  //     DateTime fajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
+  //         "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].fajir}");
+  //     DateTime dhuhrTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
+  //         "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].dhuhar}");
+  //     DateTime asrTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
+  //         "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].asr}");
+  //     DateTime magribTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
+  //         "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].magrib}");
+  //     DateTime ishaTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
+  //         "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].isha}");
+  //     DateTime now = DateTime.now();
+
+  //     if (now.isBefore(fajirTime)) {
+  //       setState(() {
+  //         cPrayerName = "Fajr";
+  //         cPrayerTime = DateFormat.Hms().format(fajirTime);
+  //         remingTime = fajirTime.difference(now);
+  //       });
+  //     } else if (now.isAfter(fajirTime) && now.isBefore(dhuhrTime)) {
+  //       setState(() {
+  //         cPrayerName = "Duhur";
+  //         cPrayerTime = DateFormat.Hms().format(dhuhrTime);
+  //         remingTime = dhuhrTime.difference(now);
+  //       });
+  //     } else if (now.isAfter(dhuhrTime) && now.isBefore(asrTime)) {
+  //       setState(() {
+  //         cPrayerName = "Asr";
+  //         cPrayerTime = DateFormat.Hms().format(asrTime);
+  //         remingTime = asrTime.difference(now);
+  //       });
+  //     } else if (now.isAfter(asrTime) && now.isBefore(magribTime)) {
+  //       setState(() {
+  //         cPrayerName = "Magrib";
+  //         cPrayerTime = DateFormat.Hms().format(magribTime);
+  //         remingTime = magribTime.difference(now);
+  //       });
+  //     } else if (now.isAfter(magribTime) && now.isBefore(ishaTime)) {
+  //       setState(() {
+  //         cPrayerName = "Isha";
+  //         cPrayerTime = DateFormat.Hms().format(ishaTime);
+  //         remingTime = ishaTime.difference(now);
+  //       });
+  //     } else {
+  //       setState(() {
+  //         cPrayerName = "Fajr";
+  //         cPrayerTime = DateFormat.Hms().format(fajirTime);
+  //         remingTime = ishaTime.difference(now);
+  //       });
+  //     }
+  //   } else {}
+  // }
+
+  Future fetchPrayerTimeNExDay() async {
     String year = DateTime.now().year.toString();
     String month = DateTime.now().month.toString().padLeft(2, '0');
-    String day = DateTime.now().day.toString().padLeft(2, '0');
-    // var time = DateTime.now();
-    setState(() {
-      currentDate = "$year-$month-$day";
-    });
+    String day =
+        DateTime.now().add(Duration(days: 1)).day.toString().padLeft(2, '0');
+    var time = DateTime.now();
+
+    var nextDayDate = "$year-$month-$day";
+    print(nextDayDate);
 
     // include current data in admin panel $currentDate
     Response response =
-        await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
+        await dio.get("http://52.90.175.175/api/prayer-time/get/$nextDayDate");
 
     if (response.data["data"] != null) {
+      print("object");
       setState(() {
-        prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
+        prayerTimeNexDay.add(PrayerTimeClass.fromJson(response.data["data"]));
       });
-
-      DateTime fajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].fajir}");
-      DateTime dhuhrTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].dhuhar}");
-      DateTime asrTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].asr}");
-      DateTime magribTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].magrib}");
-      DateTime ishaTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-          "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].isha}");
-      DateTime now = DateTime.now();
-
-      if (now.isBefore(fajirTime)) {
-        setState(() {
-          cPrayerName = "Fajr";
-          cPrayerTime = DateFormat.Hms().format(fajirTime);
-          remingTime = fajirTime.difference(now);
-        });
-      } else if (now.isAfter(fajirTime) && now.isBefore(dhuhrTime)) {
-        setState(() {
-          cPrayerName = "Duhur";
-          cPrayerTime = DateFormat.Hms().format(dhuhrTime);
-          remingTime = dhuhrTime.difference(now);
-        });
-      } else if (now.isAfter(dhuhrTime) && now.isBefore(asrTime)) {
-        setState(() {
-          cPrayerName = "Asr";
-          cPrayerTime = DateFormat.Hms().format(asrTime);
-          remingTime = asrTime.difference(now);
-        });
-      } else if (now.isAfter(asrTime) && now.isBefore(magribTime)) {
-        setState(() {
-          cPrayerName = "Magrib";
-          cPrayerTime = DateFormat.Hms().format(magribTime);
-          remingTime = magribTime.difference(now);
-        });
-      } else if (now.isAfter(magribTime) && now.isBefore(ishaTime)) {
-        setState(() {
-          cPrayerName = "Isha";
-          cPrayerTime = DateFormat.Hms().format(ishaTime);
-          remingTime = ishaTime.difference(now);
-        });
-      } else {
-        setState(() {
-          cPrayerName = "Fajr";
-          cPrayerTime = DateFormat.Hms().format(fajirTime);
-          remingTime = ishaTime.difference(now);
-        });
-      }
-    } else {}
+    }
   }
 
   prayerTimeGet() async {
@@ -371,7 +394,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(color: Colors.grey),
                       ),
                     )
-                  : Eventss(
+                  : Events(
                       mHeight: mHeight,
                       mWidth: mWidth,
                       image: 'images/event.png',
@@ -385,7 +408,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(color: Colors.grey),
                       ),
                     )
-                  : Eventss(
+                  : Events(
                       mHeight: mHeight,
                       mWidth: mWidth,
                       image: 'images/prayer.jpg',

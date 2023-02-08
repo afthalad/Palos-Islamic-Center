@@ -80,11 +80,11 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
   String cPrayerName = "";
   Timer? _timer;
 
-  Future fetchPrayerTime() async {
+  prayerTimeGet() async {
     String year = DateTime.now().year.toString();
     String month = DateTime.now().month.toString().padLeft(2, '0');
     String day = DateTime.now().day.toString().padLeft(2, '0');
-    var time = DateTime.now();
+    // var time = DateTime.now();
     setState(() {
       currentDate = "$year-$month-$day";
     });
@@ -94,7 +94,9 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
         await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
 
     if (response.data["data"] != null) {
-      prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
+      setState(() {
+        prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
+      });
 
       DateTime fajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
           "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].fajir}");
@@ -107,8 +109,6 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
       DateTime ishaTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
           "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].isha}");
       DateTime now = DateTime.now();
-      DateTime nextDayFajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-          "${DateTime.now().toString().substring(0, 10)} ${prayerTimeNexDay[0].fajir}");
 
       if (now.isBefore(fajirTime)) {
         setState(() {
@@ -140,20 +140,14 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
           cPrayerTime = DateFormat.Hms().format(ishaTime);
           remingTime = ishaTime.difference(now);
         });
-      } else if (now.isAfter(ishaTime) && now.isBefore(nextDayFajirTime)) {
-        setState(() {
-          cPrayerName = "Fajr";
-          cPrayerTime = DateFormat.Hms().format(nextDayFajirTime);
-          remingTime = ishaTime.difference(now);
-        });
       } else {
         setState(() {
-          cPrayerName = "Prayer";
-          cPrayerTime = "Time";
-          remingTime = 0;
+          cPrayerName = "Fajr";
+          cPrayerTime = DateFormat.Hms().format(fajirTime);
+          remingTime = ishaTime.difference(now);
         });
       }
-    }
+    } else {}
   }
 
   Future fetchPrayerTimeNExDay() async {
@@ -162,23 +156,26 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
     String day =
         DateTime.now().add(Duration(days: 1)).day.toString().padLeft(2, '0');
     var time = DateTime.now();
-    setState(() {
-      nextDayDate = "$year-$month-$day";
-    });
+
+    var nextDayDate = "$year-$month-$day";
+    print(nextDayDate);
 
     // include current data in admin panel $currentDate
     Response response =
         await dio.get("http://52.90.175.175/api/prayer-time/get/$nextDayDate");
 
     if (response.data["data"] != null) {
-      prayerTimeNexDay.add(PrayerTimeClass.fromJson(response.data["data"]));
+      print("object");
+      setState(() {
+        prayerTimeNexDay.add(PrayerTimeClass.fromJson(response.data["data"]));
+      });
     }
   }
 
   @override
   void initState() {
+    prayerTimeGet();
     fetchPrayerTimeNExDay();
-    fetchPrayerTime();
     super.initState();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {});
