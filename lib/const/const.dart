@@ -92,7 +92,7 @@ String news_slide_widget_subtitle = '10th Jan 2023';
 String news_slide_widget_news_image =
     'https://muslimnews.co.uk/assets/Palestine-Israeliforces-attack-coffin-of-AlJazeera-journalist-Shireen-Abu-AKleh-E-Jerusalem-13-5-22-shot-dead-by-Israeli-forces-on-may11in-jenin-ph-Mustafa-alkharouf-AA-scaled-513x239.jpg';
 TextStyle news_slide_widget_title_tstyle =
-    const TextStyle(color: Colors.white, fontSize: 20);
+    const TextStyle(color: Colors.white, fontSize: 19);
 TextStyle news_slide_widget_subtitle_tstyle =
     const TextStyle(color: Colors.white54);
 

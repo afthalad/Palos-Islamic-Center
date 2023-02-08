@@ -2,16 +2,24 @@
 
 // import 'dart:async';
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/models/redirects.dart';
 import 'package:al_sahabah/screens/prayer_time.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
+// import 'package:audio_manager/audio_manager.dart';
+import 'package:audioplayers/audioplayers.dart';
+// import 'package:audio_manager/audio_manager.dart';
+// import 'package:assets_audio_player/assets_audio_player.dart';
+// import 'package:audioplayers/audioplayers.dart';
+// import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
 import 'package:flip_board/flip_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:intl/intl.dart';
+// import 'package:just_audio/just_audio.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -226,6 +234,8 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {}
   }
 
+  final player = AudioPlayer();
+
   @override
   void initState() {
     Redirects.drawerList();
@@ -300,6 +310,16 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
+          ElevatedButton(
+              onPressed: () {
+                player.play(AssetSource("azan1.mp3"));
+              },
+              child: Text("data")),
+          ElevatedButton(
+              onPressed: () {
+                player.stop();
+              },
+              child: Text("data")),
           Container(
             width: double.infinity,
             height: mHeight * 0.28,
@@ -361,7 +381,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(color: Colors.grey),
                       ),
                     )
-                  : Events(
+                  : Eventss(
                       mHeight: mHeight,
                       mWidth: mWidth,
                       image: 'images/event.png',
@@ -375,7 +395,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(color: Colors.grey),
                       ),
                     )
-                  : Events(
+                  : Eventss(
                       mHeight: mHeight,
                       mWidth: mWidth,
                       image: 'images/prayer.jpg',

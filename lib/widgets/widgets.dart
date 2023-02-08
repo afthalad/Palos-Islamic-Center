@@ -326,13 +326,13 @@ class MFeaturesCard1 extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, '/events_screen');
+                Navigator.pushNamed(context, '/eventss_screen');
               },
               child: FeaturesCard(
                 mWidth: mWidth,
                 mHeight: mHeight,
                 featuresIcon: 'images/icon-event.png',
-                featuresTitle: 'Events',
+                featuresTitle: 'Eventss',
               ),
             ),
             InkWell(
@@ -537,8 +537,8 @@ class MFeaturesCard3 extends StatelessWidget {
 }
 
 //Event card__
-class Events extends StatefulWidget {
-  const Events({
+class Eventss extends StatefulWidget {
+  const Eventss({
     Key? key,
     required this.mHeight,
     required this.mWidth,
@@ -554,15 +554,15 @@ class Events extends StatefulWidget {
   final String eventName;
 
   @override
-  State<Events> createState() => _EventsState();
+  State<Eventss> createState() => _EventssState();
 }
 
-class _EventsState extends State<Events> {
+class _EventssState extends State<Eventss> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/events_screen');
+        Navigator.pushNamed(context, '/eventss_screen');
       },
       child: Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -1093,7 +1093,7 @@ class NewsSlideWidget0 extends StatelessWidget {
             children: [
               Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.3,
+                height: MediaQuery.of(context).size.height * 0.4,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
@@ -1125,6 +1125,19 @@ class NewsSlideWidget0 extends StatelessWidget {
                     ),
                     subtitle: Text(news[0].date,
                         style: news_slide_widget_subtitle_tstyle),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.white54,
+                    size: 20,
                   ),
                 ),
               ),

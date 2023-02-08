@@ -7,7 +7,7 @@
 
 
    <application
-        android:label="al_sahabah"
+        android:label="Al Furqaan"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

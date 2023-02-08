@@ -55,13 +55,8 @@ class _NewsScreenState extends State<NewsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 1,
-          backgroundColor: appBarColor,
-          centerTitle: true,
-          title: const Text('Events'),
-        ),
         body: DraggableHome(
+            backgroundColor: Colors.white,
             leading: const Icon(
               Icons.arrow_back,
               color: Colors.black,
@@ -98,84 +93,86 @@ class _NewsScreenState extends State<NewsScreen> {
             body: [
               news.isEmpty
                   ? const CircularProgressIndicator()
-                  : LazyLoadScrollView(
-                      onEndOfPage: () => loadNextPage(),
-                      scrollOffset: 10,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: news.length,
-                        itemBuilder: (BuildContext context, int i) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => NewsInnerScreen(
-                                      title: news[i].title,
-                                      date: news[i].date,
-                                      image: news[i].images[0],
-                                      content:
+                  : SingleChildScrollView(
+                      child: LazyLoadScrollView(
+                        onEndOfPage: () => loadNextPage(),
+                        scrollOffset: 10,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: news.length,
+                          itemBuilder: (BuildContext context, int i) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => NewsInnerScreen(
+                                        title: news[i].title,
+                                        date: news[i].date,
+                                        image: news[i].images[0],
+                                        content:
+                                            parse(news[i].content).body!.text,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1,
+                                        color: Colors.black12.withOpacity(0.1)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10)),
+                                  ),
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.all(15),
+                                    title: Text(
+                                      news[i].title,
+                                      style: news_list_tile_widget_title_tstyle,
+                                    ),
+                                    subtitle: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
                                           parse(news[i].content).body!.text,
+                                          maxLines: 2,
+                                          style:
+                                              news_slide_widget_description_tstyle,
+                                        ),
+                                        Text(
+                                          news[i].date,
+                                          style: news_slide_widget_date_tstyle,
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 1,
-                                      color: Colors.black12.withOpacity(0.1)),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10)),
-                                ),
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.all(15),
-                                  title: Text(
-                                    news[i].title,
-                                    style: news_list_tile_widget_title_tstyle,
-                                  ),
-                                  subtitle: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        parse(news[i].content).body!.text,
-                                        maxLines: 2,
-                                        style:
-                                            news_slide_widget_description_tstyle,
+                                    trailing: ConstrainedBox(
+                                      constraints: const BoxConstraints(
+                                        minWidth: 100,
+                                        minHeight: 300,
+                                        maxWidth: 104,
+                                        maxHeight: 300,
                                       ),
-                                      Text(
-                                        news[i].date,
-                                        style: news_slide_widget_date_tstyle,
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: ConstrainedBox(
-                                    constraints: const BoxConstraints(
-                                      minWidth: 100,
-                                      minHeight: 300,
-                                      maxWidth: 104,
-                                      maxHeight: 300,
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image(
-                                        fit: BoxFit.fill,
-                                        image: NetworkImage(
-                                          news[i].images[0],
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image(
+                                          fit: BoxFit.fill,
+                                          image: NetworkImage(
+                                            news[i].images[0],
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     )
             ]),
