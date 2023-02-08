@@ -25,6 +25,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  String? token = await FirebaseMessaging.instance.getToken();
+  print("Token:$token");
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   NotificationSettings settings = await messaging.requestPermission(
@@ -38,7 +40,7 @@ void main() async {
   );
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('Got a message whilst in the foreground!');
-    print('Message data: ${message.data}');
+    print('Message asdas: ${message.data}');
 
     if (message.notification != null) {
       print('Message also contained a notification: ${message.notification}');
