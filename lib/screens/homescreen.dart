@@ -310,16 +310,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          ElevatedButton(
-              onPressed: () {
-                player.play(AssetSource("azan1.mp3"));
-              },
-              child: Text("data")),
-          ElevatedButton(
-              onPressed: () {
-                player.stop();
-              },
-              child: Text("data")),
           Container(
             width: double.infinity,
             height: mHeight * 0.28,
