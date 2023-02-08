@@ -7,7 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:360806897515:android:c2e956390124c632535e2e",
+        "mobilesdk_app_id": "1:360806897515:android:3fad3f346977a06a535e2e",
         "android_client_info": {
           "package_name": "com.PalosIslamicCenter"
         }
@@ -29,6 +29,49 @@
             {
               "client_id": "360806897515-1aneco0qitvjgi12ojl39lrf0o39eufd.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "360806897515-rhroj7c2lm7ahmmavr44hv396jqkng7o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.PalosIslamicCenter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360806897515:android:c2e956390124c632535e2e",
+        "android_client_info": {
+          "package_name": "com.example.al_sahabah"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360806897515-1aneco0qitvjgi12ojl39lrf0o39eufd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiAwsWfu67OZCEinKIs4lLu8Fmx1XGEkE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360806897515-1aneco0qitvjgi12ojl39lrf0o39eufd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "360806897515-rhroj7c2lm7ahmmavr44hv396jqkng7o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.PalosIslamicCenter"
+              }
             }
           ]
         }

@@ -1,6 +1,7 @@
 import 'package:al_sahabah/const/const.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:html/parser.dart';
 
 class MasjidhServicesScreen extends StatefulWidget {
@@ -48,9 +49,10 @@ class _MasjidhServicesScreenState extends State<MasjidhServicesScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      parse(masjidhServicesText).body!.text,
-                    ),
+                    HtmlWidget(masjidhServicesText),
+                    // Text(
+                    //   parse(masjidhServicesText).body!.text,
+                    // ),
                   ],
                 ),
               ),
