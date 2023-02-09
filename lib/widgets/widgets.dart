@@ -328,11 +328,13 @@ class MFeaturesCard1 extends StatelessWidget {
               onTap: () {
                 Navigator.pushNamed(context, '/events_screen');
               },
-              child: FeaturesCard(
-                mWidth: mWidth,
-                mHeight: mHeight,
-                featuresIcon: 'images/icon-event.png',
-                featuresTitle: 'Eventss',
+              child: SingleChildScrollView(
+                child: FeaturesCard(
+                  mWidth: mWidth,
+                  mHeight: mHeight,
+                  featuresIcon: 'images/icon-event.png',
+                  featuresTitle: 'Events',
+                ),
               ),
             ),
             InkWell(
@@ -688,7 +690,7 @@ class FormTextField extends StatelessWidget {
 // Prayer Time Table
 
 // Jummah time widget
-class JummahPrayerTimesWidget extends StatelessWidget {
+class JummahPrayerTimesWidget extends StatefulWidget {
   const JummahPrayerTimesWidget({
     Key? key,
     required this.mHeight,
@@ -697,9 +699,42 @@ class JummahPrayerTimesWidget extends StatelessWidget {
   final double mHeight;
 
   @override
+  State<JummahPrayerTimesWidget> createState() =>
+      _JummahPrayerTimesWidgetState();
+}
+
+class _JummahPrayerTimesWidgetState extends State<JummahPrayerTimesWidget> {
+  Dio dio = Dio();
+
+  String? currentDate;
+
+  List<PrayerTimeClass> prayerTime = [];
+
+  Future fetchPrayerTimeNExDay() async {
+    String year = DateTime.now().year.toString();
+    String month = DateTime.now().month.toString().padLeft(2, '0');
+    String day = DateTime.now().day.toString().padLeft(2, '0');
+    var time = DateTime.now();
+
+    var nextDayDate = "$year-$month-$day";
+    print(nextDayDate);
+
+    // include current data in admin panel $currentDate
+    Response response =
+        await dio.get("http://52.90.175.175/api/prayer-time/get/$nextDayDate");
+
+    if (response.data["data"] != null) {
+      print("object");
+      setState(() {
+        prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      height: mHeight * 0.11,
+      height: widget.mHeight * 0.11,
       color: mSalah_time_container_color,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -725,7 +760,7 @@ class JummahPrayerTimesWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text("First khutbah", style: mSalah_time_title_tstyle),
-                    Text("12.00 pm", style: mSalah_time_subtitle_tstyle),
+                    Text("das", style: mSalah_time_subtitle_tstyle),
                   ],
                 ),
               ),

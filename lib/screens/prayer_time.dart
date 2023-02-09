@@ -156,8 +156,9 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
     String day =
         DateTime.now().add(Duration(days: 1)).day.toString().padLeft(2, '0');
     var time = DateTime.now();
-
-    var nextDayDate = "$year-$month-$day";
+    setState(() {
+      nextDayDate = "$year-$month-$day";
+    });
     print(nextDayDate);
 
     // include current data in admin panel $currentDate
@@ -328,11 +329,11 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
                                   ),
                                   Column(
                                     children: [
-                                      Text(
-                                        '$cPrayerName',
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 15),
-                                      ),
+                                      // Text(
+                                      //   '$cPrayerName',
+                                      //   style: const TextStyle(
+                                      //       color: Colors.white, fontSize: 15),
+                                      // ),
                                     ],
                                   ),
                                   Text(

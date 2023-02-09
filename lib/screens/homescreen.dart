@@ -95,77 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // nextDayPrayerTimeGet() async {
-  //   String year = DateTime.now().year.toString();
-  //   String month = DateTime.now().month.toString().padLeft(2, '0');
-  //   String day = DateTime.now().day.toString().padLeft(2, '0');
-  //   // var time = DateTime.now();
-  //   setState(() {
-  //     currentDate = "$year-$month-$day";
-  //   });
-
-  //   // include current data in admin panel $currentDate
-  //   Response response =
-  //       await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
-
-  //   if (response.data["data"] != null) {
-  //     setState(() {
-  //       prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
-  //     });
-
-  //     DateTime fajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-  //         "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].fajir}");
-  //     DateTime dhuhrTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-  //         "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].dhuhar}");
-  //     DateTime asrTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-  //         "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].asr}");
-  //     DateTime magribTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-  //         "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].magrib}");
-  //     DateTime ishaTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
-  //         "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].isha}");
-  //     DateTime now = DateTime.now();
-
-  //     if (now.isBefore(fajirTime)) {
-  //       setState(() {
-  //         cPrayerName = "Fajr";
-  //         cPrayerTime = DateFormat.Hms().format(fajirTime);
-  //         remingTime = fajirTime.difference(now);
-  //       });
-  //     } else if (now.isAfter(fajirTime) && now.isBefore(dhuhrTime)) {
-  //       setState(() {
-  //         cPrayerName = "Duhur";
-  //         cPrayerTime = DateFormat.Hms().format(dhuhrTime);
-  //         remingTime = dhuhrTime.difference(now);
-  //       });
-  //     } else if (now.isAfter(dhuhrTime) && now.isBefore(asrTime)) {
-  //       setState(() {
-  //         cPrayerName = "Asr";
-  //         cPrayerTime = DateFormat.Hms().format(asrTime);
-  //         remingTime = asrTime.difference(now);
-  //       });
-  //     } else if (now.isAfter(asrTime) && now.isBefore(magribTime)) {
-  //       setState(() {
-  //         cPrayerName = "Magrib";
-  //         cPrayerTime = DateFormat.Hms().format(magribTime);
-  //         remingTime = magribTime.difference(now);
-  //       });
-  //     } else if (now.isAfter(magribTime) && now.isBefore(ishaTime)) {
-  //       setState(() {
-  //         cPrayerName = "Isha";
-  //         cPrayerTime = DateFormat.Hms().format(ishaTime);
-  //         remingTime = ishaTime.difference(now);
-  //       });
-  //     } else {
-  //       setState(() {
-  //         cPrayerName = "Fajr";
-  //         cPrayerTime = DateFormat.Hms().format(fajirTime);
-  //         remingTime = ishaTime.difference(now);
-  //       });
-  //     }
-  //   } else {}
-  // }
-
-  Future fetchPrayerTimeNExDay() async {
+  Future nextDayPrayerTimeGet() async {
     String year = DateTime.now().year.toString();
     String month = DateTime.now().month.toString().padLeft(2, '0');
     String day =
@@ -179,12 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
     Response response =
         await dio.get("http://52.90.175.175/api/prayer-time/get/$nextDayDate");
 
-    if (response.data["data"] != null) {
-      print("object");
-      setState(() {
-        prayerTimeNexDay.add(PrayerTimeClass.fromJson(response.data["data"]));
-      });
-    }
+    print("object");
+    setState(() {
+      prayerTimeNexDay.add(PrayerTimeClass.fromJson(response.data["data"]));
+    });
   }
 
   prayerTimeGet() async {
@@ -215,7 +143,10 @@ class _HomeScreenState extends State<HomeScreen> {
           "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].magrib}");
       DateTime ishaTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
           "${DateTime.now().toString().substring(0, 10)} ${prayerTime[0].isha}");
+      DateTime nextDayFajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
+          "${DateTime.now().toString().substring(0, 10)} ${prayerTimeNexDay[0].fajir}");
       DateTime now = DateTime.now();
+      // print(nextDayFajirTime);
 
       if (now.isBefore(fajirTime)) {
         setState(() {
@@ -247,6 +178,12 @@ class _HomeScreenState extends State<HomeScreen> {
           cPrayerTime = DateFormat.Hms().format(ishaTime);
           remingTime = ishaTime.difference(now);
         });
+      } else if (now.isAfter(ishaTime) && now.isBefore(nextDayFajirTime)) {
+        setState(() {
+          cPrayerName = "Isha";
+          cPrayerTime = DateFormat.Hms().format(nextDayFajirTime);
+          remingTime = nextDayFajirTime.difference(now);
+        });
       } else {
         setState(() {
           cPrayerName = "Fajr";
@@ -257,13 +194,13 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {}
   }
 
-  final player = AudioPlayer();
-
   @override
   void initState() {
     Redirects.drawerList();
-    eventsGet();
+    nextDayPrayerTimeGet();
     prayerTimeGet();
+    eventsGet();
+    print("Length : ${prayerTimeNexDay.length}");
     headerImageGet();
     super.initState();
   }
@@ -293,16 +230,18 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         title: const Text('Palos Islamic Center'),
         actions: <Widget>[
-          Builder(
-            builder: (BuildContext scaffoldContext) {
-              return IconButton(
-                icon: const Icon(Icons
-                    .notifications_active_rounded), // Replace with your desired icon
-                onPressed: () {
-                  Scaffold.of(scaffoldContext).openEndDrawer();
-                },
-              );
-            },
+          SingleChildScrollView(
+            child: Builder(
+              builder: (BuildContext scaffoldContext) {
+                return IconButton(
+                  icon: const Icon(Icons
+                      .notifications_active_rounded), // Replace with your desired icon
+                  onPressed: () {
+                    Scaffold.of(scaffoldContext).openEndDrawer();
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),
