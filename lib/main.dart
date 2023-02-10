@@ -56,9 +56,10 @@ void main() async {
   //     NotificationDetails(androidPlatformChannelSpecifics, null);
   // await flutterLocalNotificationsPlugin.show(
   //     0, 'title', 'body', platformChannelSpecifics);
-
   String? token = await FirebaseMessaging.instance.getToken();
   print("Token:$token");
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.ios);
+
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   NotificationSettings settings = await messaging.requestPermission(
@@ -70,9 +71,14 @@ void main() async {
     provisional: false,
     sound: true,
   );
+// await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+//   alert: true, // Required to display a heads up notification
+//   badge: true,
+//   sound: true,
+// );
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    final player = AudioPlayer();
+    // final player = AudioPlayer();
     // player.play(AssetSource("azan1.mp3"));
     print('Got a message whilst in the foreground!');
     print('Message asdasdsadaas: ${message.data}');
