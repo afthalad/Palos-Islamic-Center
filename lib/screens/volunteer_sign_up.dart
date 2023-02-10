@@ -1,5 +1,5 @@
 import 'package:al_sahabah/const/const.dart';
-import 'package:al_sahabah/models/auth.dart';
+import 'package:al_sahabah/services/authenticaition.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';

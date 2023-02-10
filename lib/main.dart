@@ -11,6 +11,9 @@ import 'package:al_sahabah/screens/splashs.dart';
 // import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_notification_channel/flutter_notification_channel.dart';
+import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:just_audio/just_audio.dart';
@@ -65,10 +68,8 @@ void main() async {
     alert: true,
     announcement: false,
     badge: true,
-    carPlay: false,
     criticalAlert: false,
     provisional: false,
-    sound: true,
   );
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {

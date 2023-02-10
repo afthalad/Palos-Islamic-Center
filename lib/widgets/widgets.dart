@@ -2,9 +2,9 @@
 
 import 'dart:async';
 import 'package:al_sahabah/const/const.dart';
-import 'package:al_sahabah/models/auth.dart';
-import 'package:al_sahabah/models/prayer_time_by_date.dart';
-import 'package:al_sahabah/models/user_get.dart';
+import 'package:al_sahabah/services/authenticaition.dart';
+import 'package:al_sahabah/services/prayer_time_by_date.dart';
+import 'package:al_sahabah/services/user_get.dart';
 import 'package:al_sahabah/screens/ask_the_imam/categories_inner.dart';
 import 'package:al_sahabah/screens/ask_the_imam/faq_inner.dart';
 import 'package:al_sahabah/screens/ask_the_imam/main.dart';
@@ -164,12 +164,17 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
   Timer? _timer;
   var reminingTime;
 
-  func() async {
+  reminingTimeDiff() async {
     DateTime now = DateTime.now();
     var now2 = DateFormat.Hms().format(now);
     var time = await DateFormat("HH:mm:ss").parse("${widget.cPrayerTime}");
     var time2 = DateFormat("HH:mm:ss").parse("$now2");
     var diff = time.difference(time2);
+    // If difference is negative, add 24 hours
+    if (diff.inSeconds < 0) {
+      diff = diff + Duration(hours: 24);
+    }
+
     setState(() {
       reminingTime = diff;
     });
@@ -178,9 +183,12 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
   @override
   void initState() {
     super.initState();
+    reminingTimeDiff();
+
+    print("Type of : ${widget.cPrayerTime.runtimeType}");
+    print("Time : ${widget.cPrayerTime}");
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {});
-    func();
   }
 
   @override
@@ -694,9 +702,11 @@ class JummahPrayerTimesWidget extends StatefulWidget {
   const JummahPrayerTimesWidget({
     Key? key,
     required this.mHeight,
+    required this.jummahTime,
   }) : super(key: key);
 
   final double mHeight;
+  final jummahTime;
 
   @override
   State<JummahPrayerTimesWidget> createState() =>
@@ -704,33 +714,6 @@ class JummahPrayerTimesWidget extends StatefulWidget {
 }
 
 class _JummahPrayerTimesWidgetState extends State<JummahPrayerTimesWidget> {
-  Dio dio = Dio();
-
-  String? currentDate;
-
-  List<PrayerTimeClass> prayerTime = [];
-
-  Future fetchPrayerTimeNExDay() async {
-    String year = DateTime.now().year.toString();
-    String month = DateTime.now().month.toString().padLeft(2, '0');
-    String day = DateTime.now().day.toString().padLeft(2, '0');
-    var time = DateTime.now();
-
-    var nextDayDate = "$year-$month-$day";
-    print(nextDayDate);
-
-    // include current data in admin panel $currentDate
-    Response response =
-        await dio.get("http://52.90.175.175/api/prayer-time/get/$nextDayDate");
-
-    if (response.data["data"] != null) {
-      print("object");
-      setState(() {
-        prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -760,7 +743,7 @@ class _JummahPrayerTimesWidgetState extends State<JummahPrayerTimesWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text("First khutbah", style: mSalah_time_title_tstyle),
-                    Text("das", style: mSalah_time_subtitle_tstyle),
+                    Text(widget.jummahTime, style: mSalah_time_subtitle_tstyle),
                   ],
                 ),
               ),

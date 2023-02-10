@@ -5,7 +5,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:al_sahabah/const/const.dart';
-import 'package:al_sahabah/models/redirects.dart';
+import 'package:al_sahabah/services/redirects.dart';
 import 'package:al_sahabah/screens/prayer_time.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 // import 'package:audio_manager/audio_manager.dart';
@@ -18,6 +18,8 @@ import 'package:dio/dio.dart';
 import 'package:flip_board/flip_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:flutter_notification_channel/flutter_notification_channel.dart';
+import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:intl/intl.dart';
 // import 'package:just_audio/just_audio.dart';
 
@@ -96,50 +98,32 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // Future nextDayPrayerTimeGet() async {
-  //   String year = DateTime.now().year.toString();
-  //   String month = DateTime.now().month.toString().padLeft(2, '0');
-  //   String day =
-  //       DateTime.now().add(Duration(days: 1)).day.toString().padLeft(2, '0');
-  //   var time = DateTime.now();
-
-  //   var nextDayDate = "$year-$month-$day";
-
-  //   // include current data in admin panel $currentDate
-  //   Response response =
-  //       await dio.get("http://52.90.175.175/api/prayer-time/get/$nextDayDate");
-
-  //   prayerTimeNexDay.add(PrayerTimeClass.fromJson(response.data["data"]));
-
-  //   print("List :${prayerTimeNexDay[0].fajir}");
-  //   print("${prayerTimeNexDay[0].fajir.runtimeType}");
-  // }
-
   prayerTimeGet() async {
     String year = DateTime.now().year.toString();
     String month = DateTime.now().month.toString().padLeft(2, '0');
     String day = DateTime.now().day.toString().padLeft(2, '0');
     String nextDay =
         DateTime.now().add(Duration(days: 1)).day.toString().padLeft(2, '0');
+
     setState(() {
       currentDate = "$year-$month-$day";
       nextDayDate = "$year-$month-$nextDay";
     });
-    Response response2 =
+
+    Response nextDayResponse =
         await dio.get("http://52.90.175.175/api/prayer-time/get/$nextDayDate");
     setState(() {
-      prayerTimeNexDay.add(PrayerTimeClass.fromJson(response2.data["data"]));
+      prayerTimeNexDay
+          .add(PrayerTimeClass.fromJson(nextDayResponse.data["data"]));
     });
-    print("List :${prayerTimeNexDay[0].fajir}");
-    print("${prayerTimeNexDay[0].fajir.runtimeType}");
 
     // include current data in admin panel $currentDate
-    Response response =
+    Response todayResponse =
         await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
 
-    if (response.data["data"] != null) {
+    if (todayResponse.data["data"] != null) {
       setState(() {
-        prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
+        prayerTime.add(PrayerTimeClass.fromJson(todayResponse.data["data"]));
       });
 
       DateTime fajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
@@ -155,9 +139,9 @@ class _HomeScreenState extends State<HomeScreen> {
       DateTime nextDayFajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
           "${DateTime.now().toString().substring(0, 10)} ${prayerTimeNexDay[0].fajir}");
       DateTime now = DateTime.now();
-      print(nextDayFajirTime);
-      print("List :${prayerTimeNexDay[0].fajir}");
-      print(nextDayFajirTime.difference(now));
+      print(now);
+      print(prayerTimeNexDay[0].fajir);
+      print((nextDayFajirTime.add(Duration(hours: 24))).difference(now));
 
       if (now.isBefore(fajirTime)) {
         cPrayerName = await "Fajr";
@@ -181,8 +165,10 @@ class _HomeScreenState extends State<HomeScreen> {
         remingTime = await ishaTime.difference(now);
       } else {
         cPrayerName = await "Fajr";
-        cPrayerTime = await DateFormat.Hms().format(nextDayFajirTime);
-        remingTime = await nextDayFajirTime.difference(now);
+        cPrayerTime = await DateFormat.Hms()
+            .format(nextDayFajirTime.add(Duration(hours: 24)));
+        remingTime =
+            await (nextDayFajirTime.add(Duration(hours: 24))).difference(now);
       }
     } else {}
   }
@@ -190,7 +176,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     Redirects.drawerList();
-    // nextDayPrayerTimeGet();
     prayerTimeGet();
     eventsGet();
     headerImageGet();
@@ -206,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
     int nextSpinValue = 0;
 
     void spin() => spinController.add(++nextSpinValue);
-    Timer.periodic(const Duration(seconds: 5), (timer) async {
+    Timer.periodic(const Duration(seconds: 3), (timer) async {
       if (nextSpinValue >= 3) {
         setState(() {
           nextSpinValue = 0;
@@ -264,6 +249,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
+          ElevatedButton(
+              onPressed: () async {
+                var result = await FlutterNotificationChannel
+                    .registerNotificationChannel(
+                  description: 'My test channel',
+                  id: 'com.softmaestri.testchannel',
+                  importance: NotificationImportance.IMPORTANCE_HIGH,
+                  name: 'afthal',
+                );
+                print('Result: $result');
+              },
+              child: Text("data")),
           Container(
             width: double.infinity,
             height: mHeight * 0.28,
@@ -303,7 +300,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   : index == 1
                       ? MSalahTime(mHeight: mHeight, mWidth: mWidth)
                       : index == 2
-                          ? JummahPrayerTimesWidget(mHeight: mHeight)
+                          ? JummahPrayerTimesWidget(
+                              mHeight: mHeight,
+                              jummahTime: prayerTime[0].dhuhar,
+                            )
                           : SalahTimeRemingWidget(
                               mHeight: mHeight,
                               cPrayerName: cPrayerName,
