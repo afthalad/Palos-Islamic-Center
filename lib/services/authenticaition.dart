@@ -98,6 +98,7 @@ class Auth {
       // "image": Null
     });
 
+    print(response.data["massage"]);
     if (response.statusCode == 200 && response.data["error"] == 0) {
       var response = await dio.post(
           "http://52.90.175.175/api/news-letter/subscribe",

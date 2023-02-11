@@ -77,21 +77,26 @@ class _AskTheImamScreenState extends State<AskTheImamScreen> {
           child: TabBarView(
             controller: widget._tabController,
             children: [
-              GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                ),
-                itemCount: categories.length,
-                itemBuilder: (BuildContext context, int i) {
-                  return AskTheImamCategories(
-                    catId: categories[i].id,
-                    catName: categories[i].name,
-                    catDescription: categories[i].description,
-                    imageUrl: categories[i].image,
-                    noQuesntions: categories[i].questions.toString(),
-                  );
-                },
-              ),
+              categories.isEmpty
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      itemCount: categories.length,
+                      itemBuilder: (BuildContext context, int i) {
+                        return AskTheImamCategories(
+                          catId: categories[i].id,
+                          catName: categories[i].name,
+                          catDescription: categories[i].description,
+                          imageUrl: categories[i].image,
+                          noQuesntions: categories[i].questions.toString(),
+                        );
+                      },
+                    ),
               const MyQuestions(),
               FaqQuestions()
             ],

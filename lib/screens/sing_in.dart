@@ -1,4 +1,4 @@
-import 'package:al_sahabah/models/auth.dart';
+import 'package:al_sahabah/services/authenticaition.dart';
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/widgets/sing_in_slide_banner.dart';
 import 'package:flutter/material.dart';

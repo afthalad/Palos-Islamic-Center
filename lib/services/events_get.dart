@@ -1,18 +1,25 @@
 import 'package:dio/dio.dart';
 
 class EventGet {
-  static List<Event> events = [];
-  void getEvents() async {
-    try {
-      var response =
-          await Dio().get('http://52.90.175.175/api/events/get?page=1');
+  List<Event> events = [];
+  int currentPage = 1;
 
-      events = (response.data["data"]["data"] as List)
-          .map((i) => Event.fromJson(i))
-          .toList();
-    } catch (e) {
-      print(e);
-    }
+  Dio dio = Dio();
+
+  getEvents() async {
+    try {
+      var response = await Dio()
+          .get('http://52.90.175.175/api/events/get?page=$currentPage');
+      var data = response.data["data"]["data"] as List;
+
+      events.addAll(data.map((i) => Event.fromJson(i)).toList());
+    } catch (e) {}
+  }
+
+  loadNextPage() {
+    currentPage = currentPage + 1;
+    getEvents();
+    print("DASDSADS:${currentPage}");
   }
 }
 

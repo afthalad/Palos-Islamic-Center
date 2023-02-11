@@ -5,7 +5,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:al_sahabah/const/const.dart';
-import 'package:al_sahabah/models/redirects.dart';
+import 'package:al_sahabah/services/redirects.dart';
 import 'package:al_sahabah/screens/prayer_time.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 // import 'package:audio_manager/audio_manager.dart';
@@ -18,6 +18,8 @@ import 'package:dio/dio.dart';
 import 'package:flip_board/flip_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:flutter_notification_channel/flutter_notification_channel.dart';
+import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:intl/intl.dart';
 // import 'package:just_audio/just_audio.dart';
 
@@ -34,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int? widgetIndex = 0;
   Dio dio = Dio();
   String? currentDate;
+  String? nextDayDate;
 
   var cPrayerName = "";
   var cPrayerTime = "";
@@ -46,25 +49,25 @@ class _HomeScreenState extends State<HomeScreen> {
   var spinController = StreamController<int>.broadcast();
   void spin() => spinController.add(++nextSpinValue);
 
-  Future prayerTImeGet() async {
-    String year = DateTime.now().year.toString();
-    String month = DateTime.now().month.toString().padLeft(2, '0');
-    String day = DateTime.now().day.toString().padLeft(2, '0');
-    var time = DateTime.now();
-    setState(() {
-      currentDate = "$year-$month-$day";
-    });
+  // Future prayerTImeGet() async {
+  //   String year = DateTime.now().year.toString();
+  //   String month = DateTime.now().month.toString().padLeft(2, '0');
+  //   String day = DateTime.now().day.toString().padLeft(2, '0');
+  //   var time = DateTime.now();
+  //   setState(() {
+  //     currentDate = "$year-$month-$day";
+  //   });
 
-    // include current data in admin panel $currentDate
-    Response response =
-        await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
+  //   // include current data in admin panel $currentDate
+  //   Response response =
+  //       await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
 
-    if (response.data["data"] != null) {
-      setState(() {
-        prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
-      });
-    }
-  }
+  //   if (response.data["data"] != null) {
+  //     setState(() {
+  //       prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
+  //     });
+  //   }
+  // }
 
   void eventsGet() async {
     try {
@@ -95,42 +98,32 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future nextDayPrayerTimeGet() async {
-    String year = DateTime.now().year.toString();
-    String month = DateTime.now().month.toString().padLeft(2, '0');
-    String day =
-        DateTime.now().add(Duration(days: 1)).day.toString().padLeft(2, '0');
-    var time = DateTime.now();
-
-    var nextDayDate = "$year-$month-$day";
-    print(nextDayDate);
-
-    // include current data in admin panel $currentDate
-    Response response =
-        await dio.get("http://52.90.175.175/api/prayer-time/get/$nextDayDate");
-
-    print("object");
-    setState(() {
-      prayerTimeNexDay.add(PrayerTimeClass.fromJson(response.data["data"]));
-    });
-  }
-
   prayerTimeGet() async {
     String year = DateTime.now().year.toString();
     String month = DateTime.now().month.toString().padLeft(2, '0');
     String day = DateTime.now().day.toString().padLeft(2, '0');
-    // var time = DateTime.now();
+    String nextDay =
+        DateTime.now().add(Duration(days: 1)).day.toString().padLeft(2, '0');
+
     setState(() {
       currentDate = "$year-$month-$day";
+      nextDayDate = "$year-$month-$nextDay";
+    });
+
+    Response nextDayResponse =
+        await dio.get("http://52.90.175.175/api/prayer-time/get/$nextDayDate");
+    setState(() {
+      prayerTimeNexDay
+          .add(PrayerTimeClass.fromJson(nextDayResponse.data["data"]));
     });
 
     // include current data in admin panel $currentDate
-    Response response =
+    Response todayResponse =
         await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
 
-    if (response.data["data"] != null) {
+    if (todayResponse.data["data"] != null) {
       setState(() {
-        prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
+        prayerTime.add(PrayerTimeClass.fromJson(todayResponse.data["data"]));
       });
 
       DateTime fajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
@@ -146,50 +139,33 @@ class _HomeScreenState extends State<HomeScreen> {
       DateTime nextDayFajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
           "${DateTime.now().toString().substring(0, 10)} ${prayerTimeNexDay[0].fajir}");
       DateTime now = DateTime.now();
-      // print(nextDayFajirTime);
 
       if (now.isBefore(fajirTime)) {
-        setState(() {
-          cPrayerName = "Fajr";
-          cPrayerTime = DateFormat.Hms().format(fajirTime);
-          remingTime = fajirTime.difference(now);
-        });
+        cPrayerName = await "Fajr";
+        cPrayerTime = await DateFormat.Hms().format(fajirTime);
+        remingTime = await fajirTime.difference(now);
       } else if (now.isAfter(fajirTime) && now.isBefore(dhuhrTime)) {
-        setState(() {
-          cPrayerName = "Duhur";
-          cPrayerTime = DateFormat.Hms().format(dhuhrTime);
-          remingTime = dhuhrTime.difference(now);
-        });
+        cPrayerName = await "Duhur";
+        cPrayerTime = await DateFormat.Hms().format(dhuhrTime);
+        remingTime = await dhuhrTime.difference(now);
       } else if (now.isAfter(dhuhrTime) && now.isBefore(asrTime)) {
-        setState(() {
-          cPrayerName = "Asr";
-          cPrayerTime = DateFormat.Hms().format(asrTime);
-          remingTime = asrTime.difference(now);
-        });
+        cPrayerName = await "Asr";
+        cPrayerTime = await DateFormat.Hms().format(asrTime);
+        remingTime = await asrTime.difference(now);
       } else if (now.isAfter(asrTime) && now.isBefore(magribTime)) {
-        setState(() {
-          cPrayerName = "Magrib";
-          cPrayerTime = DateFormat.Hms().format(magribTime);
-          remingTime = magribTime.difference(now);
-        });
+        cPrayerName = await "Magrib";
+        cPrayerTime = await DateFormat.Hms().format(magribTime);
+        remingTime = await magribTime.difference(now);
       } else if (now.isAfter(magribTime) && now.isBefore(ishaTime)) {
-        setState(() {
-          cPrayerName = "Isha";
-          cPrayerTime = DateFormat.Hms().format(ishaTime);
-          remingTime = ishaTime.difference(now);
-        });
-      } else if (now.isAfter(ishaTime) && now.isBefore(nextDayFajirTime)) {
-        setState(() {
-          cPrayerName = "Isha";
-          cPrayerTime = DateFormat.Hms().format(nextDayFajirTime);
-          remingTime = nextDayFajirTime.difference(now);
-        });
+        cPrayerName = await "Isha";
+        cPrayerTime = await DateFormat.Hms().format(ishaTime);
+        remingTime = await ishaTime.difference(now);
       } else {
-        setState(() {
-          cPrayerName = "Fajr";
-          cPrayerTime = DateFormat.Hms().format(fajirTime);
-          remingTime = ishaTime.difference(now);
-        });
+        cPrayerName = await "Fajr";
+        cPrayerTime = await DateFormat.Hms()
+            .format(nextDayFajirTime.add(Duration(hours: 24)));
+        remingTime =
+            await (nextDayFajirTime.add(Duration(hours: 24))).difference(now);
       }
     } else {}
   }
@@ -197,10 +173,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     Redirects.drawerList();
-    nextDayPrayerTimeGet();
     prayerTimeGet();
     eventsGet();
-    print("Length : ${prayerTimeNexDay.length}");
     headerImageGet();
     super.initState();
   }
@@ -214,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
     int nextSpinValue = 0;
 
     void spin() => spinController.add(++nextSpinValue);
-    Timer.periodic(const Duration(seconds: 5), (timer) async {
+    Timer.periodic(const Duration(seconds: 3), (timer) async {
       if (nextSpinValue >= 3) {
         setState(() {
           nextSpinValue = 0;
@@ -272,6 +246,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
+          // // ElevatedButton(
+          // //     onPressed: () async {
+          // //       var result = await FlutterNotificationChannel
+          // //           .registerNotificationChannel(
+          // //         description: 'My test channel',
+          // //         id: 'com.softmaestri.testchannel',
+          // //         importance: NotificationImportance.IMPORTANCE_HIGH,
+          // //         name: 'afthal',
+          // //       );
+          // //       print('Result: $result');
+          // //     },
+          //     child: Text("data")),
           Container(
             width: double.infinity,
             height: mHeight * 0.28,
@@ -311,7 +297,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   : index == 1
                       ? MSalahTime(mHeight: mHeight, mWidth: mWidth)
                       : index == 2
-                          ? JummahPrayerTimesWidget(mHeight: mHeight)
+                          ? JummahPrayerTimesWidget(
+                              mHeight: mHeight,
+                              jummahTime: "123",
+                            )
                           : SalahTimeRemingWidget(
                               mHeight: mHeight,
                               cPrayerName: cPrayerName,
