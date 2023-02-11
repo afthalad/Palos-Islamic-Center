@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String? nextDayDate;
 
   var cPrayerName = "";
-  var cPrayerTime = "";
+  String cPrayerTime = "00:00:00"; // this line changed
   var remingTime;
 
   List<PrayerTimeClass> prayerTime = [];

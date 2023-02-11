@@ -2,8 +2,10 @@
 
 import 'dart:async';
 import 'package:al_sahabah/const/const.dart';
+import 'package:al_sahabah/screens/prayer_time.dart';
 import 'package:al_sahabah/services/authenticaition.dart';
-import 'package:al_sahabah/services/prayer_time_by_date.dart';
+import 'package:al_sahabah/services/news_get.dart';
+// import 'package:al_sahabah/services/prayer_time_by_date.dart';
 import 'package:al_sahabah/services/user_get.dart';
 import 'package:al_sahabah/screens/ask_the_imam/categories_inner.dart';
 import 'package:al_sahabah/screens/ask_the_imam/faq_inner.dart';

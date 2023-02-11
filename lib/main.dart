@@ -82,17 +82,17 @@ void main() async {
   //   enableSound: true,
   // );
   // print('Result: $result');
-  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    'masjidAppLocal 2',
-    'masjidAppLocal 2',
-    channelDescription: 'masjid app notification',
-    importance: Importance.max,
-    priority: Priority.high,
-    ticker: 'ticker',
-    sound: RawResourceAndroidNotificationSound('beep'),
-  );
-  var platformChannelSpecifics =
-      NotificationDetails(android: androidPlatformChannelSpecifics);
+  // var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  //   'masjidAppLocal 2',
+  //   'masjidAppLocal 2',
+  //   channelDescription: 'masjid app notification',
+  //   importance: Importance.max,
+  //   priority: Priority.high,
+  //   ticker: 'ticker',
+  //   sound: RawResourceAndroidNotificationSound('beep'),
+  // );
+  // var platformChannelSpecifics =
+  //     NotificationDetails(android: androidPlatformChannelSpecifics);
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     // final player = AudioPlayer();
     // player.play(AssetSource("azan1.mp3"));

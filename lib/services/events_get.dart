@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 class EventGet {
   List<Event> events = [];
   int currentPage = 1;
-
   Dio dio = Dio();
 
   getEvents() async {
