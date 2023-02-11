@@ -26,41 +26,13 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
   print("Handling a background message: ${message.messageId}");
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // var result = await FlutterNotificationChannel.registerNotificationChannel(
-  //   description: 'showing custom notification',
-  //   id: 'masjidApp',
-  //   importance: NotificationImportance.IMPORTANCE_HIGH,
-  //   name: 'masjidApp',
-  // );
-  // print('Result: $result');
-  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    'masjidAppLocal',
-    'masjidAppLocal',
-    channelDescription: 'masjid app notification',
-    importance: Importance.max,
-    priority: Priority.high,
-    ticker: 'ticker',
-    sound: RawResourceAndroidNotificationSound('beep'),
-  );
-  // var androidPlatformChannelSpecifics =
-  //     AndroidNotificationDetails('masjidAppLocal', 'masjidAppLocal', {
-  //   'sound': RawResourceAndroidNotificationSound('custom_sound'),
-  //   'importance': Importance.high,
-  //   'priority': Priority.high
-  //   // 'ticker': 'ticker'
-  // });
-  var platformChannelSpecifics = NotificationDetails(
-    android: androidPlatformChannelSpecifics,
-  );
-  // await flutterLocalNotificationsPlugin.show(
-  //     0, 'title', 'body', platformChannelSpecifics);as
 
   String? token = await FirebaseMessaging.instance.getToken();
   print("Token:$token");
@@ -73,32 +45,36 @@ void main() async {
     criticalAlert: false,
     provisional: false,
   );
-
-  // var result = await FlutterNotificationChannel.registerNotificationChannel(
-  //   description: 'showing custom notification',
-  //   id: 'masjidApp_2',
-  //   importance: NotificationImportance.IMPORTANCE_HIGH,
-  //   name: 'masjidApp 2',
-  //   enableSound: true,
-  // );
-  // print('Result: $result');
-  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    'masjidAppLocal 2',
-    'masjidAppLocal 2',
-    channelDescription: 'masjid app notification',
-    importance: Importance.max,
-    priority: Priority.high,
-    ticker: 'ticker',
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  const AndroidNotificationChannel BeepNotificationChannelSettings =
+      AndroidNotificationChannel(
+    'Beep',
+    'Beep Sound',
+    description: 'Play Beep Sound for Notification',
+    playSound: true,
     sound: RawResourceAndroidNotificationSound('beep'),
   );
-  var platformChannelSpecifics =
-  NotificationDetails(android: androidPlatformChannelSpecifics);
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    // final player = AudioPlayer();
-    // player.play(AssetSource("azan1.mp3"));
-    print('Got a message whilst in the foreground!');
-    print('Message asdasdsadaas: ${message.data}');
+  const AndroidNotificationChannel AzanNotificationChannelSettings =
+      AndroidNotificationChannel(
+    'Azan',
+    'Azan Sound',
+    description: 'Play Azan Sound for Notification',
+    playSound: true,
+    sound: RawResourceAndroidNotificationSound('azan'),
+  );
 
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(BeepNotificationChannelSettings);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(AzanNotificationChannelSettings);
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+    print('Message asdasdsadaas: ${message.data}');
     if (message.notification != null) {
       print('Message also contained a notification: ${message.notification}');
     }
@@ -128,7 +104,7 @@ class MyApp extends StatelessWidget {
         '/live_stream_screen': (context) => const LiveStreamScreen(),
         '/news_screen': (context) => const NewsScreen(),
         '/location_prayer_time_screen': (context) =>
-        const LocationPrayerTimingsScreen(),
+            const LocationPrayerTimingsScreen(),
       },
     );
   }
