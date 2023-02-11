@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //     });
   //   }
   // }
-  Future<void> resfresh() {
+  Future<void> resfresh() async {
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (BuildContext context) => super.widget));
   }
@@ -249,7 +249,11 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       body: RefreshIndicator(
-        onRefresh: () => print("object"),
+        color: Colors.white,
+        backgroundColor: Colors.blue,
+        onRefresh: () async {
+          return Future<void>.delayed(const Duration(seconds: 3));
+        },
         child: Column(
           children: [
             // ElevatedButton(
@@ -301,7 +305,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         : index == 2
                             ? JummahPrayerTimesWidget(
                                 mHeight: mHeight,
-                                jummahTime: prayerTime[0].dhuhar,
+                                jummahTime: prayerTime[0].dhuhar == null
+                                    ? Text("Loading....")
+                                    : prayerTime[0].dhuhar,
                               )
                             : SalahTimeRemingWidget(
                                 mHeight: mHeight,
