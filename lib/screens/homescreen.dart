@@ -8,12 +8,6 @@ import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/services/redirects.dart';
 import 'package:al_sahabah/screens/prayer_time.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
-// import 'package:audio_manager/audio_manager.dart';
-import 'package:audioplayers/audioplayers.dart';
-// import 'package:audio_manager/audio_manager.dart';
-// import 'package:assets_audio_player/assets_audio_player.dart';
-// import 'package:audioplayers/audioplayers.dart';
-// import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
 import 'package:flip_board/flip_widget.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +15,6 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_notification_channel/flutter_notification_channel.dart';
 import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:intl/intl.dart';
-// import 'package:just_audio/just_audio.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

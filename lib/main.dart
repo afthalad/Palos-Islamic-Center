@@ -13,7 +13,6 @@ import 'package:al_sahabah/screens/qibla/qibla_screen.dart';
 import 'package:al_sahabah/screens/sing_in.dart';
 import 'package:al_sahabah/screens/splashs.dart';
 import 'package:dio/dio.dart';
-// import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
@@ -22,9 +21,7 @@ import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:just_audio/just_audio.dart';
 import 'firebase_options.dart';
-// import 'package:audioplayers/audioplayers.dart';
 // import 'package:flutter_notification_channel/flutter_notification_channel.dart';
 // import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -47,7 +44,7 @@ void main() async {
   if (fcmToke == "" || fcmToke == null) {
     String? token = await FirebaseMessaging.instance.getToken();
     await prefs.setString('fcmToken', token!);
-
+    print('token : ' + token!);
     var response = await dio.post(
       "http://52.90.175.175/api/save-app-settigs",
       data: {
@@ -55,7 +52,7 @@ void main() async {
         "device_type": Platform.operatingSystem == "android" ? "android" : "ios"
       },
     );
-  } else {}
+  }
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -66,33 +63,35 @@ void main() async {
     criticalAlert: false,
     provisional: false,
   );
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-  const AndroidNotificationChannel BeepNotificationChannelSettings =
-      AndroidNotificationChannel(
-    'Beep',
-    'Beep Sound',
-    description: 'Play Beep Sound for Notification',
-    playSound: true,
-    sound: RawResourceAndroidNotificationSound('beep'),
-  );
-  const AndroidNotificationChannel AzanNotificationChannelSettings =
-      AndroidNotificationChannel(
-    'Azan',
-    'Azan Sound',
-    description: 'Play Azan Sound for Notification',
-    playSound: true,
-    sound: RawResourceAndroidNotificationSound('azan'),
-  );
+  if (Platform.operatingSystem == "android") {
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    const AndroidNotificationChannel BeepNotificationChannelSettings =
+        AndroidNotificationChannel(
+      'Beep',
+      'Beep Sound',
+      description: 'Play Beep Sound for Notification',
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('beep'),
+    );
+    const AndroidNotificationChannel AzanNotificationChannelSettings =
+        AndroidNotificationChannel(
+      'Azan',
+      'Azan Sound',
+      description: 'Play Azan Sound for Notification',
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('azan'),
+    );
 
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(BeepNotificationChannelSettings);
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(AzanNotificationChannelSettings);
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(BeepNotificationChannelSettings);
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(AzanNotificationChannelSettings);
+  }
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
     print('Message asdasdsadaas: ${message.data}');
