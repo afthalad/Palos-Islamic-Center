@@ -35,7 +35,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
     final prefs = await SharedPreferences.getInstance();
     var isEnabled = await prefs.getString('notication');
     setState(() {
-      isEnabled == "1" ? _switchValue = true : _switchValue = false;
+      isEnabled == "0" ? _switchValue = false : _switchValue = true;
     });
   }
 

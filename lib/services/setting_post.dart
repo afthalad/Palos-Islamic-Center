@@ -57,8 +57,8 @@ class SettingPost {
       "token": fcmToken,
       "app_settings": {
         "iqamah": {
-          "fajr": {"sound": fajrReminder, "time": fajrTime},
-          "zuhar": {"sound": duhrReminder, "time": duhrTime},
+          "fajir": {"sound": fajrReminder, "time": fajrTime},
+          "dhuhar": {"sound": duhrReminder, "time": duhrTime},
           "asr": {"sound": asrReminder, "time": asrTime},
           "magrib": {"sound": magribReminder, "time": magribTime},
           "isha": {"sound": ishaReminder, "time": ishaTime}
@@ -110,8 +110,8 @@ class SettingPost {
         "token": fcmToken,
         "app_settings": {
           "adhan": {
-            "fajr": fajrReminder,
-            "duhr": duhrReminder,
+            "fajir": fajrReminder,
+            "dhuhar": duhrReminder,
             "asr": asrReminder,
             "magrib": magribReminder,
             "isha": ishaReminder,

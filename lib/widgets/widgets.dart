@@ -77,6 +77,7 @@ class _MSalahTimeState extends State<MSalahTime> {
   Dio dio = Dio();
   static List<PrayerTimeClass> prayerTime = [];
   static String currentDate = "";
+  Timer? _timer;
 
   Future<void> fetchPrayerTime() async {
     String year = DateTime.now().year.toString();
@@ -100,6 +101,12 @@ class _MSalahTimeState extends State<MSalahTime> {
     fetchPrayerTime();
     super.initState();
   }
+
+  // @override
+  // void dispose() {
+  //   _timer!.cancel();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

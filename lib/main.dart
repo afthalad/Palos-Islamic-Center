@@ -42,7 +42,7 @@ void main() async {
   if (fcmToke == "" || fcmToke == null) {
     String? token = await FirebaseMessaging.instance.getToken();
     await prefs.setString('fcmToken', token!);
-    print('token : ' + token!);
+    print('token : ' + token);
     var response = await dio.post(
       "http://52.90.175.175/api/save-app-settigs",
       data: {

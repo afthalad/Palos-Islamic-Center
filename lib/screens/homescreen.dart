@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_notification_channel/flutter_notification_channel.dart';
 import 'package:flutter_notification_channel/notification_importance.dart';
+
 import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Dio dio = Dio();
   String? currentDate;
   String? nextDayDate;
+  Timer? _timer;
 
   var cPrayerName = "";
   String cPrayerTime = "00:00:00"; // this line changed
@@ -178,6 +180,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    _timer!.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var mHeight = MediaQuery.of(context).size.height;
     var mWidth = MediaQuery.of(context).size.width;
@@ -186,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
     int nextSpinValue = 0;
 
     void spin() => spinController.add(++nextSpinValue);
-    Timer.periodic(const Duration(seconds: 3), (timer) async {
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) async {
       if (nextSpinValue >= 3) {
         setState(() {
           nextSpinValue = 0;
@@ -195,6 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       spin();
     });
+
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -243,123 +252,128 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       body: RefreshIndicator(
-        color: Colors.white,
-        backgroundColor: Colors.blue,
+        displacement: 50,
+        backgroundColor: Colors.white,
+        color: Colors.brown,
+        strokeWidth: 3,
+        triggerMode: RefreshIndicatorTriggerMode.onEdge,
         onRefresh: () async {
-          return Future<void>.delayed(const Duration(seconds: 3));
+          await Future.delayed(Duration(milliseconds: 1000));
+
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => super.widget));
         },
-        child: Column(
-          children: [
-            // ElevatedButton(
-            //     onPressed: () async {
-            //       Navigator.pushReplacement(
-            //           context,
-            //           MaterialPageRoute(
-            //               builder: (BuildContext context) => super.widget));
-            //     },
-            //     child: Text("data")),
-            Container(
-              width: double.infinity,
-              height: mHeight * 0.28,
-              child: headerImages.isEmpty
-                  ? const Center(
-                      child: Text(
-                        "Loading...",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    )
-                  : ImageSlideshow(
-                      width: double.infinity,
-                      height: mHeight * 0.28,
-                      initialPage: 0,
-                      indicatorColor: Colors.grey,
-                      indicatorBackgroundColor: Colors.white,
-                      // autoPlayInterval: 1500,
-                      // isLoop: true,
-                      children: headerImages.map((e) {
-                        return Image.network(
-                          "http://52.90.175.175/$e",
-                          fit: BoxFit.cover,
-                        );
-                      }).toList()),
-            ),
-            FlipWidget(
-              initialValue: nextSpinValue,
-              itemStream: spinController.stream,
-              flipType: FlipType.spinFlip,
-              itemBuilder: (_, index) {
-                return index == 0
-                    ? SalahTimeRemingWidget(
-                        mHeight: mHeight,
-                        cPrayerName: cPrayerName,
-                        cPrayerTime: cPrayerTime,
-                      )
-                    : index == 1
-                        ? MSalahTime(mHeight: mHeight, mWidth: mWidth)
-                        : index == 2
-                            ? JummahPrayerTimesWidget(
-                                mHeight: mHeight,
-                                jummahTime: prayerTime[0].dhuhar == null
-                                    ? Text("Loading....")
-                                    : prayerTime[0].dhuhar,
-                              )
-                            : SalahTimeRemingWidget(
-                                mHeight: mHeight,
-                                cPrayerName: cPrayerName,
-                                cPrayerTime: cPrayerTime,
-                              );
-              },
-              flipDirection: AxisDirection.up,
-            ),
-            ImageSlideshow(
-              height: mHeight * 0.2,
-              width: double.infinity,
-              initialPage: 0,
-              indicatorRadius: 0,
-              children: [
-                events.isEmpty
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                height: mHeight * 0.28,
+                child: headerImages.isEmpty
                     ? const Center(
                         child: Text(
                           "Loading...",
                           style: TextStyle(color: Colors.grey),
                         ),
                       )
-                    : Events(
-                        mHeight: mHeight,
-                        mWidth: mWidth,
-                        image: 'images/event.png',
-                        eventDateTime: "${events[0].start} - ${events[0].end}",
-                        eventName: events[0].title,
-                      ),
-                events.isEmpty
-                    ? const Center(
-                        child: Text(
-                          "Loading...",
-                          style: TextStyle(color: Colors.grey),
+                    : ImageSlideshow(
+                        width: double.infinity,
+                        height: mHeight * 0.28,
+                        initialPage: 0,
+                        indicatorColor: Colors.grey,
+                        indicatorBackgroundColor: Colors.white,
+                        // autoPlayInterval: 1500,
+                        // isLoop: true,
+                        children: headerImages.map((e) {
+                          return Image.network(
+                            "http://52.90.175.175/$e",
+                            fit: BoxFit.cover,
+                          );
+                        }).toList()),
+              ),
+              FlipWidget(
+                initialValue: nextSpinValue,
+                itemStream: spinController.stream,
+                flipType: FlipType.spinFlip,
+                itemBuilder: (_, index) {
+                  return index == 0
+                      ? SalahTimeRemingWidget(
+                          mHeight: mHeight,
+                          cPrayerName: cPrayerName,
+                          cPrayerTime: cPrayerTime,
+                        )
+                      : index == 1
+                          ? MSalahTime(mHeight: mHeight, mWidth: mWidth)
+                          : index == 2
+                              ? JummahPrayerTimesWidget(
+                                  mHeight: mHeight,
+                                  jummahTime: prayerTime[0].dhuhar == null
+                                      ? Text("Loading....")
+                                      : prayerTime[0].dhuhar,
+                                )
+                              : SalahTimeRemingWidget(
+                                  mHeight: mHeight,
+                                  cPrayerName: cPrayerName,
+                                  cPrayerTime: cPrayerTime,
+                                );
+                },
+                flipDirection: AxisDirection.up,
+              ),
+              ImageSlideshow(
+                height: mHeight * 0.2,
+                width: double.infinity,
+                initialPage: 0,
+                indicatorRadius: 0,
+                children: [
+                  events.isEmpty
+                      ? const Center(
+                          child: Text(
+                            "Loading...",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        )
+                      : Events(
+                          mHeight: mHeight,
+                          mWidth: mWidth,
+                          image: 'images/event.png',
+                          eventDateTime:
+                              "${events[0].start} - ${events[0].end}",
+                          eventName: events[0].title,
                         ),
-                      )
-                    : Events(
-                        mHeight: mHeight,
-                        mWidth: mWidth,
-                        image: 'images/prayer.jpg',
-                        eventDateTime: "${events[1].start} - ${events[1].end}",
-                        eventName: events[1].title,
-                      ),
-              ],
-            ),
-            ImageSlideshow(
-              height: mHeight * 0.244,
-              width: double.infinity,
-              indicatorColor: Colors.grey,
-              indicatorBackgroundColor: Colors.white,
-              isLoop: false,
-              children: [
-                MFeaturesCard1(mWidth: mWidth, mHeight: mHeight),
-                MFeaturesCard2(mWidth: mWidth, mHeight: mHeight),
-                // MFeaturesCard3(mWidth: mWidth, mHeight: mHeight),
-              ],
-            ),
-          ],
+                  events.isEmpty
+                      ? const Center(
+                          child: Text(
+                            "Loading...",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        )
+                      : Events(
+                          mHeight: mHeight,
+                          mWidth: mWidth,
+                          image: 'images/prayer.jpg',
+                          eventDateTime:
+                              "${events[1].start} - ${events[1].end}",
+                          eventName: events[1].title,
+                        ),
+                ],
+              ),
+              ImageSlideshow(
+                height: mHeight * 0.244,
+                width: double.infinity,
+                indicatorColor: Colors.grey,
+                indicatorBackgroundColor: Colors.white,
+                isLoop: false,
+                children: [
+                  MFeaturesCard1(mWidth: mWidth, mHeight: mHeight),
+                  MFeaturesCard2(mWidth: mWidth, mHeight: mHeight),
+                  // MFeaturesCard3(mWidth: mWidth, mHeight: mHeight),
+                ],
+              ),
+              Text("")
+            ],
+          ),
         ),
       ),
     );
