@@ -16,49 +16,45 @@ import 'package:firebase_core/firebase_core.dart';
 // import 'package:just_audio/just_audio.dart';
 import 'firebase_options.dart';
 import 'package:audioplayers/audioplayers.dart';
-// import 'package:flutter_notification_channel/flutter_notification_channel.dart';
-// import 'package:flutter_notification_channel/notification_importance.dart';
+import 'package:flutter_notification_channel/flutter_notification_channel.dart';
+import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp();
-
-  print("Handling a background message: ${message.messageId}");
-}
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   // If you're going to use other Firebase services in the background, such as Firestore,
+//   // make sure you call `initializeApp` before using other Firebase services.
+//   await Firebase.initializeApp();
+//
+//   print("Handling a background message: ${message.messageId}");
+// }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // var result = await FlutterNotificationChannel.registerNotificationChannel(
   //   description: 'showing custom notification',
   //   id: 'masjidApp',
   //   importance: NotificationImportance.IMPORTANCE_HIGH,
   //   name: 'masjidApp',
+  //   enableSound: true,
   // );
   // print('Result: $result');
   // var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-  //     'masjidAppLocal', 'masjidAppLocal',
-  //     channelDescription: 'masjid app notification',
-  //     importance: Importance.max,
-  //     priority: Priority.high,
-  //     ticker: 'ticker',
-  //     sound: RawResourceAndroidNotificationSound('beep'));
-  // var androidPlatformChannelSpecifics =
-  //     AndroidNotificationDetails('masjidAppLocal', 'masjidAppLocal', {
-  //   'sound': RawResourceAndroidNotificationSound('custom_sound'),
-  //   'importance': Importance.high,
-  //   'priority': Priority.high
-  //   // 'ticker': 'ticker'
-  // });
+  //   'masjidAppLocal',
+  //   'masjidAppLocal',
+  //   channelDescription: 'masjid app notification',
+  //   importance: Importance.max,
+  //   priority: Priority.high,
+  //   ticker: 'ticker',
+  //   sound: RawResourceAndroidNotificationSound('beep'),
+  // );
   // var platformChannelSpecifics =
-  //     NotificationDetails(androidPlatformChannelSpecifics, null);
+  //     NotificationDetails(android: androidPlatformChannelSpecifics);
   // await flutterLocalNotificationsPlugin.show(
   //     0, 'title', 'body', platformChannelSpecifics);
   String? token = await FirebaseMessaging.instance.getToken();
   print("Token:$token");
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.ios);
+  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
