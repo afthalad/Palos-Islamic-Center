@@ -26,8 +26,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp();
-
+  // await Firebase.initializeApp();
   print("Handling a background message: ${message.messageId}");
 }
 
@@ -41,13 +40,15 @@ void main() async {
   //   name: 'masjidApp',
   // );
   // print('Result: $result');
-  // var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-  //     'masjidAppLocal', 'masjidAppLocal',
-  //     channelDescription: 'masjid app notification',
-  //     importance: Importance.max,
-  //     priority: Priority.high,
-  //     ticker: 'ticker',
-  //     sound: RawResourceAndroidNotificationSound('beep'));
+  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    'masjidAppLocal',
+    'masjidAppLocal',
+    channelDescription: 'masjid app notification',
+    importance: Importance.max,
+    priority: Priority.high,
+    ticker: 'ticker',
+    sound: RawResourceAndroidNotificationSound('beep'),
+  );
   // var androidPlatformChannelSpecifics =
   //     AndroidNotificationDetails('masjidAppLocal', 'masjidAppLocal', {
   //   'sound': RawResourceAndroidNotificationSound('custom_sound'),
@@ -55,10 +56,11 @@ void main() async {
   //   'priority': Priority.high
   //   // 'ticker': 'ticker'
   // });
-  // var platformChannelSpecifics =
-  //     NotificationDetails(androidPlatformChannelSpecifics, null);
+  var platformChannelSpecifics = NotificationDetails(
+    android: androidPlatformChannelSpecifics,
+  );
   // await flutterLocalNotificationsPlugin.show(
-  //     0, 'title', 'body', platformChannelSpecifics);
+  //     0, 'title', 'body', platformChannelSpecifics);as
 
   String? token = await FirebaseMessaging.instance.getToken();
   print("Token:$token");
@@ -72,8 +74,27 @@ void main() async {
     provisional: false,
   );
 
+  // var result = await FlutterNotificationChannel.registerNotificationChannel(
+  //   description: 'showing custom notification',
+  //   id: 'masjidApp_2',
+  //   importance: NotificationImportance.IMPORTANCE_HIGH,
+  //   name: 'masjidApp 2',
+  //   enableSound: true,
+  // );
+  // print('Result: $result');
+  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    'masjidAppLocal 2',
+    'masjidAppLocal 2',
+    channelDescription: 'masjid app notification',
+    importance: Importance.max,
+    priority: Priority.high,
+    ticker: 'ticker',
+    sound: RawResourceAndroidNotificationSound('beep'),
+  );
+  var platformChannelSpecifics =
+      NotificationDetails(android: androidPlatformChannelSpecifics);
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    final player = AudioPlayer();
+    // final player = AudioPlayer();
     // player.play(AssetSource("azan1.mp3"));
     print('Got a message whilst in the foreground!');
     print('Message asdasdsadaas: ${message.data}');

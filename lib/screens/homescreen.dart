@@ -49,25 +49,25 @@ class _HomeScreenState extends State<HomeScreen> {
   var spinController = StreamController<int>.broadcast();
   void spin() => spinController.add(++nextSpinValue);
 
-  Future prayerTImeGet() async {
-    String year = DateTime.now().year.toString();
-    String month = DateTime.now().month.toString().padLeft(2, '0');
-    String day = DateTime.now().day.toString().padLeft(2, '0');
-    var time = DateTime.now();
-    setState(() {
-      currentDate = "$year-$month-$day";
-    });
+  // Future prayerTImeGet() async {
+  //   String year = DateTime.now().year.toString();
+  //   String month = DateTime.now().month.toString().padLeft(2, '0');
+  //   String day = DateTime.now().day.toString().padLeft(2, '0');
+  //   var time = DateTime.now();
+  //   setState(() {
+  //     currentDate = "$year-$month-$day";
+  //   });
 
-    // include current data in admin panel $currentDate
-    Response response =
-        await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
+  //   // include current data in admin panel $currentDate
+  //   Response response =
+  //       await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
 
-    if (response.data["data"] != null) {
-      setState(() {
-        prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
-      });
-    }
-  }
+  //   if (response.data["data"] != null) {
+  //     setState(() {
+  //       prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
+  //     });
+  //   }
+  // }
 
   void eventsGet() async {
     try {
@@ -139,9 +139,6 @@ class _HomeScreenState extends State<HomeScreen> {
       DateTime nextDayFajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
           "${DateTime.now().toString().substring(0, 10)} ${prayerTimeNexDay[0].fajir}");
       DateTime now = DateTime.now();
-      print(now);
-      print(prayerTimeNexDay[0].fajir);
-      print((nextDayFajirTime.add(Duration(hours: 24))).difference(now));
 
       if (now.isBefore(fajirTime)) {
         cPrayerName = await "Fajr";
@@ -249,18 +246,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          ElevatedButton(
-              onPressed: () async {
-                var result = await FlutterNotificationChannel
-                    .registerNotificationChannel(
-                  description: 'My test channel',
-                  id: 'com.softmaestri.testchannel',
-                  importance: NotificationImportance.IMPORTANCE_HIGH,
-                  name: 'afthal',
-                );
-                print('Result: $result');
-              },
-              child: Text("data")),
+          // // ElevatedButton(
+          // //     onPressed: () async {
+          // //       var result = await FlutterNotificationChannel
+          // //           .registerNotificationChannel(
+          // //         description: 'My test channel',
+          // //         id: 'com.softmaestri.testchannel',
+          // //         importance: NotificationImportance.IMPORTANCE_HIGH,
+          // //         name: 'afthal',
+          // //       );
+          // //       print('Result: $result');
+          // //     },
+          //     child: Text("data")),
           Container(
             width: double.infinity,
             height: mHeight * 0.28,
@@ -302,7 +299,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       : index == 2
                           ? JummahPrayerTimesWidget(
                               mHeight: mHeight,
-                              jummahTime: prayerTime[0].dhuhar,
+                              jummahTime: "123",
                             )
                           : SalahTimeRemingWidget(
                               mHeight: mHeight,

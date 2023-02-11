@@ -185,9 +185,6 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
     super.initState();
     reminingTimeDiff();
 
-    print("Type of : ${widget.cPrayerTime.runtimeType}");
-    print("Time : ${widget.cPrayerTime}");
-
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {});
   }
 
