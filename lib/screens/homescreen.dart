@@ -9,7 +9,6 @@ import 'package:al_sahabah/services/redirects.dart';
 import 'package:al_sahabah/screens/prayer_time.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 // import 'package:audio_manager/audio_manager.dart';
-import 'package:audioplayers/audioplayers.dart';
 // import 'package:audio_manager/audio_manager.dart';
 // import 'package:assets_audio_player/assets_audio_player.dart';
 // import 'package:audioplayers/audioplayers.dart';
@@ -68,6 +67,10 @@ class _HomeScreenState extends State<HomeScreen> {
   //     });
   //   }
   // }
+  Future<void> resfresh() {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (BuildContext context) => super.widget));
+  }
 
   void eventsGet() async {
     try {
@@ -174,6 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     Redirects.drawerList();
     prayerTimeGet();
+    print(cPrayerTime);
     eventsGet();
     headerImageGet();
     super.initState();
@@ -244,120 +248,119 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       ),
-      body: Column(
-        children: [
-          // // ElevatedButton(
-          // //     onPressed: () async {
-          // //       var result = await FlutterNotificationChannel
-          // //           .registerNotificationChannel(
-          // //         description: 'My test channel',
-          // //         id: 'com.softmaestri.testchannel',
-          // //         importance: NotificationImportance.IMPORTANCE_HIGH,
-          // //         name: 'afthal',
-          // //       );
-          // //       print('Result: $result');
-          // //     },
-          //     child: Text("data")),
-          Container(
-            width: double.infinity,
-            height: mHeight * 0.28,
-            child: headerImages.isEmpty
-                ? const Center(
-                    child: Text(
-                      "Loading...",
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  )
-                : ImageSlideshow(
-                    width: double.infinity,
-                    height: mHeight * 0.28,
-                    initialPage: 0,
-                    indicatorColor: Colors.grey,
-                    indicatorBackgroundColor: Colors.white,
-                    // autoPlayInterval: 1500,
-                    // isLoop: true,
-                    children: headerImages.map((e) {
-                      return Image.network(
-                        "http://52.90.175.175/$e",
-                        fit: BoxFit.cover,
-                      );
-                    }).toList()),
-          ),
-          FlipWidget(
-            initialValue: nextSpinValue,
-            itemStream: spinController.stream,
-            flipType: FlipType.spinFlip,
-            itemBuilder: (_, index) {
-              return index == 0
-                  ? SalahTimeRemingWidget(
-                      mHeight: mHeight,
-                      cPrayerName: cPrayerName,
-                      cPrayerTime: cPrayerTime,
-                    )
-                  : index == 1
-                      ? MSalahTime(mHeight: mHeight, mWidth: mWidth)
-                      : index == 2
-                          ? JummahPrayerTimesWidget(
-                              mHeight: mHeight,
-                              jummahTime: "123",
-                            )
-                          : SalahTimeRemingWidget(
-                              mHeight: mHeight,
-                              cPrayerName: cPrayerName,
-                              cPrayerTime: cPrayerTime,
-                            );
-            },
-            flipDirection: AxisDirection.up,
-          ),
-          ImageSlideshow(
-            height: mHeight * 0.2,
-            width: double.infinity,
-            initialPage: 0,
-            indicatorRadius: 0,
-            children: [
-              events.isEmpty
+      body: RefreshIndicator(
+        onRefresh: () => print("object"),
+        child: Column(
+          children: [
+            // ElevatedButton(
+            //     onPressed: () async {
+            //       Navigator.pushReplacement(
+            //           context,
+            //           MaterialPageRoute(
+            //               builder: (BuildContext context) => super.widget));
+            //     },
+            //     child: Text("data")),
+            Container(
+              width: double.infinity,
+              height: mHeight * 0.28,
+              child: headerImages.isEmpty
                   ? const Center(
                       child: Text(
                         "Loading...",
                         style: TextStyle(color: Colors.grey),
                       ),
                     )
-                  : Events(
-                      mHeight: mHeight,
-                      mWidth: mWidth,
-                      image: 'images/event.png',
-                      eventDateTime: "${events[0].start} - ${events[0].end}",
-                      eventName: events[0].title,
-                    ),
-              events.isEmpty
-                  ? const Center(
-                      child: Text(
-                        "Loading...",
-                        style: TextStyle(color: Colors.grey),
+                  : ImageSlideshow(
+                      width: double.infinity,
+                      height: mHeight * 0.28,
+                      initialPage: 0,
+                      indicatorColor: Colors.grey,
+                      indicatorBackgroundColor: Colors.white,
+                      // autoPlayInterval: 1500,
+                      // isLoop: true,
+                      children: headerImages.map((e) {
+                        return Image.network(
+                          "http://52.90.175.175/$e",
+                          fit: BoxFit.cover,
+                        );
+                      }).toList()),
+            ),
+            FlipWidget(
+              initialValue: nextSpinValue,
+              itemStream: spinController.stream,
+              flipType: FlipType.spinFlip,
+              itemBuilder: (_, index) {
+                return index == 0
+                    ? SalahTimeRemingWidget(
+                        mHeight: mHeight,
+                        cPrayerName: cPrayerName,
+                        cPrayerTime: cPrayerTime,
+                      )
+                    : index == 1
+                        ? MSalahTime(mHeight: mHeight, mWidth: mWidth)
+                        : index == 2
+                            ? JummahPrayerTimesWidget(
+                                mHeight: mHeight,
+                                jummahTime: prayerTime[0].dhuhar,
+                              )
+                            : SalahTimeRemingWidget(
+                                mHeight: mHeight,
+                                cPrayerName: cPrayerName,
+                                cPrayerTime: cPrayerTime,
+                              );
+              },
+              flipDirection: AxisDirection.up,
+            ),
+            ImageSlideshow(
+              height: mHeight * 0.2,
+              width: double.infinity,
+              initialPage: 0,
+              indicatorRadius: 0,
+              children: [
+                events.isEmpty
+                    ? const Center(
+                        child: Text(
+                          "Loading...",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      )
+                    : Events(
+                        mHeight: mHeight,
+                        mWidth: mWidth,
+                        image: 'images/event.png',
+                        eventDateTime: "${events[0].start} - ${events[0].end}",
+                        eventName: events[0].title,
                       ),
-                    )
-                  : Events(
-                      mHeight: mHeight,
-                      mWidth: mWidth,
-                      image: 'images/prayer.jpg',
-                      eventDateTime: "${events[1].start} - ${events[1].end}",
-                      eventName: events[1].title,
-                    ),
-            ],
-          ),
-          ImageSlideshow(
-            height: mHeight * 0.244,
-            width: double.infinity,
-            indicatorColor: Colors.grey,
-            indicatorBackgroundColor: Colors.white,
-            isLoop: false,
-            children: [
-              MFeaturesCard1(mWidth: mWidth, mHeight: mHeight),
-              MFeaturesCard2(mWidth: mWidth, mHeight: mHeight),
-              // MFeaturesCard3(mWidth: mWidth, mHeight: mHeight),
-            ],
-          ),
-        ],
+                events.isEmpty
+                    ? const Center(
+                        child: Text(
+                          "Loading...",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      )
+                    : Events(
+                        mHeight: mHeight,
+                        mWidth: mWidth,
+                        image: 'images/prayer.jpg',
+                        eventDateTime: "${events[1].start} - ${events[1].end}",
+                        eventName: events[1].title,
+                      ),
+              ],
+            ),
+            ImageSlideshow(
+              height: mHeight * 0.244,
+              width: double.infinity,
+              indicatorColor: Colors.grey,
+              indicatorBackgroundColor: Colors.white,
+              isLoop: false,
+              children: [
+                MFeaturesCard1(mWidth: mWidth, mHeight: mHeight),
+                MFeaturesCard2(mWidth: mWidth, mHeight: mHeight),
+                // MFeaturesCard3(mWidth: mWidth, mHeight: mHeight),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

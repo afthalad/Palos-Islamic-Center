@@ -22,16 +22,10 @@ import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:just_audio/just_audio.dart';
 import 'firebase_options.dart';
-// import 'package:audioplayers/audioplayers.dart';
-// import 'package:flutter_notification_channel/flutter_notification_channel.dart';
-// import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
   print("Handling a background message: ${message.messageId}");
 }
@@ -55,7 +49,9 @@ void main() async {
         "device_type": Platform.operatingSystem == "android" ? "android" : "ios"
       },
     );
-  } else {}
+  } else {
+    print("Token here frrom else : $fcmToke");
+  }
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);

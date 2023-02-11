@@ -4,7 +4,6 @@ import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/screens/news_inner.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:dio/dio.dart';
-import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 // import 'package:html/dom.dart';

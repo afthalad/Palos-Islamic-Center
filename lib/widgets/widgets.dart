@@ -199,46 +199,48 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
       padding: const EdgeInsets.all(10),
       height: widget.mHeight * 0.11,
       color: mSalah_time_container_color,
-      child: reminingTime == null
+      child: widget.cPrayerTime == "00:00:00"
           ? const Center(child: Text("Loading..."))
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          : reminingTime == null
+              ? const Center(child: Text("Loading..."))
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      '${widget.cPrayerName} at  ${widget.cPrayerTime}',
-                      style: mSalah_time_subtitle_tstyle,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${widget.cPrayerName} at  ${widget.cPrayerTime}',
+                          style: mSalah_time_subtitle_tstyle,
+                        ),
+                        Text(
+                          'Remining time : ${(reminingTime.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((reminingTime.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(reminingTime.inSeconds - _timer!.tick) % 60}',
+                          style: mSalah_time_title_tstyle,
+                        ),
+                      ],
                     ),
-                    Text(
-                      'Remining time : ${(reminingTime.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((reminingTime.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(reminingTime.inSeconds - _timer!.tick) % 60}',
-                      style: mSalah_time_title_tstyle,
-                    ),
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white30,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, "/prayer_time_screen");
+                        },
+                        child: Text(
+                          "see more",
+                          style: mSalah_time_subtitle_tstyle,
+                        ),
+                      ),
+                    )
                   ],
                 ),
-                Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.white30,
-                      width: 1,
-                    ),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, "/prayer_time_screen");
-                    },
-                    child: Text(
-                      "see more",
-                      style: mSalah_time_subtitle_tstyle,
-                    ),
-                  ),
-                )
-              ],
-            ),
     );
   }
 }
