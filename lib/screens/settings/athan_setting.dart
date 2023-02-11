@@ -1,4 +1,10 @@
+// ignore_for_file: unused_local_variable
+
+import 'dart:io';
+
 import 'package:al_sahabah/const/const.dart';
+import 'package:al_sahabah/services/setting_post.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,7 +20,6 @@ class AthanSettingPageScreen extends StatefulWidget {
 
 class _AthanSettingPageScreenState extends State<AthanSettingPageScreen> {
   bool isProcessed = false;
-
   var fajradhandropdownValue = 'No reminder';
   var duhradhandropdownValue = 'No reminder';
   var asradhandropdownValue = 'No reminder';
@@ -39,13 +44,9 @@ class _AthanSettingPageScreenState extends State<AthanSettingPageScreen> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       fajradhandropdownValue = prefs.getString('fajrAdhan')!;
-
       duhradhandropdownValue = prefs.getString('duhrAdhan')!;
-
       asradhandropdownValue = prefs.getString('asrAdhan')!;
-
       magribadhandropdownValue = prefs.getString('magribAdhan')!;
-
       ishaadhandropdownValue = prefs.getString('ishaAdhan')!;
     });
   }
@@ -58,6 +59,8 @@ class _AthanSettingPageScreenState extends State<AthanSettingPageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SettingPost settingPost = SettingPost(context);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -249,6 +252,12 @@ class _AthanSettingPageScreenState extends State<AthanSettingPageScreen> {
                         isProcessed = true;
                       });
                       await saveSettings();
+                      await settingPost.settingsPost(
+                          fajradhandropdownValue,
+                          duhradhandropdownValue,
+                          asradhandropdownValue,
+                          magribadhandropdownValue,
+                          ishaadhandropdownValue);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           duration: Duration(seconds: 3),

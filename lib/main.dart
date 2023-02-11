@@ -1,3 +1,7 @@
+// ignore_for_file: unused_local_variable
+
+import 'dart:io';
+
 import 'package:al_sahabah/screens/events.dart';
 import 'package:al_sahabah/screens/homescreen.dart';
 import 'package:al_sahabah/screens/live_stream.dart';
@@ -8,6 +12,7 @@ import 'package:al_sahabah/screens/prayer_time.dart';
 import 'package:al_sahabah/screens/qibla/qibla_screen.dart';
 import 'package:al_sahabah/screens/sing_in.dart';
 import 'package:al_sahabah/screens/splashs.dart';
+import 'package:dio/dio.dart';
 // import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -16,9 +21,10 @@ import 'package:flutter_notification_channel/flutter_notification_channel.dart';
 import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:just_audio/just_audio.dart';
 import 'firebase_options.dart';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 // import 'package:flutter_notification_channel/flutter_notification_channel.dart';
 // import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -34,8 +40,23 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  String? token = await FirebaseMessaging.instance.getToken();
-  print("Token:$token");
+  Dio dio = Dio();
+  final prefs = await SharedPreferences.getInstance();
+  var fcmToke = await prefs.getString('fcmToken');
+
+  if (fcmToke == "" || fcmToke == null) {
+    String? token = await FirebaseMessaging.instance.getToken();
+    await prefs.setString('fcmToken', token!);
+
+    var response = await dio.post(
+      "http://52.90.175.175/api/save-app-settigs",
+      data: {
+        "token": token,
+        "device_type": Platform.operatingSystem == "android" ? "android" : "ios"
+      },
+    );
+  } else {}
+
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   NotificationSettings settings = await messaging.requestPermission(

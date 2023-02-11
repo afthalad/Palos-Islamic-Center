@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/screens/location_prayer_time.dart';
+import 'package:al_sahabah/services/setting_post.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,7 +21,6 @@ class IqamaSettingPageScreen extends StatefulWidget {
 class _IqamaSettingPageScreenState extends State<IqamaSettingPageScreen> {
   bool _switchValue = true;
   bool _switchValue2 = false;
-
   bool isProcessed = false;
 
   var fajrdropdownValue = 'No reminder';
@@ -38,7 +41,7 @@ class _IqamaSettingPageScreenState extends State<IqamaSettingPageScreen> {
   final magribTextController = TextEditingController();
   final ishaTextController = TextEditingController();
 
-  iqamahsaveSettings() async {
+  iqamahSaveSettings() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('fajrIqama', fajrdropdownValue);
     await prefs.setString('duhrIqama', duhrdropdownValue);
@@ -52,17 +55,13 @@ class _IqamaSettingPageScreenState extends State<IqamaSettingPageScreen> {
     await prefs.setString('ishaTextFormField', ishaTextController.text);
   }
 
-  iqamahgetSettings() async {
+  iqamahGetSettings() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       fajrdropdownValue = prefs.getString('fajrIqama')!;
-
       duhrdropdownValue = prefs.getString('duhrIqama')!;
-
       asrdropdownValue = prefs.getString('asrIqama')!;
-
       magribdropdownValue = prefs.getString('magribIqama')!;
-
       ishadropdownValue = prefs.getString('ishaIqama')!;
       fajrTextController.text = prefs.getString('fajrTextFormField')!;
       duhrTextController.text = prefs.getString('duhrTextFormField')!;
@@ -75,11 +74,12 @@ class _IqamaSettingPageScreenState extends State<IqamaSettingPageScreen> {
   @override
   void initState() {
     super.initState();
-    iqamahgetSettings();
+    iqamahGetSettings();
   }
 
   @override
   Widget build(BuildContext context) {
+    SettingPost settingPost = SettingPost(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -331,7 +331,19 @@ class _IqamaSettingPageScreenState extends State<IqamaSettingPageScreen> {
                         setState(() {
                           isProcessed = true;
                         });
-                        await iqamahsaveSettings();
+                        await iqamahSaveSettings();
+                        await settingPost.iqamaSettingsPost(
+                          fajrdropdownValue,
+                          duhrdropdownValue,
+                          asrdropdownValue,
+                          magribdropdownValue,
+                          ishadropdownValue,
+                          fajrTextController.text,
+                          duhrTextController.text,
+                          asrTextController.text,
+                          magribTextController.text,
+                          ishaTextController.text,
+                        );
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             duration: Duration(seconds: 3),

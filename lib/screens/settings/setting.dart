@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/screens/settings/athan_setting.dart';
 import 'package:al_sahabah/screens/settings/iqamah_setting.dart';
 import 'package:al_sahabah/screens/location_prayer_time.dart';
+import 'package:al_sahabah/services/setting_post.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,10 +21,34 @@ class SettingPageScreen extends StatefulWidget {
 }
 
 class _SettingPageScreenState extends State<SettingPageScreen> {
-  bool _switchValue = true;
+  var notificatioIsEnabled;
+  var _switchValue = true;
+
+  saveEnableNotificationSetting(switchValue) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('notication', "");
+    await prefs.setString('notication', switchValue ? "1" : "0");
+    print(prefs.getString('notication'));
+  }
+
+  getEnableNotificationSetting(switchValue) async {
+    final prefs = await SharedPreferences.getInstance();
+    var isEnabled = await prefs.getString('notication');
+    setState(() {
+      isEnabled == "1" ? _switchValue = true : _switchValue = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getEnableNotificationSetting(_switchValue);
+  }
 
   @override
   Widget build(BuildContext context) {
+    SettingPost settingPost = SettingPost(context);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
@@ -122,10 +150,13 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
               ),
               trailing: Switch(
                 value: _switchValue,
-                onChanged: (value) {
+                onChanged: (value) async {
                   setState(() {
                     _switchValue = value;
                   });
+                  await saveEnableNotificationSetting(_switchValue);
+                  print(_switchValue);
+                  await settingPost.enableNotificationSettingPost(_switchValue);
                 },
               ),
             ),

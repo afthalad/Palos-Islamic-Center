@@ -12,16 +12,11 @@ class NewsGet {
 
     var data = response.data["data"]["data"] as List;
 
-    if (response.data["data"] != null) {
-      for (var item in data) {
-        news.add(News.fromJson(item));
-      }
-    }
+    news.addAll(data.map((i) => News.fromJson(i)).toList());
   }
 
   void loadNextPage() {
     currentPage++;
-
     fetchNewss();
     print(currentPage);
   }

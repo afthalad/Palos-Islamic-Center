@@ -2,7 +2,6 @@
 
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/screens/news_inner.dart';
-import 'package:al_sahabah/services/news_get.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:dio/dio.dart';
 import 'package:draggable_home/draggable_home.dart';
@@ -22,79 +21,52 @@ class NewsScreen extends StatefulWidget {
 }
 
 class _NewsScreenState extends State<NewsScreen> {
-  // Dio dio = Dio();
-  // List<News> news = [];
-  // int currentPage = 1;
-  // bool _isLoading = false;
-  NewsGet newsGet = NewsGet();
-  // bool _isLoading = NewsGet.isLoading;
+  Dio dio = Dio();
+  List<News> news = [];
+  int currentPage = 1;
+  bool _isLoading = false;
   ScrollController _scrollController = ScrollController();
 
-  // Future<void> fetchNewss() async {
-  //   Response response =
-  //       await dio.get("http://52.90.175.175/api/news/get?page=$currentPage");
+  Future<void> fetchNewss() async {
+    Response response =
+        await dio.get("http://52.90.175.175/api/news/get?page=$currentPage");
 
-  //   var data = response.data["data"]["data"] as List;
+    var data = response.data["data"]["data"] as List;
 
-  //   setState(() {
-  //     news.addAll(data.map((i) => News.fromJson(i)).toList());
-  //   });
-  // }
+    setState(() {
+      news.addAll(data.map((i) => News.fromJson(i)).toList());
+    });
+  }
 
-  // void loadNextPage() {
-  //   setState(() {
-  //     currentPage++;
-  //   });
-  //   fetchNewss();
-  //   print("object");
-  // }
+  void loadNextPage() {
+    setState(() {
+      currentPage++;
+    });
+    fetchNewss();
+    print("object");
+  }
 
-  // void _scrollControllerListner() {
-  //   _scrollController.addListener(() {
-  //     if (_scrollController.offset >=
-  //             _scrollController.position.maxScrollExtent &&
-  //         !_scrollController.position.outOfRange) {
-  //       setState(() {
-  //         _isLoading = true;
-  //       });
-  //       Future.delayed(Duration(seconds: 2), () {
-  //         newsGet.loadNextPage();
-  //         setState(() {
-  //           _isLoading = false;
-  //         });
-  //       });
-  //     }
-  //   });
-  // }
   void _scrollControllerListner() {
     _scrollController.addListener(() {
       if (_scrollController.offset >=
               _scrollController.position.maxScrollExtent &&
           !_scrollController.position.outOfRange) {
         setState(() {
-          isLoading.isLoading = true;
+          _isLoading = true;
         });
         Future.delayed(Duration(seconds: 2), () {
-          newsGet.loadNextPage();
+          loadNextPage();
           setState(() {
-            isLoading.isLoading = false;
+            _isLoading = false;
           });
         });
       }
     });
   }
 
-  // @override
-  // void initState() {
-  //   newsGet.fetchNewss();
-  //   print(NewsGet.isLoading);
-  //   super.initState();
-  //   _scrollControllerListner();
-  // }
   @override
   void initState() {
-    newsGet.fetchNewss();
-    // print(isLoading);
+    fetchNewss();
     super.initState();
     _scrollControllerListner();
   }
@@ -109,14 +81,14 @@ class _NewsScreenState extends State<NewsScreen> {
           child: Column(
             children: [
               Container(
-                child: newsGet.news.length < 2
+                child: news.length < 2
                     ? ImageSlideshow(
-                        children: [NewsSlideWidget0(news: newsGet.news)],
+                        children: [NewsSlideWidget0(news: news)],
                       )
                     : ImageSlideshow(
                         children: [
-                          NewsSlideWidget0(news: newsGet.news),
-                          NewsSlideWidget1(news: newsGet.news)
+                          NewsSlideWidget0(news: news),
+                          NewsSlideWidget1(news: news)
                         ],
                       ),
               ),
@@ -130,12 +102,12 @@ class _NewsScreenState extends State<NewsScreen> {
                   subtitle: Text(news_screen_subtitle),
                 ),
               ),
-              newsGet.news.isEmpty
+              news.isEmpty
                   ? const CircularProgressIndicator()
                   : ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: newsGet.news.length,
+                      itemCount: news.length,
                       itemBuilder: (BuildContext context, int i) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -145,12 +117,10 @@ class _NewsScreenState extends State<NewsScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => NewsInnerScreen(
-                                    title: newsGet.news[i].title,
-                                    date: newsGet.news[i].date,
-                                    image: newsGet.news[i].images[0],
-                                    content: parse(newsGet.news[i].content)
-                                        .body!
-                                        .text,
+                                    title: news[i].title,
+                                    date: news[i].date,
+                                    image: news[i].images[0],
+                                    content: parse(news[i].content).body!.text,
                                   ),
                                 ),
                               );
@@ -175,13 +145,13 @@ class _NewsScreenState extends State<NewsScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      parse(newsGet.news[i].content).body!.text,
+                                      parse(news[i].content).body!.text,
                                       maxLines: 2,
                                       style:
                                           news_slide_widget_description_tstyle,
                                     ),
                                     Text(
-                                      newsGet.news[i].date,
+                                      news[i].date,
                                       style: news_slide_widget_date_tstyle,
                                     ),
                                   ],
@@ -198,7 +168,7 @@ class _NewsScreenState extends State<NewsScreen> {
                                     child: Image(
                                       fit: BoxFit.fill,
                                       image: NetworkImage(
-                                        newsGet.news[i].images[0],
+                                        news[i].images[0],
                                       ),
                                     ),
                                   ),
@@ -218,155 +188,29 @@ class _NewsScreenState extends State<NewsScreen> {
           ),
         ),
       ),
-      //   body: FutureBuilder(
-      //       future: newsGet.fetchNewss(),
-      //       builder: (BuildContext context, AsyncSnapshot snapshot) {
-      //         return SingleChildScrollView(
-      //           controller: _scrollController,
-      //           child: Column(
-      //             children: [
-      //               Container(
-      //                 child: newsGet.news.length < 2
-      //                     ? ImageSlideshow(
-      //                         children: [NewsSlideWidget0(news: newsGet.news)],
-      //                       )
-      //                     : ImageSlideshow(
-      //                         children: [
-      //                           NewsSlideWidget0(news: newsGet.news),
-      //                           NewsSlideWidget1(news: newsGet.news)
-      //                         ],
-      //                       ),
-      //               ),
-      //               Container(
-      //                 color: Colors.white,
-      //                 child: ListTile(
-      //                   // selectedTileColor: Colors.white,
-
-      //                   title: Text(news_screen_title,
-      //                       style: news_screen_title_tstyle),
-      //                   subtitle: Text(news_screen_subtitle),
-      //                 ),
-      //               ),
-      //               newsGet.news.isEmpty
-      //                   ? const CircularProgressIndicator()
-      //                   : ListView.builder(
-      //                       physics: NeverScrollableScrollPhysics(),
-      //                       shrinkWrap: true,
-      //                       itemCount: newsGet.news.length,
-      //                       itemBuilder: (BuildContext context, int i) {
-      //                         return Padding(
-      //                           padding: const EdgeInsets.all(8.0),
-      //                           child: InkWell(
-      //                             onTap: () {
-      //                               Navigator.push(
-      //                                 context,
-      //                                 MaterialPageRoute(
-      //                                   builder: (context) => NewsInnerScreen(
-      //                                     title: newsGet.news[i].title,
-      //                                     date: newsGet.news[i].date,
-      //                                     image: newsGet.news[i].images[0],
-      //                                     content:
-      //                                         parse(newsGet.news[i].content)
-      //                                             .body!
-      //                                             .text,
-      //                                   ),
-      //                                 ),
-      //                               );
-      //                             },
-      //                             child: Container(
-      //                               decoration: BoxDecoration(
-      //                                 border: Border.all(
-      //                                     width: 1,
-      //                                     color:
-      //                                         Colors.black12.withOpacity(0.1)),
-      //                                 borderRadius: const BorderRadius.all(
-      //                                     Radius.circular(10)),
-      //                               ),
-      //                               child: ListTile(
-      //                                 contentPadding: EdgeInsets.all(15),
-      //                                 title: Text(
-      //                                   newsGet.news[i].title,
-      //                                   style:
-      //                                       news_list_tile_widget_title_tstyle,
-      //                                 ),
-      //                                 subtitle: Column(
-      //                                   mainAxisAlignment:
-      //                                       MainAxisAlignment.spaceAround,
-      //                                   crossAxisAlignment:
-      //                                       CrossAxisAlignment.start,
-      //                                   children: [
-      //                                     Text(
-      //                                       parse(newsGet.news[i].content)
-      //                                           .body!
-      //                                           .text,
-      //                                       maxLines: 2,
-      //                                       style:
-      //                                           news_slide_widget_description_tstyle,
-      //                                     ),
-      //                                     Text(
-      //                                       newsGet.news[i].date,
-      //                                       style:
-      //                                           news_slide_widget_date_tstyle,
-      //                                     ),
-      //                                   ],
-      //                                 ),
-      //                                 trailing: ConstrainedBox(
-      //                                   constraints: const BoxConstraints(
-      //                                     minWidth: 100,
-      //                                     minHeight: 300,
-      //                                     maxWidth: 104,
-      //                                     maxHeight: 300,
-      //                                   ),
-      //                                   child: ClipRRect(
-      //                                     borderRadius:
-      //                                         BorderRadius.circular(10),
-      //                                     child: Image(
-      //                                       fit: BoxFit.fill,
-      //                                       image: NetworkImage(
-      //                                         newsGet.news[i].images[0],
-      //                                       ),
-      //                                     ),
-      //                                   ),
-      //                                 ),
-      //                               ),
-      //                             ),
-      //                           ),
-      //                         );
-      //                       },
-      //                     ),
-      //               _isLoading
-      //                   ? CircularProgressIndicator()
-      //                   : Container(
-      //                       height: 0,
-      //                     ),
-      //             ],
-      //           ),
-      //         );
-      //       }),
-      // ),
     );
   }
 }
 
-// class News {
-//   String title;
-//   String content;
-//   List<dynamic> images;
-//   String date;
+class News {
+  String title;
+  String content;
+  List<dynamic> images;
+  String date;
 
-//   News({
-//     required this.title,
-//     required this.content,
-//     required this.images,
-//     required this.date,
-//   });
+  News({
+    required this.title,
+    required this.content,
+    required this.images,
+    required this.date,
+  });
 
-//   factory News.fromJson(Map<String, dynamic> json) {
-//     return News(
-//       title: json["title"] ?? "",
-//       content: json["content"] ?? "",
-//       images: json["images"] ?? "",
-//       date: json["date"] ?? "",
-//     );
-//   }
-// }
+  factory News.fromJson(Map<String, dynamic> json) {
+    return News(
+      title: json["title"] ?? "",
+      content: json["content"] ?? "",
+      images: json["images"] ?? "",
+      date: json["date"] ?? "",
+    );
+  }
+}
