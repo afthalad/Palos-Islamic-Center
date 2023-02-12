@@ -15,15 +15,10 @@ import 'package:al_sahabah/screens/splashs.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_notification_channel/flutter_notification_channel.dart';
-import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
-// import 'package:flutter_notification_channel/flutter_notification_channel.dart';
-// import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

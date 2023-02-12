@@ -1,8 +1,7 @@
 import 'package:al_sahabah/const/const.dart';
+import 'package:al_sahabah/screens/masjisdh_service_inner.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:html/parser.dart';
 
 class MasjidhServicesScreen extends StatefulWidget {
   const MasjidhServicesScreen({super.key});
@@ -43,20 +42,65 @@ class _MasjidhServicesScreenState extends State<MasjidhServicesScreen> {
       ),
       body: masjidhServicesText == ""
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(10),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    HtmlWidget(masjidhServicesText),
-                    // Text(
-                    //   parse(masjidhServicesText).body!.text,
-                    // ),
-                  ],
-                ),
-              ),
-            ),
+          : ListView.builder(
+              itemCount: 3,
+              itemBuilder: (BuildContext context, int i) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MasjidhServiceInner(
+                                  appBarTitle: "Community sevices",
+                                )));
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      side: BorderSide(
+                        color: appBarColor.withOpacity(0.5),
+                      ),
+                    ),
+                    elevation: 0,
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(10),
+                      title: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.room_service,
+                              color: sec,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.05,
+                            ),
+                            Text("Community services")
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }),
+
+      // : Padding(
+      //     padding: const EdgeInsets.all(10),
+      //     child: SingleChildScrollView(
+      //       child: Column(
+      //         crossAxisAlignment: CrossAxisAlignment.start,
+      //         children: [
+      //           HtmlWidget(masjidhServicesText),
+      //           // Text(
+      //           //   parse(masjidhServicesText).body!.text,
+      //           // ),
+      //         ],
+      //       ),
+      //     ),
+      //   ),
     );
   }
 }
