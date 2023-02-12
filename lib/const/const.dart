@@ -164,11 +164,9 @@ String contactus_screen_profile_email = 'ojammal@mosquefoundation.org';
 String contactus_screen_profile_phone = '(708)430-567';
 TextStyle contactus_screen_profile_name_tstyle =
     const TextStyle(fontSize: 25, fontWeight: FontWeight.bold);
-TextStyle contactus_screen_profile_tstyle = const TextStyle(fontSize: 20);
-TextStyle contactus_screen_profile_tstyle1 = const TextStyle(
-  fontSize: 20,
-  fontWeight: FontWeight.bold,
-);
+TextStyle contactus_screen_profile_tstyle = const TextStyle(fontSize: 15);
+TextStyle contactus_screen_profile_tstyle1 =
+    const TextStyle(fontSize: 17, fontWeight: FontWeight.w500);
 TextStyle contactus_screen_profile_tstyl21 = const TextStyle(fontSize: 20);
 
 // Events screen

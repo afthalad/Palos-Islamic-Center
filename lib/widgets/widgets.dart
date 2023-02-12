@@ -88,7 +88,9 @@ class _MSalahTimeState extends State<MSalahTime> {
     //include current date  admin panel
     Response response =
         await dio.get("http://52.90.175.175/api/prayer-time/get/$currentDate");
-
+    if (!mounted) {
+      return;
+    }
     if (response.data["data"] != null) {
       setState(() {
         prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
@@ -102,11 +104,11 @@ class _MSalahTimeState extends State<MSalahTime> {
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   _timer!.cancel();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1319,7 +1321,7 @@ class _AskTheImamCategoriesState extends State<AskTheImamCategories> {
           .get("http://52.90.175.175/api/questions/get/${widget.catId}?page=1");
 
       var data = response.data["data"]["data"] as List;
-
+      if (!mounted) return;
       setState(() {
         question.addAll(data.map((i) => Question.fromJson(i)).toList());
       });

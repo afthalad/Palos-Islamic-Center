@@ -74,6 +74,9 @@ class _AskTheQuestionScreenState extends State<AskTheQuestionScreen> {
     );
 
     if (response.statusCode == 200 && response.data['error'] == 0) {
+      setState(() {
+        isProcess = false;
+      });
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
       ScaffoldMessenger.of(context).showSnackBar(
@@ -87,9 +90,6 @@ class _AskTheQuestionScreenState extends State<AskTheQuestionScreen> {
         ),
       );
     } else {
-      setState(() {
-        isProcess = false;
-      });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           duration: Duration(seconds: 3),
@@ -100,6 +100,9 @@ class _AskTheQuestionScreenState extends State<AskTheQuestionScreen> {
           ),
         ),
       );
+      setState(() {
+        isProcess = false;
+      });
     }
   }
 

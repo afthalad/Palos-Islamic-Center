@@ -53,7 +53,6 @@ class _AskTheImamScreenState extends State<AskTheImamScreen> {
   @override
   void initState() {
     fetchCategoriess();
-
     super.initState();
   }
 
@@ -81,21 +80,33 @@ class _AskTheImamScreenState extends State<AskTheImamScreen> {
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  : GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                      ),
-                      itemCount: categories.length,
-                      itemBuilder: (BuildContext context, int i) {
-                        return AskTheImamCategories(
-                          catId: categories[i].id,
-                          catName: categories[i].name,
-                          catDescription: categories[i].description,
-                          imageUrl: categories[i].image,
-                          noQuesntions: categories[i].questions.toString(),
-                        );
+                  : RefreshIndicator(
+                      displacement: 150,
+                      backgroundColor: Colors.white,
+                      color: Color.fromARGB(255, 255, 170, 0),
+                      strokeWidth: 3,
+                      triggerMode: RefreshIndicatorTriggerMode.anywhere,
+                      onRefresh: () async {
+                        await Future.delayed(Duration(milliseconds: 1000));
+                        setState(() {});
+                        ;
                       },
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                        ),
+                        itemCount: categories.length,
+                        itemBuilder: (BuildContext context, int i) {
+                          return AskTheImamCategories(
+                            catId: categories[i].id,
+                            catName: categories[i].name,
+                            catDescription: categories[i].description,
+                            imageUrl: categories[i].image,
+                            noQuesntions: categories[i].questions.toString(),
+                          );
+                        },
+                      ),
                     ),
               const MyQuestions(),
               FaqQuestions()

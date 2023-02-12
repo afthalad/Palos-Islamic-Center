@@ -9,16 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //Iqama Setting Page Screen
-class IqamaSettingPageScreen extends StatefulWidget {
-  const IqamaSettingPageScreen({
+class BeforeAthanSettingPageScreen extends StatefulWidget {
+  const BeforeAthanSettingPageScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<IqamaSettingPageScreen> createState() => _IqamaSettingPageScreenState();
+  State<BeforeAthanSettingPageScreen> createState() =>
+      _BeforeAthanSettingPageScreenState();
 }
 
-class _IqamaSettingPageScreenState extends State<IqamaSettingPageScreen> {
+class _BeforeAthanSettingPageScreenState
+    extends State<BeforeAthanSettingPageScreen> {
   bool _switchValue = true;
   bool _switchValue2 = false;
   bool isProcessed = false;
@@ -85,7 +87,7 @@ class _IqamaSettingPageScreenState extends State<IqamaSettingPageScreen> {
         elevation: 1,
         backgroundColor: appBarColor,
         centerTitle: true,
-        title: const Text("Iqama Settings"),
+        title: const Text("Before Athan"),
       ),
       body: SingleChildScrollView(
         child: Column(

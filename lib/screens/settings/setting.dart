@@ -70,38 +70,6 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const IqamaSettingPageScreen()),
-              ),
-              leading: Icon(
-                Icons.handshake,
-                color: sec,
-                size: 35,
-              ),
-              title: const Text('Iqamah'),
-              subtitle: const Text(
-                'Reminder at or before iqamah time',
-                style: TextStyle(
-                  fontSize: 12,
-                ),
-              ),
-              trailing: const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.black12,
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: Colors.black12),
-              ),
-            ),
-            child: ListTile(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
                     builder: (context) => const AthanSettingPageScreen()),
               ),
               leading: Icon(
@@ -134,8 +102,35 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const IqamaSettingPageScreen()),
+                    builder: (context) => const BeforeAthanSettingPageScreen()),
               ),
+              leading: Icon(
+                Icons.handshake,
+                color: sec,
+                size: 35,
+              ),
+              title: const Text('Before Athan'),
+              subtitle: const Text(
+                'Reminder at or before Athan time',
+                style: TextStyle(
+                  fontSize: 12,
+                ),
+              ),
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.black12,
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: Colors.black12),
+              ),
+            ),
+            child: ListTile(
               leading: Icon(
                 Icons.notifications_active,
                 color: sec,

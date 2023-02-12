@@ -55,24 +55,39 @@ class _EventsScreenState extends State<EventsScreen> {
               padding: const EdgeInsets.all(8.0),
               child: LazyLoadScrollView(
                 onEndOfPage: () => loadNextPage(),
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => const Divider(
-                    color: Colors.black26,
-                  ),
-                  itemCount: events.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      contentPadding: const EdgeInsets.all(20),
-                      title: Text(events[index].title),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(events[index].description),
-                          Text("${events[index].start} - ${events[index].end}"),
-                        ],
-                      ),
-                    );
+                child: RefreshIndicator(
+                  displacement: 150,
+                  backgroundColor: Colors.white,
+                  color: Color.fromARGB(255, 255, 170, 0),
+                  strokeWidth: 3,
+                  triggerMode: RefreshIndicatorTriggerMode.anywhere,
+                  onRefresh: () async {
+                    await Future.delayed(Duration(milliseconds: 1000));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => super.widget));
                   },
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => const Divider(
+                      color: Colors.black26,
+                    ),
+                    itemCount: events.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        contentPadding: const EdgeInsets.all(20),
+                        title: Text(events[index].title),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(events[index].description),
+                            Text(
+                                "${events[index].start} - ${events[index].end}"),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),

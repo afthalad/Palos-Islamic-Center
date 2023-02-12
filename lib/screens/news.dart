@@ -31,7 +31,7 @@ class _NewsScreenState extends State<NewsScreen> {
         await dio.get("http://52.90.175.175/api/news/get?page=$currentPage");
 
     var data = response.data["data"]["data"] as List;
-
+    if (!mounted) return;
     setState(() {
       news.addAll(data.map((i) => News.fromJson(i)).toList());
     });

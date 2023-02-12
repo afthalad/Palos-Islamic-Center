@@ -42,17 +42,17 @@ class _AboutUsPageState extends State<AboutUsPage> {
         centerTitle: true,
         title: const Text("About us"),
       ),
-      body: SingleChildScrollView(
-        child: aboutUsText == ""
-            ? const Center(child: CircularProgressIndicator())
-            : Padding(
+      body: aboutUsText == ""
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [HtmlWidget(aboutUsText)],
                 ),
               ),
-      ),
+            ),
     );
   }
 }

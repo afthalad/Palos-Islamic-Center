@@ -56,7 +56,7 @@ class SettingPost {
         await dio.post("http://52.90.175.175/api/save-app-settigs", data: {
       "token": fcmToken,
       "app_settings": {
-        "iqamah": {
+        "before_athan": {
           "fajir": {"sound": fajrReminder, "time": fajrTime},
           "dhuhar": {"sound": duhrReminder, "time": duhrTime},
           "asr": {"sound": asrReminder, "time": asrTime},
@@ -66,6 +66,20 @@ class SettingPost {
       },
       "device_type": Platform.operatingSystem == "android" ? "android" : "ios"
     });
+    // var response =
+    //     await dio.post("http://52.90.175.175/api/save-app-settigs", data: {
+    //   "token": fcmToken,
+    //   "app_settings": {
+    //     "iqamah": {
+    //       "fajir": {"sound": fajrReminder, "time": fajrTime},
+    //       "dhuhar": {"sound": duhrReminder, "time": duhrTime},
+    //       "asr": {"sound": asrReminder, "time": asrTime},
+    //       "magrib": {"sound": magribReminder, "time": magribTime},
+    //       "isha": {"sound": ishaReminder, "time": ishaTime}
+    //     }
+    //   },
+    //   "device_type": Platform.operatingSystem == "android" ? "android" : "ios"
+    // });
 
     if (response.statusCode == 200 && response.data['error'] == 0) {
       print("success");

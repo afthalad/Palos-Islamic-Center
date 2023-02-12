@@ -92,6 +92,7 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
 
     Response nextDayResponse =
         await dio.get("http://52.90.175.175/api/prayer-time/get/$nextDayDate");
+    if (!mounted) return;
     setState(() {
       prayerTimeNexDay
           .add(PrayerTimeClass.fromJson(nextDayResponse.data["data"]));
