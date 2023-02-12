@@ -6,6 +6,9 @@ import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
+import 'package:html/parser.dart' show parseFragment;
 
 // News Screen
 class NewsScreen extends StatefulWidget {
@@ -20,6 +23,7 @@ class _NewsScreenState extends State<NewsScreen> {
   List<News> news = [];
   int currentPage = 1;
   bool _isLoading = false;
+  String newsDescription = "";
   ScrollController _scrollController = ScrollController();
 
   Future<void> fetchNewss() async {
@@ -154,7 +158,7 @@ class _NewsScreenState extends State<NewsScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        news[i].content,
+                                        parseFragment(news[i].content).text!,
                                         maxLines: 2,
                                         style:
                                             news_slide_widget_description_tstyle,
