@@ -33,8 +33,7 @@ class _BeforeAthanSettingPageScreenState
 
   var drop = [
     'No reminder',
-    'Beeb',
-    'Allahu Akbar Allahu Akbar',
+    'Soft Beeb',
   ];
 
   final fajrTextController = TextEditingController();
