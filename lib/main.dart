@@ -67,6 +67,7 @@ void main() async {
       description: 'Play Beep Sound for Notification',
       playSound: true,
       sound: RawResourceAndroidNotificationSound('beep'),
+      importance: Importance.max,
     );
     const AndroidNotificationChannel AzanNotificationChannelSettings =
         AndroidNotificationChannel(
@@ -75,8 +76,16 @@ void main() async {
       description: 'Play Azan Sound for Notification',
       playSound: true,
       sound: RawResourceAndroidNotificationSound('azan'),
+      importance: Importance.max,
     );
-
+    const AndroidNotificationChannel DefaultNotificationChannelSettings =
+        AndroidNotificationChannel(
+      'Default',
+      'Default Sound',
+      description: 'Play Default Sound for Notification',
+      playSound: true,
+      importance: Importance.max,
+    );
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
