@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print, library_private_types_in_public_api
 import 'package:al_sahabah/const/const.dart';
-import 'package:al_sahabah/services/events_get.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';

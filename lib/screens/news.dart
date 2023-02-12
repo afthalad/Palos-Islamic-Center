@@ -6,10 +6,6 @@ import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
-// import 'package:html/dom.dart';
-
-import 'package:html/parser.dart';
-import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 // News Screen
 class NewsScreen extends StatefulWidget {
@@ -130,12 +126,10 @@ class _NewsScreenState extends State<NewsScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => NewsInnerScreen(
-                                      title: news[i].title,
-                                      date: news[i].date,
-                                      image: news[i].images[0],
-                                      content:
-                                          parse(news[i].content).body!.text,
-                                    ),
+                                        title: news[i].title,
+                                        date: news[i].date,
+                                        image: news[i].images[0],
+                                        content: news[i].content),
                                   ),
                                 );
                               },
@@ -160,7 +154,7 @@ class _NewsScreenState extends State<NewsScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        parse(news[i].content).body!.text,
+                                        news[i].content,
                                         maxLines: 2,
                                         style:
                                             news_slide_widget_description_tstyle,

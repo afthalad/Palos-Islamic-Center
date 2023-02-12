@@ -1,12 +1,7 @@
-import 'dart:io';
-
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/screens/settings/athan_setting.dart';
 import 'package:al_sahabah/screens/settings/iqamah_setting.dart';
-import 'package:al_sahabah/screens/location_prayer_time.dart';
 import 'package:al_sahabah/services/setting_post.dart';
-import 'package:al_sahabah/widgets/widgets.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -1,11 +1,9 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:io';
-
 import 'package:al_sahabah/screens/events.dart';
 import 'package:al_sahabah/screens/homescreen.dart';
 import 'package:al_sahabah/screens/live_stream.dart';
-import 'package:al_sahabah/screens/location_prayer_time.dart';
 import 'package:al_sahabah/screens/masjidh_services.dart';
 import 'package:al_sahabah/screens/news.dart';
 import 'package:al_sahabah/screens/prayer_time.dart';
@@ -119,8 +117,6 @@ class MyApp extends StatelessWidget {
         '/qibla_screen': (context) => QiblaScreen(),
         '/live_stream_screen': (context) => const LiveStreamScreen(),
         '/news_screen': (context) => const NewsScreen(),
-        '/location_prayer_time_screen': (context) =>
-            const LocationPrayerTimingsScreen(),
       },
     );
   }

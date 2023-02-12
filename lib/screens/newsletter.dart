@@ -171,60 +171,6 @@ class _NewsletterScreenState extends State<NewsletterScreen> {
         ),
         body: news == false
             ? Center(child: Text("Blank page"))
-            // ? SingleChildScrollView(
-            //     child: Form(
-            //       key: widget._formKey,
-            //       child: Column(
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         crossAxisAlignment: CrossAxisAlignment.center,
-            //         children: [
-            //           Container(
-            //             width: 400,
-            //             height: 200,
-            //             child:
-            //                 const Image(image: AssetImage('images/email.png')),
-            //           ),
-            //           Text(
-            //             textAlign: TextAlign.center,
-            //             "Subscribe Newsletter",
-            //             style: newsletter_screen_title_tstyle,
-            //           ),
-            //           Text("Subscribe to our updates right in your inbox."),
-            //           FormTextField(
-            //             controller: _email,
-            //             hintText: newsletter_screen_hintext,
-            //             validatorText: newsletter_screen_validetext,
-            //           ),
-            //           SizedBox(height: widget.mHeight * 0.01),
-            //           isProcess
-            //               ? CircularProgressIndicator()
-            //               : Container(
-            //                   width: widget.mWidth * 0.95,
-            //                   child: ElevatedButton(
-            //                     style: ElevatedButton.styleFrom(
-            //                       padding: const EdgeInsets.all(10),
-            //                       elevation: 0,
-            //                       backgroundColor: const Color(0xFF0D50A3),
-            //                       shape: RoundedRectangleBorder(
-            //                           borderRadius: BorderRadius.circular(-10)),
-            //                     ),
-            //                     onPressed: () async {
-            //                       if (widget._formKey.currentState!
-            //                           .validate()) {
-            //                         await subscribeNewsletter(_email.text);
-            //                       }
-            //                     },
-            //                     child: Text(
-            //                       'Subscribe',
-            //                       style: newsletter_screen_buttontext_tstyle,
-            //                     ),
-            //                   ),
-            //                 ),
-            //         ],
-            //       ),
-            //     ),
-            //   )
-
             : SingleChildScrollView(
                 child: Form(
                   key: widget._formKey,
