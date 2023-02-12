@@ -33,7 +33,8 @@ class _MasjidhServicesScreenState extends State<MasjidhServicesScreen> {
   // }
   getMasjidhServices() async {
     try {
-      var response = await Dio().get('http://52.90.175.175/api/services/get/');
+      var response = await Dio()
+          .get('http://52.90.175.175/api/services/get?page=$currentPage');
       var data = response.data["data"]["data"] as List;
       print(data);
       setState(() {
