@@ -2,6 +2,7 @@ import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/screens/masjisdh_service_inner.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 class MasjidhServicesScreen extends StatefulWidget {
   const MasjidhServicesScreen({super.key});
@@ -11,13 +12,34 @@ class MasjidhServicesScreen extends StatefulWidget {
 }
 
 class _MasjidhServicesScreenState extends State<MasjidhServicesScreen> {
+  List<Services> services = [];
+  int currentPage = 1;
   dynamic masjidhServicesText = "";
+  ScrollController _scrollController = ScrollController();
+  bool _isLoading = false;
+
+  // getMasjidhServices() async {
+  //   try {
+  //     var response = await Dio().get('http://52.90.175.175/api/services/get/');
+  //     var data = response.data["data"]["data"] as List;
+  //     print(data);
+  //     setState(() {
+  //       services.addAll(data.map((i) => Services.fromJson(i)).toList());
+  //     });
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  //   return null;
+  // }
   getMasjidhServices() async {
     try {
-      var response = await Dio()
-          .get('http://52.90.175.175/api/static-content/masjid-service');
+      var response = await Dio().get('http://52.90.175.175/api/services/get/');
+      var data = response.data["data"]["data"] as List;
+      print(data);
       setState(() {
-        masjidhServicesText = response.data["data"];
+        for (var i in data) {
+          services.add(Services.fromJson(i));
+        }
       });
     } catch (e) {
       rethrow;
@@ -25,9 +47,57 @@ class _MasjidhServicesScreenState extends State<MasjidhServicesScreen> {
     return null;
   }
 
+  void loadNextPage() {
+    setState(() {
+      currentPage++;
+    });
+    getMasjidhServices();
+  }
+
+  // void _scrollControllerListner() {
+  //   _scrollController.addListener(() {
+  //     if (_scrollController.offset >=
+  //             _scrollController.position.maxScrollExtent &&
+  //         !_scrollController.position.outOfRange) {
+  //       setState(() {
+  //         _isLoading = true;
+  //       });
+  //       Future.delayed(Duration(seconds: 2), () {
+  //         loadNextPage();
+  //         setState(() {
+  //           _isLoading = false;
+  //         });
+  //       });
+  //     }
+  //   });
+  // }
+  // loadNextPage() async {
+  //   currentPage++;
+  //   getMasjidhServices();
+  // }
+
+  // getEvents() async {
+  //   try {
+  //     var response = await Dio()
+  //         .get('http://52.90.175.175/api/services/get?page=$currentPage');
+  //     var data = response.data["data"]["data"] as List;
+  //     print(data);
+  //     setState(() {
+  //       services.addAll(data.map((i) => Services.fromJson(i)).toList());
+  //     });
+  //   } catch (e) {}
+  // }
+
+  // loadNextPage() {
+  //   currentPage = currentPage + 1;
+  //   getEvents();
+  //   print("DASDSADS:${currentPage}");
+  // }
+
   @override
   void initState() {
     getMasjidhServices();
+    // _scrollControllerListner();
     super.initState();
   }
 
@@ -40,52 +110,66 @@ class _MasjidhServicesScreenState extends State<MasjidhServicesScreen> {
         centerTitle: true,
         title: const Text('Masjidh Services'),
       ),
-      body: masjidhServicesText == ""
+      body: services.isEmpty
           ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: 3,
-              itemBuilder: (BuildContext context, int i) {
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
+          : LazyLoadScrollView(
+              onEndOfPage: () => loadNextPage(),
+              child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: services.length,
+                  itemBuilder: (BuildContext context, int i) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
                             builder: (context) => MasjidhServiceInner(
-                                  appBarTitle: "Community sevices",
-                                )));
-                  },
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      side: BorderSide(
-                        color: appBarColor.withOpacity(0.5),
-                      ),
-                    ),
-                    elevation: 0,
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(10),
-                      title: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.room_service,
-                              color: sec,
+                              appBarTitle: services[i].title,
+                              serviceId: services[i].id,
                             ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                        );
+                      },
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          side: BorderSide(
+                            color: appBarColor.withOpacity(0.5),
+                          ),
+                        ),
+                        elevation: 0,
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.all(10),
+                          title: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.room_service,
+                                  color: sec,
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                ),
+                                Text(services[i].title)
+                              ],
                             ),
-                            Text("Community services")
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                );
-              }),
+                    );
+                  }),
+            ),
+      // _isLoading
+      //     ? CircularProgressIndicator()
+      //     : Container(
+      //         height: 0,
+      //       ),
 
       // : Padding(
       //     padding: const EdgeInsets.all(10),
@@ -101,6 +185,22 @@ class _MasjidhServicesScreenState extends State<MasjidhServicesScreen> {
       //       ),
       //     ),
       //   ),
+    );
+  }
+}
+
+class Services {
+  final String title;
+  final int id;
+  final String description;
+
+  Services({required this.title, required this.id, required this.description});
+
+  factory Services.fromJson(Map<String, dynamic> json) {
+    return Services(
+      id: json['id'],
+      title: json['title'],
+      description: json['description'],
     );
   }
 }

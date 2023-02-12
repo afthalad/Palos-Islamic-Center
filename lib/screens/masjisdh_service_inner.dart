@@ -1,15 +1,43 @@
 import 'package:al_sahabah/const/const.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class MasjidhServiceInner extends StatefulWidget {
-  const MasjidhServiceInner({super.key, required this.appBarTitle});
+  const MasjidhServiceInner(
+      {super.key, required this.appBarTitle, required this.serviceId});
 
   final appBarTitle;
+  final serviceId;
   @override
   State<MasjidhServiceInner> createState() => _MasjidhServiceInnerState();
 }
 
 class _MasjidhServiceInnerState extends State<MasjidhServiceInner> {
+  var title = "";
+  var description = "";
+  getMasjidhServices() async {
+    try {
+      var response = await Dio()
+          .get('http://52.90.175.175/api/services/get/${widget.serviceId}');
+      var data = response.data["data"];
+      print(data);
+      setState(() {
+        title = data["title"];
+        description = data["description"];
+      });
+    } catch (e) {
+      rethrow;
+    }
+    return null;
+  }
+
+  @override
+  void initState() {
+    getMasjidhServices();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,20 +47,59 @@ class _MasjidhServiceInnerState extends State<MasjidhServiceInner> {
         centerTitle: true,
         title: Text(widget.appBarTitle),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // HtmlWidget(masjidhServicesText),
-              Text(
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+      body: title == ""
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // HtmlWidget(masjidhServicesText),
+                  Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    child: Image(
+                      fit: BoxFit.cover,
+                      image: AssetImage("images/prayerTime.png"),
+                    ),
+                  ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      side: BorderSide(
+                        color: appBarColor.withOpacity(0.5),
+                      ),
+                    ),
+                    elevation: 0,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(10),
+                      title: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.room_service,
+                              color: sec,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.05,
+                            ),
+                            Text(title),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: HtmlWidget(description),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
