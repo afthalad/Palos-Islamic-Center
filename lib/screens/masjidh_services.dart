@@ -18,19 +18,6 @@ class _MasjidhServicesScreenState extends State<MasjidhServicesScreen> {
   ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
 
-  // getMasjidhServices() async {
-  //   try {
-  //     var response = await Dio().get('http://52.90.175.175/api/services/get/');
-  //     var data = response.data["data"]["data"] as List;
-  //     print(data);
-  //     setState(() {
-  //       services.addAll(data.map((i) => Services.fromJson(i)).toList());
-  //     });
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  //   return null;
-  // }
   getMasjidhServices() async {
     try {
       var response = await Dio()
@@ -55,50 +42,10 @@ class _MasjidhServicesScreenState extends State<MasjidhServicesScreen> {
     getMasjidhServices();
   }
 
-  // void _scrollControllerListner() {
-  //   _scrollController.addListener(() {
-  //     if (_scrollController.offset >=
-  //             _scrollController.position.maxScrollExtent &&
-  //         !_scrollController.position.outOfRange) {
-  //       setState(() {
-  //         _isLoading = true;
-  //       });
-  //       Future.delayed(Duration(seconds: 2), () {
-  //         loadNextPage();
-  //         setState(() {
-  //           _isLoading = false;
-  //         });
-  //       });
-  //     }
-  //   });
-  // }
-  // loadNextPage() async {
-  //   currentPage++;
-  //   getMasjidhServices();
-  // }
-
-  // getEvents() async {
-  //   try {
-  //     var response = await Dio()
-  //         .get('http://52.90.175.175/api/services/get?page=$currentPage');
-  //     var data = response.data["data"]["data"] as List;
-  //     print(data);
-  //     setState(() {
-  //       services.addAll(data.map((i) => Services.fromJson(i)).toList());
-  //     });
-  //   } catch (e) {}
-  // }
-
-  // loadNextPage() {
-  //   currentPage = currentPage + 1;
-  //   getEvents();
-  //   print("DASDSADS:${currentPage}");
-  // }
-
   @override
   void initState() {
     getMasjidhServices();
-    // _scrollControllerListner();
+
     super.initState();
   }
 
