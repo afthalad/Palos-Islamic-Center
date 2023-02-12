@@ -1,5 +1,7 @@
 import 'package:al_sahabah/const/const.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:html/parser.dart' show parseFragment;
 
 class NewsInnerScreen extends StatefulWidget {
   String title;
@@ -63,7 +65,7 @@ class _NewsInnerScreenState extends State<NewsInnerScreen> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Text(widget.content),
+              child: HtmlWidget(widget.content),
             )
           ],
         ),
