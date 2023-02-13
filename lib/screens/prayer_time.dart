@@ -154,6 +154,11 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
     } else {}
   }
 
+  String convertTo12HourFormat(String time24) {
+    final time24Hour = DateFormat('HH:mm').parse(time24);
+    return DateFormat('h:mm a').format(time24Hour);
+  }
+
   @override
   void initState() {
     prayerTimeGet();
@@ -268,29 +273,40 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
                                 ],
                               ),
                               PrayerimeRow(
-                                  prayerTime: prayerTime[0].fajir,
+                                  prayerTime: convertTo12HourFormat(
+                                      prayerTime[0].fajir),
                                   prayerName: "Fajr ",
-                                  iqamathTime: prayerTime[0].fajir_iqamath),
+                                  iqamathTime: convertTo12HourFormat(
+                                      prayerTime[0].fajir_iqamath)),
                               PrayerimeRow(
-                                  prayerTime: prayerTime[0].sunrise,
+                                  prayerTime: convertTo12HourFormat(
+                                      prayerTime[0].sunrise),
                                   prayerName: "Sunrise",
                                   iqamathTime: "                   "),
                               PrayerimeRow(
-                                  prayerTime: prayerTime[0].dhuhar,
+                                  prayerTime: convertTo12HourFormat(
+                                      prayerTime[0].dhuhar),
                                   prayerName: "Dhuhar",
-                                  iqamathTime: prayerTime[0].dhuhar_iqamath),
+                                  iqamathTime: convertTo12HourFormat(
+                                      prayerTime[0].dhuhar_iqamath)),
                               PrayerimeRow(
-                                  prayerTime: prayerTime[0].asr,
+                                  prayerTime:
+                                      convertTo12HourFormat(prayerTime[0].asr),
                                   prayerName: "Asr   ",
-                                  iqamathTime: prayerTime[0].asr_iqamath),
+                                  iqamathTime: convertTo12HourFormat(
+                                      prayerTime[0].asr_iqamath)),
                               PrayerimeRow(
-                                  prayerTime: prayerTime[0].magrib,
+                                  prayerTime: convertTo12HourFormat(
+                                      prayerTime[0].magrib),
                                   prayerName: "Magrib",
-                                  iqamathTime: prayerTime[0].magrib_iqamath),
+                                  iqamathTime: convertTo12HourFormat(
+                                      prayerTime[0].magrib_iqamath)),
                               PrayerimeRow(
-                                  prayerTime: prayerTime[0].isha,
+                                  prayerTime:
+                                      convertTo12HourFormat(prayerTime[0].isha),
                                   prayerName: "Isha  ",
-                                  iqamathTime: prayerTime[0].isha_iqamath),
+                                  iqamathTime: convertTo12HourFormat(
+                                      prayerTime[0].isha_iqamath)),
                             ],
                           ),
                         ),
@@ -315,13 +331,7 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
                                         prayer_time_table_islamic_month_tstyle,
                                   ),
                                   Column(
-                                    children: [
-                                      // Text(
-                                      //   '$cPrayerName',
-                                      //   style: const TextStyle(
-                                      //       color: Colors.white, fontSize: 15),
-                                      // ),
-                                    ],
+                                    children: [],
                                   ),
                                   Text(
                                     'Sunrise\n${prayerTimeNexDay[0].sunrise}',
@@ -352,33 +362,40 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
                                 ],
                               ),
                               PrayerimeRow(
-                                  prayerTime: prayerTimeNexDay[0].fajir,
+                                  prayerTime: convertTo12HourFormat(
+                                      prayerTimeNexDay[0].fajir),
                                   prayerName: "Fajr ",
-                                  iqamathTime:
-                                      prayerTimeNexDay[0].fajir_iqamath),
+                                  iqamathTime: convertTo12HourFormat(
+                                      prayerTimeNexDay[0].fajir_iqamath)),
                               PrayerimeRow(
-                                  prayerTime: prayerTimeNexDay[0].sunrise,
+                                  prayerTime: convertTo12HourFormat(
+                                      prayerTimeNexDay[0].sunrise),
                                   prayerName: "Sunrise",
                                   iqamathTime: "                   "),
                               PrayerimeRow(
-                                  prayerTime: prayerTimeNexDay[0].dhuhar,
+                                  prayerTime: convertTo12HourFormat(
+                                      prayerTimeNexDay[0].dhuhar),
                                   prayerName: "Dhuhar",
-                                  iqamathTime:
-                                      prayerTimeNexDay[0].dhuhar_iqamath),
+                                  iqamathTime: convertTo12HourFormat(
+                                      prayerTimeNexDay[0].dhuhar_iqamath)),
                               PrayerimeRow(
-                                  prayerTime: prayerTimeNexDay[0].asr,
+                                  prayerTime:
+                                      convertTo12HourFormat(prayerTime[0].asr),
                                   prayerName: "Asr   ",
-                                  iqamathTime: prayerTimeNexDay[0].asr_iqamath),
+                                  iqamathTime: convertTo12HourFormat(
+                                      prayerTimeNexDay[0].asr_iqamath)),
                               PrayerimeRow(
-                                  prayerTime: prayerTimeNexDay[0].magrib,
+                                  prayerTime: convertTo12HourFormat(
+                                      prayerTimeNexDay[0].magrib),
                                   prayerName: "Magrib",
-                                  iqamathTime:
-                                      prayerTimeNexDay[0].magrib_iqamath),
+                                  iqamathTime: convertTo12HourFormat(
+                                      prayerTimeNexDay[0].magrib_iqamath)),
                               PrayerimeRow(
-                                  prayerTime: prayerTimeNexDay[0].isha,
+                                  prayerTime:
+                                      convertTo12HourFormat(prayerTime[0].isha),
                                   prayerName: "Isha  ",
-                                  iqamathTime:
-                                      prayerTimeNexDay[0].isha_iqamath),
+                                  iqamathTime: convertTo12HourFormat(
+                                      prayerTimeNexDay[0].isha_iqamath)),
                             ],
                           ),
                         )

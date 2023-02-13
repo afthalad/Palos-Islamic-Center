@@ -5,11 +5,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 //Signup page Screen
-class VolunteerSignUpPageScreen extends StatefulWidget {
+class VolunteerRequest extends StatefulWidget {
   final String pageTitle;
   final String pageSubTitle;
   final String buttonText;
-  VolunteerSignUpPageScreen(
+  VolunteerRequest(
       {Key? key,
       required GlobalKey<FormState> formKey,
       required this.mHeight,
@@ -25,11 +25,10 @@ class VolunteerSignUpPageScreen extends StatefulWidget {
   final double mWidth;
 
   @override
-  State<VolunteerSignUpPageScreen> createState() =>
-      _VolunteerSignUpPageScreenState();
+  State<VolunteerRequest> createState() => _VolunteerRequestState();
 }
 
-class _VolunteerSignUpPageScreenState extends State<VolunteerSignUpPageScreen> {
+class _VolunteerRequestState extends State<VolunteerRequest> {
   final TextEditingController _name = TextEditingController();
 
   final TextEditingController _email = TextEditingController();
@@ -37,12 +36,6 @@ class _VolunteerSignUpPageScreenState extends State<VolunteerSignUpPageScreen> {
   final TextEditingController _phone = TextEditingController();
 
   final TextEditingController _age = TextEditingController();
-
-  final TextEditingController _intrest = TextEditingController();
-
-  final TextEditingController _password = TextEditingController();
-
-  final TextEditingController _confirmPassword = TextEditingController();
 
   bool singupProcess = false;
 
@@ -92,18 +85,6 @@ class _VolunteerSignUpPageScreenState extends State<VolunteerSignUpPageScreen> {
                     textInputType: TextInputType.emailAddress,
                   ),
                   FormTextField(
-                    hintText: 'Password ',
-                    validatorText: 'Please enter your password',
-                    controller: _password,
-                    textInputType: TextInputType.text,
-                  ),
-                  FormTextField(
-                    hintText: 'Confirm password ',
-                    validatorText: 'Please enter your confirm password',
-                    controller: _confirmPassword,
-                    textInputType: TextInputType.text,
-                  ),
-                  FormTextField(
                     hintText: 'Phone number',
                     validatorText: 'Please enter your phone number',
                     controller: _phone,
@@ -114,12 +95,6 @@ class _VolunteerSignUpPageScreenState extends State<VolunteerSignUpPageScreen> {
                     validatorText: 'Please enter your age',
                     controller: _age,
                     textInputType: TextInputType.number,
-                  ),
-                  FormTextField(
-                    hintText: 'Interested in',
-                    validatorText: 'Please enter somthing ',
-                    controller: _intrest,
-                    textInputType: TextInputType.text,
                   ),
                   SizedBox(height: widget.mHeight * 0.01),
                   singupProcess
@@ -136,35 +111,33 @@ class _VolunteerSignUpPageScreenState extends State<VolunteerSignUpPageScreen> {
                             ),
                             onPressed: () async {
                               if (widget._formKey.currentState!.validate()) {
-                                if (_password.text != _confirmPassword.text) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      duration: Duration(seconds: 3),
-                                      backgroundColor: Colors.white,
-                                      content: Text(
-                                        "Passwords does not match",
-                                        style: TextStyle(color: Colors.red),
-                                      ),
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    duration: Duration(seconds: 3),
+                                    backgroundColor: Colors.white,
+                                    content: Text(
+                                      "Passwords does not match",
+                                      style: TextStyle(color: Colors.red),
                                     ),
-                                  );
-                                } else {
-                                  setState(() {
-                                    singupProcess = true;
-                                  });
-                                  await authentication.signup(
-                                    email: _email.text.trim(),
-                                    name: _name.text.trim(),
-                                    phone: _phone.text.trim(),
-                                    dob: _age.text.trim(),
-                                    intrest: _intrest.text.trim(),
-                                    password: _password.text.trim(),
-                                    cpassword: _confirmPassword.text.trim(),
-                                  );
+                                  ),
+                                );
 
-                                  setState(() {
-                                    singupProcess = false;
-                                  });
-                                }
+                                setState(() {
+                                  singupProcess = true;
+                                });
+                                // await authentication.signup(
+                                //   // email: _email.text.trim(),
+                                //   name: _name.text.trim(),
+                                //   phone: _phone.text.trim(),
+                                //   dob: _age.text.trim(),
+                                //   intrest: _intrest.text.trim(),
+                                //   // password: _password.text.trim(),
+                                //   // cpassword: _confirmPassword.text.trim(),
+                                // );
+
+                                setState(() {
+                                  singupProcess = false;
+                                });
                               }
                             },
                             child: Text(

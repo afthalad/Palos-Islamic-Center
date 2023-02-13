@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    _timer!.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -337,7 +337,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   // MFeaturesCard3(mWidth: mWidth, mHeight: mHeight),
                 ],
               ),
-              Text("")
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ContactUsSocial(
+                    image: "images/icon-facebook.png",
+                    title: "Facebook",
+                    link: m_features_card2_facebook_web_url,
+                  ),
+                  ContactUsSocial(
+                    image: "images/icon-youtube..png",
+                    title: "Youtube",
+                    link: m_features_card2_youtube_web_url,
+                  ),
+                  ContactUsSocial(
+                    image: "images/icon-instagram.png",
+                    title: "Instagram",
+                    link: m_features_card2_instagram_web_url,
+                  ),
+                  // ContactUsSocial(),
+                  // ContactUsSocial(),
+                  // ContactUsSocial(),
+                ],
+              ),
             ],
           ),
         ),
