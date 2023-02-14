@@ -120,7 +120,7 @@ class _MSalahTimeState extends State<MSalahTime> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.mHeight * 0.108,
+      height: widget.mHeight * 0.11,
       color: mSalah_time_container_color,
       child: prayerTime.isEmpty
           ? const Center(child: Text("Loading..."))
@@ -214,7 +214,7 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
     });
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-      height: widget.mHeight * 0.108,
+      height: widget.mHeight * 0.11,
       color: mSalah_time_container_color,
       child: widget.cPrayerTime == "00:00:00"
           ? const Center(child: Text("Loading..."))
@@ -229,11 +229,15 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
                       children: [
                         Text(
                           '${widget.cPrayerName} at  ${widget.cPrayerTime}',
-                          style: mSalah_time_subtitle_tstyle,
+                          style: TextStyle(fontSize: 15, color: Colors.white),
+                        ),
+                        SizedBox(
+                          height: 4,
                         ),
                         Text(
                           'Remining time : ${(reminingTime.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((reminingTime.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(reminingTime.inSeconds - _timer!.tick) % 60}',
-                          style: mSalah_time_title_tstyle,
+                          // style: mSalah_time_title_tstyle,
+                          style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
                       ],
                     ),
@@ -688,7 +692,7 @@ class _JummahPrayerTimesWidgetState extends State<JummahPrayerTimesWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.mHeight * 0.108,
+      height: widget.mHeight * 0.11,
       color: mSalah_time_container_color,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
