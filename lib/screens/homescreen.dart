@@ -255,8 +255,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         initialPage: 0,
                         indicatorColor: Colors.grey,
                         indicatorBackgroundColor: Colors.white,
-                        // autoPlayInterval: 1500,
-                        // isLoop: true,
                         children: headerImages.map((e) {
                           return Image.network(
                             "http://52.90.175.175/$e",
