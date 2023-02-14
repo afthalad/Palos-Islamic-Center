@@ -443,15 +443,19 @@ class MFeaturesCard2 extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            InkWell(
-              onTap: () {
-                launchUrl(Uri.parse(m_features_card2_zakath_calulator_web_url));
-              },
-              child: FeaturesCard(
-                mWidth: mWidth,
-                mHeight: mHeight,
-                featuresIcon: 'images/icon-calculator.png',
-                featuresTitle: 'Zakat Calculator',
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: InkWell(
+                onTap: () {
+                  launchUrl(
+                      Uri.parse(m_features_card2_zakath_calulator_web_url));
+                },
+                child: FeaturesCard(
+                  mWidth: mWidth,
+                  mHeight: mHeight,
+                  featuresIcon: 'images/icon-calculator.png',
+                  featuresTitle: 'Zakat Calculator',
+                ),
               ),
             ),
             InkWell(
