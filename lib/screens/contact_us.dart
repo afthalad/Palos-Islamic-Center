@@ -94,6 +94,7 @@ class _ContaceusDetailsScreenState extends State<ContaceusDetailsScreen> {
       body: persons.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               physics: ScrollPhysics(),
               child: Column(
                 children: <Widget>[
@@ -156,6 +157,7 @@ class _ContaceusDetailsScreenState extends State<ContaceusDetailsScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
+                                textInputAction: TextInputAction.done,
                                 controller: _question,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
