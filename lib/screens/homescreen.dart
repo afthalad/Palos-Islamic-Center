@@ -361,19 +361,42 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   ContactUsSocial(
                     image: "images/icon-facebook.png",
-                    title: "Facebook",
+                    title: "",
                     link: m_features_card2_facebook_web_url,
                   ),
                   ContactUsSocial(
                     image: "images/icon-youtube..png",
-                    title: "Youtube",
+                    title: "",
                     link: m_features_card2_youtube_web_url,
                   ),
                   ContactUsSocial(
                     image: "images/icon-instagram.png",
-                    title: "Instagram",
+                    title: "",
                     link: m_features_card2_instagram_web_url,
                   ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/live_stream_screen');
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 30,
+                            child: Image(
+                              image: AssetImage("images/icons-youtube.png"),
+                            ),
+                          ),
+                          Text("")
+                        ],
+                      ),
+                    ),
+                  ),
+
                   // ContactUsSocial(),
                   // ContactUsSocial(),
                   // ContactUsSocial(),

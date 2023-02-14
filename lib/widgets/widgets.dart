@@ -81,11 +81,6 @@ class _MSalahTimeState extends State<MSalahTime> {
   static String currentDate = "";
   Timer? _timer;
 
-  // String? fajirTime12;
-  // String? dhuhrTime12;
-  // String? asrTime12;
-  // String? magribTime12;
-  // String? ishaTime12;
   Future<void> fetchPrayerTime() async {
     String year = DateTime.now().year.toString();
     String month = DateTime.now().month.toString().padLeft(2, '0');
@@ -125,7 +120,7 @@ class _MSalahTimeState extends State<MSalahTime> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.mHeight * 0.11,
+      height: widget.mHeight * 0.108,
       color: mSalah_time_container_color,
       child: prayerTime.isEmpty
           ? const Center(child: Text("Loading..."))
@@ -219,7 +214,7 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
     });
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-      height: widget.mHeight * 0.11,
+      height: widget.mHeight * 0.108,
       color: mSalah_time_container_color,
       child: widget.cPrayerTime == "00:00:00"
           ? const Center(child: Text("Loading..."))
@@ -408,13 +403,13 @@ class MFeaturesCard1 extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, '/live_stream_screen');
+                Navigator.pushNamed(context, "/news_screen");
               },
               child: FeaturesCard(
                 mWidth: mWidth,
                 mHeight: mHeight,
-                featuresIcon: 'images/icons-youtube.png',
-                featuresTitle: 'Live Streaming',
+                featuresIcon: 'images/icon-news.png',
+                featuresTitle: 'News',
               ),
             ),
           ],
@@ -446,66 +441,21 @@ class MFeaturesCard2 extends StatelessWidget {
     return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            InkWell(
-              onTap: () {
-                launchUrl(Uri.parse(m_features_card2_facebook_web_url));
-              },
-              child: FeaturesCard(
-                mWidth: mWidth,
-                mHeight: mHeight,
-                featuresIcon: 'images/icon-facebook.png',
-                featuresTitle: 'Facebook',
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                launchUrl(Uri.parse(m_features_card2_youtube_web_url));
-              },
-              child: FeaturesCard(
-                mWidth: mWidth,
-                mHeight: mHeight,
-                featuresIcon: 'images/icon-youtube..png',
-                featuresTitle: 'Youtube',
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                launchUrl(Uri.parse(m_features_card2_instagram_web_url));
-              },
-              child: FeaturesCard(
-                mWidth: mWidth,
-                mHeight: mHeight,
-                featuresIcon: 'images/icon-instagram.png',
-                featuresTitle: 'Instagram',
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            InkWell(
-              onTap: () {
-                launchUrl(Uri.parse(m_features_card2_zakath_calulator_web_url));
-              },
-              child: FeaturesCard(
-                mWidth: mWidth,
-                mHeight: mHeight,
-                featuresIcon: 'images/icon-calculator.png',
-                featuresTitle: 'Zakat Calculator',
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, "/news_screen");
-              },
-              child: FeaturesCard(
-                mWidth: mWidth,
-                mHeight: mHeight,
-                featuresIcon: 'images/icon-news.png',
-                featuresTitle: 'News',
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: InkWell(
+                onTap: () {
+                  launchUrl(
+                      Uri.parse(m_features_card2_zakath_calulator_web_url));
+                },
+                child: FeaturesCard(
+                  mWidth: mWidth,
+                  mHeight: mHeight,
+                  featuresIcon: 'images/icon-calculator.png',
+                  featuresTitle: 'Zakat Calculator',
+                ),
               ),
             ),
             InkWell(
@@ -718,8 +668,6 @@ class FormTextField extends StatelessWidget {
   }
 }
 
-// Prayer Time Table
-
 // Jummah time widget
 class JummahPrayerTimesWidget extends StatefulWidget {
   const JummahPrayerTimesWidget({
@@ -740,7 +688,7 @@ class _JummahPrayerTimesWidgetState extends State<JummahPrayerTimesWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.mHeight * 0.11,
+      height: widget.mHeight * 0.108,
       color: mSalah_time_container_color,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -1528,12 +1476,12 @@ class ContactUsSocial extends StatelessWidget {
   const ContactUsSocial({
     Key? key,
     required this.title,
-    required this.link,
+    this.link,
     required this.image,
   }) : super(key: key);
   final String title;
   final String image;
-  final String link;
+  final String? link;
 
   @override
   Widget build(BuildContext context) {
@@ -1541,7 +1489,7 @@ class ContactUsSocial extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-            launchUrl(Uri.parse(link));
+            launchUrl(Uri.parse(link!));
           },
           child: Padding(
             padding: const EdgeInsets.all(12),
