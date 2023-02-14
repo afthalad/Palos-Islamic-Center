@@ -39,10 +39,73 @@ class _VolunteerRequestState extends State<VolunteerRequest> {
 
   bool singupProcess = false;
 
+  volunteerRequest({
+    required email,
+    required name,
+    required phone,
+    required age,
+  }) async {
+    Dio dio = Dio();
+    var response =
+        await dio.post("http://52.90.175.175/api/volunteers/request", data: {
+      "email": email,
+      "name": name,
+      "phone_number": phone,
+      "age": age,
+    });
+
+    if (response.statusCode == 200 && response.data["error"] == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text(
+            "Successfully request sent",
+            style: TextStyle(color: Colors.green),
+          ),
+        ),
+      );
+      Navigator.pushNamed(context, "/home_screen");
+    } else {
+      if (response.data["message"] == "The email has already been taken.") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.white,
+            content: Text(
+              "The email has already been taken.",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.white,
+            content: Text(
+              "Request send failure",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        );
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text(
+            "Request send failure",
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Auth authentication = Auth(context);
-
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -52,7 +115,7 @@ class _VolunteerRequestState extends State<VolunteerRequest> {
           elevation: 1,
           backgroundColor: appBarColor,
           centerTitle: true,
-          title: const Text("Volunteer sing up"),
+          title: const Text("Volunteer request"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -111,29 +174,15 @@ class _VolunteerRequestState extends State<VolunteerRequest> {
                             ),
                             onPressed: () async {
                               if (widget._formKey.currentState!.validate()) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    duration: Duration(seconds: 3),
-                                    backgroundColor: Colors.white,
-                                    content: Text(
-                                      "Passwords does not match",
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                  ),
-                                );
-
                                 setState(() {
                                   singupProcess = true;
                                 });
-                                // await authentication.signup(
-                                //   // email: _email.text.trim(),
-                                //   name: _name.text.trim(),
-                                //   phone: _phone.text.trim(),
-                                //   dob: _age.text.trim(),
-                                //   intrest: _intrest.text.trim(),
-                                //   // password: _password.text.trim(),
-                                //   // cpassword: _confirmPassword.text.trim(),
-                                // );
+                                await volunteerRequest(
+                                  email: _email.text.trim(),
+                                  name: _name.text.trim(),
+                                  phone: _phone.text.trim(),
+                                  age: _age.text.trim(),
+                                );
 
                                 setState(() {
                                   singupProcess = false;
