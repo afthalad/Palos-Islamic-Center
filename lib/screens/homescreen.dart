@@ -181,13 +181,19 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 1,
         backgroundColor: appBarColor,
         centerTitle: true,
-        title: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          Container(
-              width: 45,
-              height: 45,
-              child: Image(image: AssetImage("images/image.png"))),
-          const Text('Masjid Furqaan'),
-        ]),
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Row(children: [
+            Container(
+                width: 40,
+                height: 40,
+                child: Image(image: AssetImage("images/image.png"))),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: const Text('Masjid Furqaan'),
+            ),
+          ]),
+        ),
         actions: <Widget>[
           SingleChildScrollView(
             child: Builder(

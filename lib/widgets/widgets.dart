@@ -218,7 +218,7 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
       setState(() {});
     });
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
       height: widget.mHeight * 0.11,
       color: mSalah_time_container_color,
       child: widget.cPrayerTime == "00:00:00"
