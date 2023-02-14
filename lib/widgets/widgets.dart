@@ -611,7 +611,7 @@ class _EventsState extends State<Events> {
                 colorFilter: ColorFilter.mode(
                     Colors.black.withOpacity(0.3), BlendMode.darken),
                 fit: BoxFit.cover,
-                image: AssetImage(widget.image),
+                image: NetworkImage(widget.image),
               ),
               borderRadius: BorderRadius.circular(15),
             ),

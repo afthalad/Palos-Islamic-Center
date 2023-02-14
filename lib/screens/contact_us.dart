@@ -22,7 +22,9 @@ class _ContaceusDetailsScreenState extends State<ContaceusDetailsScreen> {
 
   final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
+  final TextEditingController _subject = TextEditingController();
   final TextEditingController _question = TextEditingController();
+  bool singupProcess = false;
 
   Future<void> fetchPersons() async {
     Response response =
@@ -32,6 +34,47 @@ class _ContaceusDetailsScreenState extends State<ContaceusDetailsScreen> {
     setState(() {
       persons = data.values.map((e) => Person.fromJson(e)).toList();
     });
+  }
+
+  contactUsQuestion({
+    required email,
+    required name,
+    required subject,
+    required description,
+  }) async {
+    Dio dio = Dio();
+    var response =
+        await dio.post("http://52.90.175.175/api/contactus/send", data: {
+      "email": email,
+      "name": name,
+      "subject": subject,
+      "description": description,
+    });
+
+    if (response.statusCode == 200 && response.data["error"] == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text(
+            "Successfully question sent",
+            style: TextStyle(color: Colors.green),
+          ),
+        ),
+      );
+      Navigator.pushNamed(context, "/home_screen");
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.white,
+          content: Text(
+            "Question send failure",
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -93,13 +136,13 @@ class _ContaceusDetailsScreenState extends State<ContaceusDetailsScreen> {
                           hintText: 'Email',
                           validatorText: 'Please enter your email',
                           controller: _email,
-                          textInputType: TextInputType.name,
+                          textInputType: TextInputType.emailAddress,
                         ),
                         FormTextField(
-                          hintText: 'Age',
-                          validatorText: 'Please enter your age',
-                          controller: _question,
-                          textInputType: TextInputType.number,
+                          hintText: 'Subject',
+                          validatorText: 'Please enter your subject',
+                          controller: _subject,
+                          textInputType: TextInputType.text,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -113,9 +156,10 @@ class _ContaceusDetailsScreenState extends State<ContaceusDetailsScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
+                                controller: _question,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please enter your question';
+                                    return 'Please enter your Description';
                                   } else {
                                     setState(() {
                                       question = value;
@@ -151,9 +195,14 @@ class _ContaceusDetailsScreenState extends State<ContaceusDetailsScreen> {
                                       setState(() {
                                         isProcess = true;
                                       });
+                                      await contactUsQuestion(
+                                          email: _email.text.trim(),
+                                          name: _name.text.trim(),
+                                          subject: _subject.text.trim(),
+                                          description: _question.text.trim());
 
                                       setState(() {
-                                        isProcess = true;
+                                        isProcess = false;
                                       });
                                     }
                                   },
