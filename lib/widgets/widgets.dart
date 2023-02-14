@@ -46,7 +46,7 @@ class SalahTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -120,7 +120,7 @@ class _MSalahTimeState extends State<MSalahTime> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.mHeight * 0.108,
+      height: widget.mHeight * 0.08,
       color: mSalah_time_container_color,
       child: prayerTime.isEmpty
           ? const Center(child: Text("Loading..."))
@@ -214,7 +214,7 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
     });
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-      height: widget.mHeight * 0.108,
+      height: widget.mHeight * 0.08,
       color: mSalah_time_container_color,
       child: widget.cPrayerTime == "00:00:00"
           ? const Center(child: Text("Loading..."))
@@ -684,7 +684,7 @@ class _JummahPrayerTimesWidgetState extends State<JummahPrayerTimesWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.mHeight * 0.108,
+      height: widget.mHeight * 0.08,
       color: mSalah_time_container_color,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
