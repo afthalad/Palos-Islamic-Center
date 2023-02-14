@@ -181,7 +181,13 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 1,
         backgroundColor: appBarColor,
         centerTitle: true,
-        title: const Text('Al Furqaan'),
+        title: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          Container(
+              width: 45,
+              height: 45,
+              child: Image(image: AssetImage("images/image.png"))),
+          const Text('Masjid Furqaan'),
+        ]),
         actions: <Widget>[
           SingleChildScrollView(
             child: Builder(
@@ -286,7 +292,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               : SalahTimeRemingWidget(
                                   mHeight: mHeight,
                                   cPrayerName: cPrayerName,
-                                  cPrayerTime: cPrayerTime,
+                                  cPrayerTime: DateFormat('h:mm a').format(
+                                      DateFormat('HH:mm').parse(cPrayerTime)),
                                 );
                 },
                 flipDirection: AxisDirection.up,
@@ -308,8 +315,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           mHeight: mHeight,
                           mWidth: mWidth,
                           image: events[0].image,
-                          eventDateTime:
-                              "${events[0].start} - ${events[0].end}",
+                          eventDateTime: DateFormat('yyyy-MM-dd hh:mm a')
+                              .format(DateFormat('yyyy-MM-dd hh:mm:ss')
+                                  .parse(events[0].start)),
                           eventName: events[0].title,
                         ),
                   events.isEmpty
@@ -323,8 +331,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           mHeight: mHeight,
                           mWidth: mWidth,
                           image: events[1].image,
-                          eventDateTime:
-                              "${events[1].start} - ${events[1].end}",
+                          eventDateTime: DateFormat('yyyy-MM-dd hh:mm a')
+                              .format(DateFormat('yyyy-MM-dd hh:mm:ss')
+                                  .parse(events[1].start)),
                           eventName: events[1].title,
                         ),
                 ],
