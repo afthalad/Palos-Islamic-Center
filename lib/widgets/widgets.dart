@@ -52,7 +52,6 @@ class SalahTime extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(salahTitle, style: mSalah_time_title_tstyle),
-          SizedBox(height: 5),
           Text(salahTime, style: mSalah_time_subtitle_tstyle),
         ],
       ),
@@ -121,12 +120,11 @@ class _MSalahTimeState extends State<MSalahTime> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.mHeight * 0.12,
+      height: widget.mHeight * 0.108,
       color: mSalah_time_container_color,
       child: prayerTime.isEmpty
           ? const Center(child: Text("Loading..."))
           : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -215,57 +213,50 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
       setState(() {});
     });
     return Container(
-      // padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-      // height: widget.mHeight * 0.12,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+      height: widget.mHeight * 0.108,
       color: mSalah_time_container_color,
       child: widget.cPrayerTime == "00:00:00"
           ? const Center(child: Text("Loading..."))
           : reminingTime == null
               ? const Center(child: Text("Loading..."))
-              : Padding(
-                  padding: const EdgeInsets.all(18),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${widget.cPrayerName} at  ${widget.cPrayerTime}',
-                            style: TextStyle(fontSize: 16, color: Colors.white),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            'Remining time : ${(reminingTime.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((reminingTime.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(reminingTime.inSeconds - _timer!.tick) % 60}',
-                            // style: mSalah_time_title_tstyle,
-                            style: TextStyle(fontSize: 16, color: Colors.white),
-                          ),
-                        ],
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${widget.cPrayerName} at  ${widget.cPrayerTime}',
+                          style: mSalah_time_subtitle_tstyle,
+                        ),
+                        Text(
+                          'Remining time : ${(reminingTime.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((reminingTime.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(reminingTime.inSeconds - _timer!.tick) % 60}',
+                          style: mSalah_time_title_tstyle,
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white30,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(50),
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white30,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(50),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, "/prayer_time_screen");
+                        },
+                        child: Text(
+                          "see more",
+                          style: mSalah_time_subtitle_tstyle,
                         ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, "/prayer_time_screen");
-                          },
-                          child: Text(
-                            "see more",
-                            style: mSalah_time_subtitle_tstyle,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                      ),
+                    )
+                  ],
                 ),
     );
   }
@@ -452,19 +443,15 @@ class MFeaturesCard2 extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: InkWell(
-                onTap: () {
-                  launchUrl(
-                      Uri.parse(m_features_card2_zakath_calulator_web_url));
-                },
-                child: FeaturesCard(
-                  mWidth: mWidth,
-                  mHeight: mHeight,
-                  featuresIcon: 'images/icon-calculator.png',
-                  featuresTitle: 'Zakat Calculator',
-                ),
+            InkWell(
+              onTap: () {
+                launchUrl(Uri.parse(m_features_card2_zakath_calulator_web_url));
+              },
+              child: FeaturesCard(
+                mWidth: mWidth,
+                mHeight: mHeight,
+                featuresIcon: 'images/icon-calculator.png',
+                featuresTitle: 'Zakat Calculator',
               ),
             ),
             InkWell(
@@ -697,7 +684,7 @@ class _JummahPrayerTimesWidgetState extends State<JummahPrayerTimesWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.mHeight * 0.12,
+      height: widget.mHeight * 0.108,
       color: mSalah_time_container_color,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -712,8 +699,7 @@ class _JummahPrayerTimesWidgetState extends State<JummahPrayerTimesWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text("Dars Al Jumah", style: mSalah_time_title_tstyle),
-                    SizedBox(height: 5),
-                    Text("11.30 AM", style: mSalah_time_subtitle_tstyle),
+                    Text("11.30 am", style: mSalah_time_subtitle_tstyle),
                   ],
                 ),
               ),
@@ -724,7 +710,6 @@ class _JummahPrayerTimesWidgetState extends State<JummahPrayerTimesWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text("First khutbah", style: mSalah_time_title_tstyle),
-                    SizedBox(height: 5),
                     Text(widget.jummahTime, style: mSalah_time_subtitle_tstyle),
                   ],
                 ),
@@ -736,8 +721,7 @@ class _JummahPrayerTimesWidgetState extends State<JummahPrayerTimesWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text("second khutbah", style: mSalah_time_title_tstyle),
-                    SizedBox(height: 5),
-                    Text("01.30 PM", style: mSalah_time_subtitle_tstyle),
+                    Text("01.30 pm", style: mSalah_time_subtitle_tstyle),
                   ],
                 ),
               )
