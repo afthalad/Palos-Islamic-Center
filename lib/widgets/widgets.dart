@@ -190,7 +190,7 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
   reminingTimeDiff() async {
     DateTime now = DateTime.now();
     var now2 = DateFormat.Hms().format(now);
-    var time = await DateFormat("HH:mm:ss").parse("${widget.cPrayerTime}");
+    var time = await DateFormat("'h:mm a").parse("${widget.cPrayerTime}");
     var time2 = DateFormat("HH:mm:ss").parse("$now2");
     var diff = time.difference(time2);
     // If difference is negative, add 24 hours
@@ -218,7 +218,7 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
       setState(() {});
     });
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       height: widget.mHeight * 0.11,
       color: mSalah_time_container_color,
       child: widget.cPrayerTime == "00:00:00"
