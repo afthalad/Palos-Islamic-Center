@@ -215,54 +215,57 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
       setState(() {});
     });
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-      height: widget.mHeight * 0.12,
+      // padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+      // height: widget.mHeight * 0.12,
       color: mSalah_time_container_color,
       child: widget.cPrayerTime == "00:00:00"
           ? const Center(child: Text("Loading..."))
           : reminingTime == null
               ? const Center(child: Text("Loading..."))
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${widget.cPrayerName} at  ${widget.cPrayerTime}',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'Remining time : ${(reminingTime.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((reminingTime.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(reminingTime.inSeconds - _timer!.tick) % 60}',
-                          // style: mSalah_time_title_tstyle,
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white30,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(50),
+              : Padding(
+                  padding: const EdgeInsets.all(18),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${widget.cPrayerName} at  ${widget.cPrayerTime}',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            'Remining time : ${(reminingTime.inHours - _timer!.tick ~/ 3600).toString().padLeft(2, '0')}:${((reminingTime.inMinutes - _timer!.tick ~/ 60) % 60).toString().padLeft(2, '0')}:${(reminingTime.inSeconds - _timer!.tick) % 60}',
+                            // style: mSalah_time_title_tstyle,
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                        ],
                       ),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, "/prayer_time_screen");
-                        },
-                        child: Text(
-                          "see more",
-                          style: mSalah_time_subtitle_tstyle,
+                      Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white30,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(50),
                         ),
-                      ),
-                    )
-                  ],
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, "/prayer_time_screen");
+                          },
+                          child: Text(
+                            "see more",
+                            style: mSalah_time_subtitle_tstyle,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
     );
   }
