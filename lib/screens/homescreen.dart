@@ -9,6 +9,7 @@ import 'package:al_sahabah/widgets/widgets.dart';
 import 'package:dio/dio.dart';
 import 'package:flip_board/flip_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:intl/intl.dart';
 
@@ -178,16 +179,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          // Status bar color
+          statusBarColor: Colors.transparent,
+
+          // Status bar brightness (optional)
+          statusBarIconBrightness: Brightness.light, // For Android (dark icons)
+          statusBarBrightness: Brightness.light, // For iOS (dark icons)
+        ),
         elevation: 1,
         backgroundColor: appBarColor,
         centerTitle: true,
-        title: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          Container(
-              width: 45,
-              height: 45,
-              child: Image(image: AssetImage("images/image.png"))),
-          const Text('Masjid Furqaan'),
-        ]),
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Row(children: [
+            Container(
+                width: 40,
+                height: 40,
+                child: Image(image: AssetImage("images/image.png"))),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: const Text('Masjid Furqaan'),
+            ),
+          ]),
+        ),
         actions: <Widget>[
           SingleChildScrollView(
             child: Builder(
@@ -355,19 +370,42 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   ContactUsSocial(
                     image: "images/icon-facebook.png",
-                    title: "Facebook",
+                    title: "",
                     link: m_features_card2_facebook_web_url,
                   ),
                   ContactUsSocial(
                     image: "images/icon-youtube..png",
-                    title: "Youtube",
+                    title: "",
                     link: m_features_card2_youtube_web_url,
                   ),
                   ContactUsSocial(
                     image: "images/icon-instagram.png",
-                    title: "Instagram",
+                    title: "",
                     link: m_features_card2_instagram_web_url,
                   ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/live_stream_screen');
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 30,
+                            child: Image(
+                              image: AssetImage("images/icons-youtube.png"),
+                            ),
+                          ),
+                          Text("")
+                        ],
+                      ),
+                    ),
+                  ),
+
                   // ContactUsSocial(),
                   // ContactUsSocial(),
                   // ContactUsSocial(),

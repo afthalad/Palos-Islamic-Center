@@ -21,7 +21,7 @@ TextStyle mSalah_time_title_tstyle =
     const TextStyle(color: Colors.white, fontSize: 15);
 TextStyle mSalah_time_subtitle_tstyle = const TextStyle(
   color: Colors.white,
-  fontSize: 12,
+  fontSize: 14,
 );
 
 // Feautres card
