@@ -58,8 +58,7 @@ TextStyle prayer_time_table_heading_tstyle =
 
 //Start drawer
 String start_drawer_username = 'Username';
-String start_drawer_header_userimage =
-    'https://thumbs.dreamstime.com/b/arabic-muslim-man-beard-smiling-36429753.jpg';
+String start_drawer_header_userimage = 'images/profile.jpg';
 
 TextStyle start_drawer_username_tstyle = const TextStyle(
   fontSize: 20,

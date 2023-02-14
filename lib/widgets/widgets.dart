@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:al_sahabah/const/const.dart';
+import 'package:al_sahabah/screens/membership.dart';
 import 'package:al_sahabah/screens/prayer_time.dart';
 import 'package:al_sahabah/services/authenticaition.dart';
 // import 'package:al_sahabah/services/news_get.dart';
@@ -16,8 +17,9 @@ import 'package:al_sahabah/screens/news.dart';
 import 'package:al_sahabah/screens/news_inner.dart';
 import 'package:al_sahabah/screens/newsletter.dart';
 import 'package:al_sahabah/screens/settings/setting.dart';
-import 'package:al_sahabah/screens/volunteer_sign_up.dart';
+import 'package:al_sahabah/screens/sign_up.dart';
 import 'package:al_sahabah/screens/sing_in.dart';
+import 'package:al_sahabah/voulunteer_request.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
@@ -79,6 +81,11 @@ class _MSalahTimeState extends State<MSalahTime> {
   static String currentDate = "";
   Timer? _timer;
 
+  // String? fajirTime12;
+  // String? dhuhrTime12;
+  // String? asrTime12;
+  // String? magribTime12;
+  // String? ishaTime12;
   Future<void> fetchPrayerTime() async {
     String year = DateTime.now().year.toString();
     String month = DateTime.now().month.toString().padLeft(2, '0');
@@ -96,6 +103,11 @@ class _MSalahTimeState extends State<MSalahTime> {
         prayerTime.add(PrayerTimeClass.fromJson(response.data["data"]));
       });
     }
+  }
+
+  String convertTo12HourFormat(String time24) {
+    final time24Hour = DateFormat('HH:mm').parse(time24);
+    return DateFormat('h:mm a').format(time24Hour);
   }
 
   @override
@@ -125,27 +137,27 @@ class _MSalahTimeState extends State<MSalahTime> {
                     SalahTime(
                       mWidth: widget.mWidth * 0.3,
                       salahTitle: 'Subah',
-                      salahTime: prayerTime[0].fajir,
+                      salahTime: convertTo12HourFormat(prayerTime[0].fajir),
                     ),
                     SalahTime(
                       mWidth: widget.mWidth * 0.3,
                       salahTitle: 'Duhr',
-                      salahTime: prayerTime[0].dhuhar,
+                      salahTime: convertTo12HourFormat(prayerTime[0].dhuhar),
                     ),
                     SalahTime(
                       mWidth: widget.mWidth * 0.3,
                       salahTitle: 'Asr',
-                      salahTime: prayerTime[0].asr,
+                      salahTime: convertTo12HourFormat(prayerTime[0].asr),
                     ),
                     SalahTime(
                       mWidth: widget.mWidth * 0.3,
                       salahTitle: 'Magrib',
-                      salahTime: prayerTime[0].magrib,
+                      salahTime: convertTo12HourFormat(prayerTime[0].magrib),
                     ),
                     SalahTime(
                       mWidth: widget.mWidth * 0.3,
                       salahTitle: 'Isha',
-                      salahTime: prayerTime[0].isha,
+                      salahTime: convertTo12HourFormat(prayerTime[0].isha),
                     ),
                   ],
                 ),
@@ -202,6 +214,7 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () {
+      if (!mounted) return;
       setState(() {});
     });
     return Container(
@@ -598,7 +611,7 @@ class _EventsState extends State<Events> {
                 colorFilter: ColorFilter.mode(
                     Colors.black.withOpacity(0.3), BlendMode.darken),
                 fit: BoxFit.cover,
-                image: AssetImage(widget.image),
+                image: NetworkImage(widget.image),
               ),
               borderRadius: BorderRadius.circular(15),
             ),
@@ -942,7 +955,7 @@ class _StartDrawerState extends State<StartDrawer> {
               children: [
                 CircleAvatar(
                   maxRadius: 50,
-                  backgroundImage: NetworkImage(start_drawer_header_userimage),
+                  backgroundImage: AssetImage(start_drawer_header_userimage),
                 ),
                 Text(start_drawer_username, style: start_drawer_username_tstyle)
               ],
@@ -958,22 +971,30 @@ class _StartDrawerState extends State<StartDrawer> {
             icon: Icons.phone,
             pageWidget: ContaceusDetailsScreen(),
           ),
-          const DrawerList(
-            title: 'Membership',
-            pageWidget: Center(child: Text('Membership')),
-            icon: Icons.card_membership,
-          ),
           DrawerList(
-            title: 'Volunteer Signup',
-            icon: Icons.volunteer_activism,
-            pageWidget: VolunteerSignUpPageScreen(
+            title: 'Membership',
+            pageWidget: MembershipScreen(
+              buttonText: "Add",
+              pageTitle: "Membership",
+              pageSubTitle:
+                  "Upgrade to unlock exclusive benefits and rewards with our membership program.",
               formKey: widget._formKey,
               mHeight: widget.mHeight,
               mWidth: widget.mWidth,
-              pageTitle: 'Sign Up for Volunteer',
+            ),
+            icon: Icons.card_membership,
+          ),
+          DrawerList(
+            title: 'Volunteer request',
+            icon: Icons.volunteer_activism,
+            pageWidget: VolunteerRequest(
+              formKey: widget._formKey,
+              mHeight: widget.mHeight,
+              mWidth: widget.mWidth,
+              pageTitle: 'Request for Volunteer',
               pageSubTitle:
                   "Fill out your information below and Join us in making a positive impact in your community!",
-              buttonText: 'Sign up',
+              buttonText: 'Submit',
             ),
           ),
           const DrawerList(
@@ -982,7 +1003,7 @@ class _StartDrawerState extends State<StartDrawer> {
             pageWidget: SettingPageScreen(),
           ),
           const DrawerList(
-            title: 'Sign in',
+            title: 'Sign in / Sign up',
             icon: Icons.person,
             pageWidget: SigninScreen(),
           ),
@@ -1058,9 +1079,17 @@ class _SignedInStartDrawerState extends State<SignedInStartDrawer> {
             icon: Icons.phone,
             pageWidget: ContaceusDetailsScreen(),
           ),
-          const DrawerList(
+          DrawerList(
             title: 'Membership',
-            pageWidget: Center(child: Text('Membership')),
+            pageWidget: MembershipScreen(
+              buttonText: "Add",
+              pageTitle: "Membership",
+              pageSubTitle:
+                  "Upgrade to unlock exclusive benefits and rewards with our membership program.",
+              formKey: widget._formKey,
+              mHeight: widget.mHeight,
+              mWidth: widget.mWidth,
+            ),
             icon: Icons.card_membership,
           ),
           DrawerList(
@@ -1070,6 +1099,19 @@ class _SignedInStartDrawerState extends State<SignedInStartDrawer> {
                 formKey: widget._formKey,
                 mHeight: widget.mHeight,
                 mWidth: widget.mWidth),
+          ),
+          DrawerList(
+            title: 'Volunteer request',
+            icon: Icons.volunteer_activism,
+            pageWidget: VolunteerRequest(
+              formKey: widget._formKey,
+              mHeight: widget.mHeight,
+              mWidth: widget.mWidth,
+              pageTitle: 'Request for Volunteer',
+              pageSubTitle:
+                  "Fill out your information below and Join us in making a positive impact in your community!",
+              buttonText: 'Submit',
+            ),
           ),
           const DrawerList(
             title: 'Setting',
@@ -1478,6 +1520,50 @@ class Question {
       question: json["question"] ?? "",
       answer: json["answer"] ?? "",
       date: json["created_at"] ?? "",
+    );
+  }
+}
+
+class ContactUsSocial extends StatelessWidget {
+  const ContactUsSocial({
+    Key? key,
+    required this.title,
+    required this.link,
+    required this.image,
+  }) : super(key: key);
+  final String title;
+  final String image;
+  final String link;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        InkWell(
+          onTap: () {
+            launchUrl(Uri.parse(link));
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 30,
+                  child: Image(
+                    image: AssetImage(image),
+                  ),
+                ),
+                Text(
+                  title,
+                  style: features_title_tstyle,
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

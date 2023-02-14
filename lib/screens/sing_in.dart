@@ -1,3 +1,4 @@
+import 'package:al_sahabah/screens/sign_up.dart';
 import 'package:al_sahabah/services/authenticaition.dart';
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/widgets/sing_in_slide_banner.dart';
@@ -11,7 +12,8 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
   bool singInProcess = false;
   bool passWordVisible = true;
   final TextEditingController _email = TextEditingController();
@@ -65,9 +67,9 @@ class _SigninScreenState extends State<SigninScreen> {
                       ),
                       Column(
                         children: [
-                          const SizedBox(
-                            height: 10,
-                          ),
+                          // const SizedBox(
+                          //   height: 10,
+                          // ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 2),
@@ -114,6 +116,37 @@ class _SigninScreenState extends State<SigninScreen> {
                                       )),
                                 ),
                               )),
+                          // const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Don't you have an account? "),
+                              GestureDetector(
+                                child: Text(
+                                  "Sign up ",
+                                  style: TextStyle(color: sec),
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SignUpPageScreen(
+                                        formKey: _formKey2,
+                                        buttonText: "Sing up",
+                                        mHeight:
+                                            MediaQuery.of(context).size.height,
+                                        mWidth:
+                                            MediaQuery.of(context).size.height,
+                                        pageTitle: "Sing up",
+                                        pageSubTitle:
+                                            "Fill out your information to create an account and start using our service. It only takes a few seconds!",
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                           const SizedBox(height: 10),
                           singInProcess == true
                               ? const CircularProgressIndicator()

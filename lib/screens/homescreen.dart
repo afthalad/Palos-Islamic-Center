@@ -140,6 +140,11 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {}
   }
 
+  String convertTo12HourFormat(String time24) {
+    final time24Hour = DateFormat('HH:mm').parse(time24);
+    return DateFormat('h:mm a').format(time24Hour);
+  }
+
   @override
   void initState() {
     Redirects.drawerList();
@@ -151,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    _timer!.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -164,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
     int nextSpinValue = 0;
 
     void spin() => spinController.add(++nextSpinValue);
-    Timer.periodic(const Duration(seconds: 3), (timer) async {
+    Timer.periodic(const Duration(seconds: 6), (timer) async {
       if (nextSpinValue >= 3) {
         nextSpinValue = 0;
       }
@@ -277,7 +282,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mHeight: mHeight,
                                   jummahTime: prayerTime.isEmpty
                                       ? "Loading...."
-                                      : prayerTime[0].dhuhar,
+                                      : convertTo12HourFormat(
+                                          prayerTime[0].dhuhar),
                                 )
                               : SalahTimeRemingWidget(
                                   mHeight: mHeight,
@@ -303,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       : Events(
                           mHeight: mHeight,
                           mWidth: mWidth,
-                          image: 'images/event.png',
+                          image: events[0].image,
                           eventDateTime:
                               "${events[0].start} - ${events[0].end}",
                           eventName: events[0].title,
@@ -318,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       : Events(
                           mHeight: mHeight,
                           mWidth: mWidth,
-                          image: 'images/prayer.jpg',
+                          image: events[1].image,
                           eventDateTime:
                               "${events[1].start} - ${events[1].end}",
                           eventName: events[1].title,
@@ -337,7 +343,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   // MFeaturesCard3(mWidth: mWidth, mHeight: mHeight),
                 ],
               ),
-              Text("")
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ContactUsSocial(
+                    image: "images/icon-facebook.png",
+                    title: "Facebook",
+                    link: m_features_card2_facebook_web_url,
+                  ),
+                  ContactUsSocial(
+                    image: "images/icon-youtube..png",
+                    title: "Youtube",
+                    link: m_features_card2_youtube_web_url,
+                  ),
+                  ContactUsSocial(
+                    image: "images/icon-instagram.png",
+                    title: "Instagram",
+                    link: m_features_card2_instagram_web_url,
+                  ),
+                  // ContactUsSocial(),
+                  // ContactUsSocial(),
+                  // ContactUsSocial(),
+                ],
+              ),
             ],
           ),
         ),
@@ -351,12 +379,15 @@ class Event {
   final String start;
   final String end;
   final String description;
+  final String image;
 
-  Event(
-      {required this.title,
-      required this.start,
-      required this.end,
-      required this.description});
+  Event({
+    required this.title,
+    required this.start,
+    required this.end,
+    required this.description,
+    required this.image,
+  });
 
   factory Event.fromJson(Map<String, dynamic> json) {
     return Event(
@@ -364,6 +395,7 @@ class Event {
       start: json['start'],
       end: json['end'],
       description: json['description'],
+      image: json['image'],
     );
   }
 }
