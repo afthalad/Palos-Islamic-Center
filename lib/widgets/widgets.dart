@@ -974,7 +974,7 @@ class _StartDrawerState extends State<StartDrawer> {
           DrawerList(
             title: 'Membership',
             pageWidget: MembershipScreen(
-              buttonText: "Addp",
+              buttonText: "Add",
               pageTitle: "Membership",
               pageSubTitle:
                   "Upgrade to unlock exclusive benefits and rewards with our membership program.",
@@ -1082,7 +1082,7 @@ class _SignedInStartDrawerState extends State<SignedInStartDrawer> {
           DrawerList(
             title: 'Membership',
             pageWidget: MembershipScreen(
-              buttonText: "Addp",
+              buttonText: "Add",
               pageTitle: "Membership",
               pageSubTitle:
                   "Upgrade to unlock exclusive benefits and rewards with our membership program.",

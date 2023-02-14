@@ -238,26 +238,10 @@ class _MembershipScreenState extends State<MembershipScreen> {
                                 setState(() {
                                   singupProcess = true;
                                 });
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    duration: Duration(seconds: 3),
-                                    backgroundColor: Colors.white,
-                                    content: Text(
-                                      "Passwords does not match",
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                  ),
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    duration: Duration(seconds: 3),
-                                    backgroundColor: Colors.white,
-                                    content: Text(
-                                      "Passwords does not match",
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                  ),
-                                );
+
+                                setState(() {
+                                  singupProcess = false;
+                                });
                               }
                             },
                             child: Text(

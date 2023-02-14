@@ -164,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
     int nextSpinValue = 0;
 
     void spin() => spinController.add(++nextSpinValue);
-    Timer.periodic(const Duration(seconds: 3), (timer) async {
+    Timer.periodic(const Duration(seconds: 6), (timer) async {
       if (nextSpinValue >= 3) {
         nextSpinValue = 0;
       }
