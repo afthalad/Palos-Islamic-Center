@@ -21,7 +21,7 @@ TextStyle mSalah_time_title_tstyle =
     const TextStyle(color: Colors.white, fontSize: 15);
 TextStyle mSalah_time_subtitle_tstyle = const TextStyle(
   color: Colors.white,
-  fontSize: 14,
+  fontSize: 13,
 );
 
 // Feautres card
@@ -57,7 +57,8 @@ TextStyle prayer_time_table_heading_tstyle =
     const TextStyle(color: Colors.white, fontSize: 13);
 
 //Start drawer
-String start_drawer_username = 'Username';
+// String start_drawer_username = 'Username';
+String start_drawer_username = '';
 String start_drawer_header_userimage = 'images/profile.jpg';
 
 TextStyle start_drawer_username_tstyle = const TextStyle(

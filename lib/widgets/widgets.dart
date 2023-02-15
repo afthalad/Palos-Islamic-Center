@@ -905,7 +905,8 @@ class _StartDrawerState extends State<StartDrawer> {
                   maxRadius: 50,
                   backgroundImage: AssetImage(start_drawer_header_userimage),
                 ),
-                Text(start_drawer_username, style: start_drawer_username_tstyle)
+                // Text(start_drawer_username, style: start_drawer_username_tstyle)
+                // Text(start_drawer_username, style: start_drawer_username_tstyle)
               ],
             ),
           )),
