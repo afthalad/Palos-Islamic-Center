@@ -395,7 +395,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 ImageSlideshow(
-                  height: mHeight * 0.33,
+                  height: mHeight * 0.25,
                   width: double.infinity,
                   indicatorColor: Colors.grey,
                   indicatorBackgroundColor: Colors.white,
