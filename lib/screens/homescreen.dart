@@ -32,13 +32,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Timer? _timer;
 
   var cPrayerName = "";
-  String cPrayerTime = "00:00:00"; // this line changed
+  String cPrayerTime = "12:00 AM"; // this line changed
   var remingTime;
 
   List<PrayerTimeClass> prayerTime = [];
   List<PrayerTimeClass> prayerTimeNexDay = [];
   List<String> headerImages = [];
   List<Event> events = [];
+  var liveStreamUrl = "";
   var spinController = StreamController<int>.broadcast();
   List<dynamic> features = [];
   void spin() => spinController.add(++nextSpinValue);
@@ -235,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 35),
             child: Row(children: [
               Container(
-                  width: 40,
+                  width: 55,
                   height: 40,
                   child: Image(image: AssetImage("images/stg.png"))),
               Padding(
@@ -288,7 +289,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: RefreshIndicator(
           displacement: 150,
           backgroundColor: Colors.white,
-          color: Color.fromARGB(255, 255, 170, 0),
+          color: Color.fromARGB(255, 40, 42, 70),
           strokeWidth: 3,
           triggerMode: RefreshIndicatorTriggerMode.anywhere,
           onRefresh: () async {

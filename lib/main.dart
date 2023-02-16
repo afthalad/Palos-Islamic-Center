@@ -124,7 +124,7 @@ class MyApp extends StatelessWidget {
         '/events_screen': (context) => const EventsScreen(),
         '/prayer_time_screen': (context) => const PrayerTimingsScreen(),
         '/qibla_screen': (context) => QiblaScreen(),
-        '/live_stream_screen': (context) => const LiveStreamScreen(),
+        '/live_stream_screen': (context) => LiveStreamScreen(),
         '/news_screen': (context) => const NewsScreen(),
       },
     );

@@ -72,6 +72,7 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
   Dio dio = Dio();
   static List<PrayerTimeClass> prayerTime = [];
   static List<PrayerTimeClass> prayerTimeNexDay = [];
+  static List<PrayerTimeClass> monthPrayerTime = [];
   var time = DateTime.now();
   var cPrayerTime = "";
   var remingTime;
@@ -79,6 +80,7 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
   String nextDayDate = "";
   String cPrayerName = "";
   Timer? _timer;
+
   prayerTimeGet() async {
     String year = DateTime.now().year.toString();
     String month = DateTime.now().month.toString().padLeft(2, '0');
@@ -121,9 +123,6 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
       DateTime nextDayFajirTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(
           "${DateTime.now().toString().substring(0, 10)} ${prayerTimeNexDay[0].fajir}");
       DateTime now = DateTime.now();
-      print(now);
-      print(prayerTimeNexDay[0].fajir);
-      print((nextDayFajirTime.add(Duration(hours: 24))).difference(now));
 
       if (now.isBefore(fajirTime)) {
         cPrayerName = await "Fajr";
@@ -160,23 +159,31 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
     return DateFormat('h:mm a').format(time24Hour);
   }
 
-  List<dynamic> data = [
-    {"Name": "John", "Age": 28, "Role": "Senior Supervisor"},
-    {"Name": "Jane", "Age": 32, "Role": "Regional Administrator"},
-    {"Name": "Mary", "Age": 28, "Role": "Manager"},
-    {"Name": "Kumar", "Age": 32, "Role": "Administrator"},
-    {"Name": "Ravi", "Age": 28, "Role": "Supervisor"},
-    {"Name": "Ali", "Age": 32, "Role": "Manager"},
-  ];
+  Future<void> _fetchPrayerTimes() async {
+    DateTime now = await DateTime.now();
+    String month = now.month.toString().padLeft(2, '0');
+    int year = await now.year;
+    print(month);
+    print(year);
+    Response response = await dio
+        .get("http://52.90.175.175/api/prayer-time/get-by-month/$month/$year");
 
-  Color getColor(Set<MaterialState> states) {
-    return Colors.grey;
+    if (response.data != null) {
+      List<dynamic> data = response.data["data"];
+
+      for (var prayerTime in data) {
+        monthPrayerTime.add(PrayerTimeClass.fromJson(prayerTime));
+      }
+
+      setState(() {});
+      print(monthPrayerTime.length);
+    }
   }
 
   @override
   void initState() {
     prayerTimeGet();
-    print(prayerTimeNexDay.length);
+    _fetchPrayerTimes();
     super.initState();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {});
@@ -203,13 +210,14 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
         child: Column(
           children: <Widget>[
             TabBar(
+              indicatorColor: sec,
               labelColor: appBarColor,
               tabs: <Widget>[
                 Tab(
-                  text: 'Tab 1',
+                  text: "Today's",
                 ),
                 Tab(
-                  text: 'Tab 2',
+                  text: 'Monthly',
                 ),
               ],
             ),
@@ -353,55 +361,67 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
                       ),
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
-                          width: double.infinity,
-                          height: MediaQuery.of(context).size.height * 0.05,
-                          color: appBarColor,
-                          child: Center(
-                            child: Text(
-                              "February 2023",
-                              textAlign: TextAlign.center,
-                              style: mSalah_time_title_tstyle,
-                            ),
+                        Expanded(
+                          child: PageView(
+                            children: [
+                              SingleChildScrollView(
+                                child: AthanTimesByMonths(
+                                    monthPrayerTime: monthPrayerTime),
+                              ),
+                              // SingleChildScrollView(
+                              //   child: IqamaTimesByMonths(
+                              //       monthPrayerTime: monthPrayerTime),
+                              // )
+                            ],
                           ),
                         ),
-                        Center(
-                          child: DataTable(
-                            border: TableBorder.all(width: 1),
-                            columns: const <DataColumn>[
-                              DataColumn(
-                                label: Text('Name'),
-                              ),
-                              DataColumn(
-                                label: Text('Age'),
-                                numeric: true,
-                              ),
-                              DataColumn(
-                                label: Text('Role'),
-                              ),
-                            ],
-                            rows: List.generate(data.length, (index) {
-                              final item = data[index];
-                              return DataRow(
-                                color: index % 2 == 0
-                                    ? MaterialStateProperty.resolveWith(
-                                        getColor)
-                                    : null,
-                                cells: [
-                                  DataCell(Text(item['Name'])),
-                                  DataCell(Text(item['Age'].toString())),
-                                  DataCell(Text(item['Role'])),
-                                ],
-                              );
-                            }),
-                          ),
-                        )
                       ],
                     ),
-                  )
+                  ),
+                  // Column(
+                  //   children: [
+                  //     Expanded(
+                  //       child: PageView(
+                  //         children: _tables,
+                  //         onPageChanged: (index) {
+                  //           setState(() {
+                  //             _currentPageIndex = index;
+                  //           });
+                  //         },
+                  //       ),
+                  //     ),
+                  //     Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         IconButton(
+                  //           icon: const Icon(
+                  //             Icons.arrow_left,
+                  //             color: Colors.red,
+                  //           ),
+                  //           onPressed: () {
+                  //             if (_currentPageIndex > 0) {
+                  //               setState(() {
+                  //                 _currentPageIndex--;
+                  //               });
+                  //             }
+                  //           },
+                  //         ),
+                  //         const SizedBox(width: 16),
+                  //         IconButton(
+                  //           icon: const Icon(Icons.arrow_right),
+                  //           onPressed: () {
+                  //             if (_currentPageIndex < _tables.length - 1) {
+                  //               setState(() {
+                  //                 _currentPageIndex++;
+                  //               });
+                  //             }
+                  //           },
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ],
+                  // ),
                   // Add your content for the second tab here
                 ],
               ),
@@ -412,6 +432,361 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
     );
   }
 }
+
+class AthanTimesByMonths extends StatelessWidget {
+  const AthanTimesByMonths({
+    Key? key,
+    required this.monthPrayerTime,
+  }) : super(key: key);
+
+  final List<PrayerTimeClass> monthPrayerTime;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.05,
+            color: appBarColor,
+            child: Center(
+              child: Text(
+                DateFormat('MMMM y').format(DateTime.now()),
+                textAlign: TextAlign.center,
+                style: mSalah_time_title_tstyle,
+              ),
+            )),
+        Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.05,
+            color: sec,
+            child: Center(
+              child: Text(
+                "Athan Timings",
+                textAlign: TextAlign.center,
+                style: mSalah_time_title_tstyle,
+              ),
+            )),
+        SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          // child: buildMonthPrayerTime(monthPrayerTime)
+          child: FittedBox(
+            child: DataTable(
+              horizontalMargin: 8,
+              columnSpacing: 4.2,
+              dataRowHeight: 60.0,
+              headingTextStyle: TextStyle(color: Colors.white),
+              dataTextStyle: TextStyle(fontSize: 11.2, color: Colors.white),
+              columns: [
+                DataColumn(
+                  label: Center(
+                    // You can set as per your requirement.
+                    child: Text(
+                      'Date',
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Text(""),
+                  // numeric: true,
+                ),
+                DataColumn(
+                  label: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Text("Fajr"),
+                  ),
+                  // numeric: true,
+                ),
+                DataColumn(
+                  label: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Text("Duhr"),
+                  ),
+                  // numeric: true,
+                ),
+                DataColumn(
+                  label: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Text("Asr"),
+                  ),
+                  // numeric: true,
+                ),
+                DataColumn(
+                  label: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Text("Magrib"),
+                  ),
+                  // numeric: true,
+                ),
+                DataColumn(
+                  label: Padding(
+                    padding: const EdgeInsets.only(left: 7),
+                    child: Text("Isha"),
+                  ),
+                  // numeric: true,
+                ),
+              ],
+              rows: monthPrayerTime
+                  .map((prayerTime) => DataRow(
+                        cells: [
+                          DataCell(Container(
+                            width: 50,
+                            // color: Colors.amber,
+                            padding: const EdgeInsets.only(
+                              bottom: 23,
+                            ),
+                            child: Text(
+                              prayerTime.date.split('-')[2],
+                              style: TextStyle(fontSize: 23),
+                              textAlign: TextAlign.start,
+                            ),
+                          )),
+                          DataCell(Center(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 17, left: 5),
+                              child: Column(
+                                children: [
+                                  Text("Athan"),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text("Iqama"),
+                                ],
+                              ),
+                            ),
+                          )), // Only date
+                          DataCell(Column(
+                            children: [
+                              Center(
+                                child: Text(
+                                  DateFormat.jm().format(DateFormat("hh:mm:ss")
+                                      .parse(prayerTime.fajir.substring(0, 8))),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Center(
+                                child: Text(
+                                  DateFormat.jm().format(DateFormat("hh:mm:ss")
+                                      .parse(prayerTime.fajir_iqamath
+                                          .substring(0, 8))),
+                                ),
+                              ),
+                            ],
+                          )), // Only hr and min
+                          DataCell(Column(
+                            children: [
+                              Center(
+                                child: Text(
+                                  DateFormat.jm().format(DateFormat("hh:mm:ss")
+                                      .parse(
+                                          prayerTime.dhuhar.substring(0, 8))),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Center(
+                                child: Text(
+                                  DateFormat.jm().format(DateFormat("hh:mm:ss")
+                                      .parse(prayerTime.dhuhar_iqamath
+                                          .substring(0, 8))),
+                                ),
+                              ),
+                            ],
+                          )), // Only hr and min
+                          DataCell(Padding(
+                            padding: const EdgeInsets.only(left: 0),
+                            child: Column(
+                              children: [
+                                Center(
+                                  child: Text(
+                                    DateFormat.jm().format(
+                                        DateFormat("hh:mm:ss").parse(
+                                            prayerTime.asr.substring(0, 8))),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Center(
+                                  child: Text(
+                                    DateFormat.jm().format(
+                                        DateFormat("hh:mm:ss").parse(prayerTime
+                                            .asr_iqamath
+                                            .substring(0, 8))),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )), // Only hr and min
+                          DataCell(Container(
+                            child: Column(
+                              children: [
+                                Center(
+                                  child: Text(
+                                    DateFormat.jm().format(
+                                        DateFormat("hh:mm:ss").parse(
+                                            prayerTime.magrib.substring(0, 8))),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Center(
+                                  child: Text(
+                                    DateFormat.jm().format(
+                                        DateFormat("hh:mm:ss").parse(prayerTime
+                                            .magrib_iqamath
+                                            .substring(0, 8))),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )), // Only hr and min
+                          DataCell(Container(
+                            child: Column(
+                              children: [
+                                Center(
+                                  child: Text(
+                                    DateFormat.jm().format(
+                                        DateFormat("hh:mm:ss").parse(
+                                            prayerTime.isha.substring(0, 8))),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Center(
+                                  child: Text(
+                                    DateFormat.jm().format(
+                                        DateFormat("hh:mm:ss").parse(prayerTime
+                                            .isha_iqamath
+                                            .substring(0, 8))),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )), // Only hr and min
+                        ],
+                      ))
+                  .toList(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// class IqamaTimesByMonths extends StatelessWidget {
+//   const IqamaTimesByMonths({
+//     Key? key,
+//     required this.monthPrayerTime,
+//   }) : super(key: key);
+
+//   final List<PrayerTimeClass> monthPrayerTime;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       mainAxisAlignment: MainAxisAlignment.start,
+//       crossAxisAlignment: CrossAxisAlignment.center,
+//       children: [
+//         Container(
+//             width: double.infinity,
+//             height: MediaQuery.of(context).size.height * 0.05,
+//             color: appBarColor,
+//             child: Center(
+//               child: Text(
+//                 DateFormat('MMMM y').format(DateTime.now()),
+//                 textAlign: TextAlign.center,
+//                 style: mSalah_time_title_tstyle,
+//               ),
+//             )),
+//         Container(
+//             width: double.infinity,
+//             height: MediaQuery.of(context).size.height * 0.05,
+//             color: sec,
+//             child: Center(
+//               child: Text(
+//                 "Iqamah Timings",
+//                 textAlign: TextAlign.center,
+//                 style: mSalah_time_title_tstyle,
+//               ),
+//             )),
+//         SingleChildScrollView(
+//           scrollDirection: Axis.vertical,
+//           child: DataTable(
+//             columnSpacing: 10.0,
+//             dataRowHeight: 50.0,
+//             headingTextStyle: TextStyle(color: Colors.white),
+//             dataTextStyle: TextStyle(fontSize: 12, color: Colors.white),
+//             columns: [
+//               DataColumn(
+//                 label: Text("Date"),
+//                 // numeric: true,
+//               ),
+//               DataColumn(
+//                 label: Text("Fajr"),
+//                 // numeric: true,
+//               ),
+//               DataColumn(
+//                 label: Text("Duhr"),
+//                 // numeric: true,
+//               ),
+//               DataColumn(
+//                 label: Text("Asr"),
+//                 // numeric: true,
+//               ),
+//               DataColumn(
+//                 label: Text("Magrib"),
+//                 // numeric: true,
+//               ),
+//               DataColumn(
+//                 label: Text("Isha"),
+//                 // numeric: true,
+//               ),
+//             ],
+//             rows: monthPrayerTime
+//                 .map((prayerTime) => DataRow(
+//                       cells: [
+//                         DataCell(Center(
+//                           child: Text(prayerTime.date.split('-')[2]),
+//                         )), // Only date
+//                         DataCell(Center(
+//                           child: Text(
+//                             DateFormat.jm().format(DateFormat("hh:mm:ss").parse(
+//                                 prayerTime.fajir_iqamath.substring(0, 8))),
+//                           ),
+//                         )), // Only hr and min
+//                         DataCell(Center(
+//                           child: Text(
+//                             DateFormat.jm().format(DateFormat("hh:mm:ss").parse(
+//                                 prayerTime.dhuhar_iqamath.substring(0, 8))),
+//                           ),
+//                         )), // Only hr and min
+//                         DataCell(Center(
+//                           child: Text(
+//                             DateFormat.jm().format(DateFormat("hh:mm:ss")
+//                                 .parse(prayerTime.asr_iqamath.substring(0, 8))),
+//                           ),
+//                         )), // Only hr and min
+//                         DataCell(Center(
+//                           child: Text(
+//                             DateFormat.jm().format(DateFormat("hh:mm:ss").parse(
+//                                 prayerTime.magrib_iqamath.substring(0, 8))),
+//                           ),
+//                         )), // Only hr and min
+//                         DataCell(Center(
+//                           child: Text(
+//                             DateFormat.jm().format(DateFormat("hh:mm:ss").parse(
+//                                 prayerTime.isha_iqamath.substring(0, 8))),
+//                           ),
+//                         )), // Only hr and min
+//                       ],
+//                     ))
+//                 .toList(),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 class PrayerimeRow extends StatelessWidget {
   const PrayerimeRow({

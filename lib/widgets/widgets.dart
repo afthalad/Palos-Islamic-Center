@@ -670,7 +670,10 @@ class _JummahPrayerTimesWidgetState extends State<JummahPrayerTimesWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text("Dars Al Jumah", style: mSalah_time_title_tstyle),
-                    Text("11.30 am", style: mSalah_time_subtitle_tstyle),
+                    Text(
+                      "11:05 AM",
+                      style: mSalah_time_subtitle_tstyle,
+                    ),
                   ],
                 ),
               ),
@@ -692,7 +695,7 @@ class _JummahPrayerTimesWidgetState extends State<JummahPrayerTimesWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text("second khutbah", style: mSalah_time_title_tstyle),
-                    Text("01.30 pm", style: mSalah_time_subtitle_tstyle),
+                    Text("01.30 PM", style: mSalah_time_subtitle_tstyle),
                   ],
                 ),
               )
@@ -859,7 +862,7 @@ class _StartDrawerState extends State<StartDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: sec,
+      backgroundColor: appBarColor,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [

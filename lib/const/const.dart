@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-// Color appBarColor = Color.fromARGB(255, 67, 25, 3);
-Color appBarColor = Color.fromARGB(255, 40, 42, 70);
+Color appBarColor = Colors.indigo.shade900;
+// Color appBarColor = Color.fromARGB(255, 40, 42, 70);
 Color sec = Color.fromARGB(255, 197, 36, 39);
 
 var textFormDecoration = InputDecoration(
@@ -160,11 +160,6 @@ TextStyle event_screen_date_tstyle =
     const TextStyle(fontSize: 15, fontWeight: FontWeight.bold);
 TextStyle event_screen_month_tstyle = const TextStyle(fontSize: 13);
 
-// Live stream screen
-String live_stream_screen_video_iframe = '''
-    <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FPalosIslamicCenter%2Fposts%2Fpfbid02nKfMXJqutxgA32GQWVwg92dNqPyxoHNTcUTFEBLWsXf8ABsiX4fvDimYPyHq8eBml&show_text=true&width=500" width="500" height="372" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-    <!-- anything goes here -->
-    ''';
 // All news screen
 String news_screen_title = 'Recent News';
 String news_screen_subtitle = 'Stay up to date with the latest news and events';
