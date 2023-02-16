@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(
-        Duration(milliseconds: 500),
+        Duration(milliseconds: 5000),
         () => Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomeScreen())));
   }
@@ -23,14 +23,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: appBarColor,
+      backgroundColor: appBarColor.withOpacity(0.3),
       body: Center(
         // child: Text("aasdsd"),
         child: Container(
             width: 200,
             height: 200,
             child: Image(
-                fit: BoxFit.scaleDown, image: AssetImage("images/image.png"))),
+                fit: BoxFit.contain,
+                image: AssetImage("images/full_logo.png"))),
       ),
     );
   }

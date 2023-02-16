@@ -2,6 +2,7 @@
 
 // import 'dart:async';
 import 'dart:async';
+import 'dart:math';
 import 'package:al_sahabah/const/const.dart';
 import 'package:al_sahabah/services/redirects.dart';
 import 'package:al_sahabah/screens/prayer_time.dart';
@@ -38,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> headerImages = [];
   List<Event> events = [];
   var spinController = StreamController<int>.broadcast();
+  List<Feature> features = [];
   void spin() => spinController.add(++nextSpinValue);
 
   void eventsGet() async {
@@ -83,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     Response nextDayResponse =
         await dio.get("http://52.90.175.175/api/prayer-time/get/$nextDayDate");
+    if (!mounted) return;
     setState(() {
       prayerTimeNexDay
           .add(PrayerTimeClass.fromJson(nextDayResponse.data["data"]));
@@ -134,10 +137,14 @@ class _HomeScreenState extends State<HomeScreen> {
       } else {
         cPrayerName = await "Fajr";
         cPrayerTime = await DateFormat.Hms()
-            .format(nextDayFajirTime.add(Duration(hours: 24)));
+            .format(nextDayFajirTime.add(Duration(days: 1)));
         remingTime =
-            await (nextDayFajirTime.add(Duration(hours: 24))).difference(now);
+            await (nextDayFajirTime.add(Duration(days: 1))).difference(now);
       }
+
+      print(cPrayerName);
+      print(cPrayerTime);
+      print(remingTime);
     } else {}
   }
 
@@ -146,10 +153,48 @@ class _HomeScreenState extends State<HomeScreen> {
     return DateFormat('h:mm a').format(time24Hour);
   }
 
+  List<List<Feature>> featuresLists = List.generate(2, (_) => []);
+
+  Future<List<Feature>> fetchFeaturesData() async {
+    const String apiUrl = 'http://52.90.175.175/api/pages/get';
+
+    try {
+      final response = await Dio().get(apiUrl);
+      if (response.statusCode == 200) {
+        final data = response.data['data'] as List;
+        setState(() {
+          features.addAll(data.map((i) => Feature.fromJson(i)).toList());
+        });
+        print(features.length);
+
+        return data.map((feature) => Feature.fromJson(feature)).toList();
+      } else {
+        throw Exception('Failed to load features data');
+      }
+    } catch (error) {
+      print(error);
+      throw Exception('Failed to load features data: $error');
+    }
+  }
+
+  List<List<T>> chunk<T>(List<T> list, int chunkSize) {
+    return List.generate((list.length / chunkSize).ceil(), (i) {
+      int start = i * chunkSize;
+      int end = (i + 1) * chunkSize;
+      return list.sublist(start, end < list.length ? end : list.length);
+    });
+  }
+
   @override
   void initState() {
     Redirects.drawerList();
     prayerTimeGet();
+    fetchFeaturesData().then((data) {
+      setState(() {
+        features = data;
+      });
+    });
+
     eventsGet();
     headerImageGet();
     super.initState();
@@ -170,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
     int nextSpinValue = 0;
 
     void spin() => spinController.add(++nextSpinValue);
-    Timer.periodic(const Duration(seconds: 6), (timer) async {
+    Timer.periodic(const Duration(seconds: 5), (timer) async {
       if (nextSpinValue >= 3) {
         nextSpinValue = 0;
       }
@@ -178,244 +223,263 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle(
-          // Status bar color
-          statusBarColor: Colors.transparent,
+        appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            // Status bar color
+            statusBarColor: Colors.transparent,
 
-          // Status bar brightness (optional)
-          statusBarIconBrightness: Brightness.light, // For Android (dark icons)
-          statusBarBrightness: Brightness.light, // For iOS (dark icons)
-        ),
-        elevation: 1,
-        backgroundColor: appBarColor,
-        centerTitle: true,
-        title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Row(children: [
-            Container(
-                width: 40,
-                height: 40,
-                child: Image(image: AssetImage("images/image.png"))),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: const Text('Masjid Furqaan'),
-            ),
-          ]),
-        ),
-        actions: <Widget>[
-          SingleChildScrollView(
-            child: Builder(
-              builder: (BuildContext scaffoldContext) {
-                return IconButton(
-                  icon: const Icon(Icons
-                      .notifications_active_rounded), // Replace with your desired icon
-                  onPressed: () {
-                    Scaffold.of(scaffoldContext).openEndDrawer();
-                  },
-                );
-              },
-            ),
+            // Status bar brightness (optional)
+            statusBarIconBrightness:
+                Brightness.light, // For Android (dark icons)
+            statusBarBrightness: Brightness.light, // For iOS (dark icons)
           ),
-        ],
-      ),
-      endDrawer: const EndDrawer(),
-      drawer: Builder(
-        builder: (context) {
-          return FutureBuilder<bool>(
-            future: Redirects.drawerList(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return snapshot.data!
-                    ? SignedInStartDrawer(
-                        formKey: _formKey,
-                        mHeight: mHeight,
-                        mWidth: mWidth,
-                      )
-                    : StartDrawer(
-                        formKey: _formKey,
-                        mHeight: mHeight,
-                        mWidth: mWidth,
-                      );
-              } else {
-                return const CircularProgressIndicator();
-              }
-            },
-          );
-        },
-      ),
-      body: RefreshIndicator(
-        displacement: 150,
-        backgroundColor: Colors.white,
-        color: Color.fromARGB(255, 255, 170, 0),
-        strokeWidth: 3,
-        triggerMode: RefreshIndicatorTriggerMode.anywhere,
-        onRefresh: () async {
-          await Future.delayed(Duration(milliseconds: 1000));
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => super.widget));
-        },
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
+          elevation: 1,
+          backgroundColor: appBarColor.withOpacity(0.3),
+          centerTitle: true,
+          title: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 35),
+            child: Row(children: [
               Container(
-                width: double.infinity,
-                height: mHeight * 0.28,
-                child: headerImages.isEmpty
-                    ? const Center(
-                        child: Text(
-                          "Loading...",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      )
-                    : ImageSlideshow(
-                        width: double.infinity,
-                        height: mHeight * 0.28,
-                        initialPage: 0,
-                        indicatorColor: Colors.grey,
-                        indicatorBackgroundColor: Colors.white,
-                        children: headerImages.map((e) {
-                          return Image.network(
-                            "http://52.90.175.175/$e",
-                            fit: BoxFit.cover,
-                          );
-                        }).toList()),
+                  width: 40,
+                  height: 40,
+                  child: Image(image: AssetImage("images/stg.png"))),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: const Text('STG Masjid'),
               ),
-              FlipWidget(
-                initialValue: nextSpinValue,
-                itemStream: spinController.stream,
-                flipType: FlipType.spinFlip,
-                itemBuilder: (_, index) {
-                  return index == 0
-                      ? SalahTimeRemingWidget(
-                          mHeight: mHeight,
-                          cPrayerName: cPrayerName,
-                          cPrayerTime: cPrayerTime,
-                        )
-                      : index == 1
-                          ? MSalahTime(mHeight: mHeight, mWidth: mWidth)
-                          : index == 2
-                              ? JummahPrayerTimesWidget(
-                                  mHeight: mHeight,
-                                  jummahTime: prayerTime.isEmpty
-                                      ? "Loading...."
-                                      : convertTo12HourFormat(
-                                          prayerTime[0].dhuhar),
-                                )
-                              : SalahTimeRemingWidget(
-                                  mHeight: mHeight,
-                                  cPrayerName: cPrayerName,
-                                  cPrayerTime: DateFormat('h:mm a').format(
-                                      DateFormat('HH:mm').parse(cPrayerTime)),
-                                );
-                },
-                flipDirection: AxisDirection.up,
-              ),
-              ImageSlideshow(
-                height: mHeight * 0.2,
-                width: double.infinity,
-                initialPage: 0,
-                indicatorRadius: 0,
-                children: [
-                  events.isEmpty
-                      ? const Center(
-                          child: Text(
-                            "Loading...",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        )
-                      : Events(
-                          mHeight: mHeight,
-                          mWidth: mWidth,
-                          image: events[0].image,
-                          eventDateTime: DateFormat('yyyy-MM-dd hh:mm a')
-                              .format(DateFormat('yyyy-MM-dd hh:mm:ss')
-                                  .parse(events[0].start)),
-                          eventName: events[0].title,
-                        ),
-                  events.isEmpty
-                      ? const Center(
-                          child: Text(
-                            "Loading...",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        )
-                      : Events(
-                          mHeight: mHeight,
-                          mWidth: mWidth,
-                          image: events[1].image,
-                          eventDateTime: DateFormat('yyyy-MM-dd hh:mm a')
-                              .format(DateFormat('yyyy-MM-dd hh:mm:ss')
-                                  .parse(events[1].start)),
-                          eventName: events[1].title,
-                        ),
-                ],
-              ),
-              ImageSlideshow(
-                height: mHeight * 0.244,
-                width: double.infinity,
-                indicatorColor: Colors.grey,
-                indicatorBackgroundColor: Colors.white,
-                isLoop: false,
-                children: [
-                  MFeaturesCard1(mWidth: mWidth, mHeight: mHeight),
-                  MFeaturesCard2(mWidth: mWidth, mHeight: mHeight),
-                  // MFeaturesCard3(mWidth: mWidth, mHeight: mHeight),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ContactUsSocial(
-                    image: "images/icon-facebook.png",
-                    title: "",
-                    link: m_features_card2_facebook_web_url,
-                  ),
-                  ContactUsSocial(
-                    image: "images/icon-youtube..png",
-                    title: "",
-                    link: m_features_card2_youtube_web_url,
-                  ),
-                  ContactUsSocial(
-                    image: "images/icon-instagram.png",
-                    title: "",
-                    link: m_features_card2_instagram_web_url,
-                  ),
-
-                  InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/live_stream_screen');
+            ]),
+          ),
+          actions: <Widget>[
+            SingleChildScrollView(
+              child: Builder(
+                builder: (BuildContext scaffoldContext) {
+                  return IconButton(
+                    icon: const Icon(Icons
+                        .notifications_active_rounded), // Replace with your desired icon
+                    onPressed: () {
+                      Scaffold.of(scaffoldContext).openEndDrawer();
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 30,
-                            child: Image(
-                              image: AssetImage("images/icons-youtube.png"),
-                            ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+        endDrawer: const EndDrawer(),
+        drawer: Builder(
+          builder: (context) {
+            return FutureBuilder<bool>(
+              future: Redirects.drawerList(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return snapshot.data!
+                      ? SignedInStartDrawer(
+                          formKey: _formKey,
+                          mHeight: mHeight,
+                          mWidth: mWidth,
+                        )
+                      : StartDrawer(
+                          formKey: _formKey,
+                          mHeight: mHeight,
+                          mWidth: mWidth,
+                        );
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              },
+            );
+          },
+        ),
+        body: RefreshIndicator(
+          displacement: 150,
+          backgroundColor: Colors.white,
+          color: Color.fromARGB(255, 255, 170, 0),
+          strokeWidth: 3,
+          triggerMode: RefreshIndicatorTriggerMode.anywhere,
+          onRefresh: () async {
+            await Future.delayed(Duration(milliseconds: 1000));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => super.widget));
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: mHeight * 0.28,
+                  child: headerImages.isEmpty
+                      ? const Center(
+                          child: Text(
+                            "Loading...",
+                            style: TextStyle(color: Colors.grey),
                           ),
-                          Text("")
-                        ],
+                        )
+                      : ImageSlideshow(
+                          width: double.infinity,
+                          height: mHeight * 0.28,
+                          initialPage: 0,
+                          indicatorColor: Colors.grey,
+                          indicatorBackgroundColor: Colors.white,
+                          children: headerImages.map((e) {
+                            return Image.network(
+                              "http://52.90.175.175/$e",
+                              fit: BoxFit.cover,
+                            );
+                          }).toList()),
+                ),
+                FlipWidget(
+                  initialValue: nextSpinValue,
+                  itemStream: spinController.stream,
+                  flipType: FlipType.spinFlip,
+                  itemBuilder: (_, index) {
+                    return index == 0
+                        ? SalahTimeRemingWidget(
+                            mHeight: mHeight,
+                            cPrayerName: cPrayerName,
+                            cPrayerTime: cPrayerTime,
+                          )
+                        : index == 1
+                            ? MSalahTime(mHeight: mHeight, mWidth: mWidth)
+                            : index == 2
+                                ? JummahPrayerTimesWidget(
+                                    mHeight: mHeight,
+                                    jummahTime: prayerTime.isEmpty
+                                        ? "Loading...."
+                                        : convertTo12HourFormat(
+                                            prayerTime[0].dhuhar),
+                                  )
+                                : SalahTimeRemingWidget(
+                                    mHeight: mHeight,
+                                    cPrayerName: cPrayerName,
+                                    cPrayerTime: DateFormat('h:mm a').format(
+                                        DateFormat('HH:mm').parse(cPrayerTime)),
+                                  );
+                  },
+                  flipDirection: AxisDirection.up,
+                ),
+                ImageSlideshow(
+                  height: mHeight * 0.2,
+                  width: double.infinity,
+                  initialPage: 0,
+                  indicatorRadius: 0,
+                  children: [
+                    events.isEmpty
+                        ? const Center(
+                            child: Text(
+                              "Loading...",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          )
+                        : Events(
+                            mHeight: mHeight,
+                            mWidth: mWidth,
+                            image: events[0].image,
+                            eventDateTime: DateFormat('yyyy-MM-dd hh:mm a')
+                                .format(DateFormat('yyyy-MM-dd hh:mm:ss')
+                                    .parse(events[0].start)),
+                            eventName: events[0].title,
+                          ),
+                    events.isEmpty
+                        ? const Center(
+                            child: Text(
+                              "Loading...",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          )
+                        : Events(
+                            mHeight: mHeight,
+                            mWidth: mWidth,
+                            image: events[1].image,
+                            eventDateTime: DateFormat('yyyy-MM-dd hh:mm a')
+                                .format(DateFormat('yyyy-MM-dd hh:mm:ss')
+                                    .parse(events[1].start)),
+                            eventName: events[1].title,
+                          ),
+                  ],
+                ),
+                ImageSlideshow(
+                  height: mHeight * 0.33,
+                  width: double.infinity,
+                  indicatorColor: Colors.grey,
+                  indicatorBackgroundColor: Colors.white,
+                  isLoop: false,
+                  children: chunk(features, 6)
+                      .map((featureChunk) => SizedBox(
+                            height: mHeight * 0.244, // specify a fixed height
+                            child: GridView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                mainAxisSpacing:
+                                    0, // set the spacing between rows
+                              ),
+                              itemCount: featureChunk.length,
+                              itemBuilder: (context, index) {
+                                final feature = featureChunk[index];
+                                return FeaturesCard(
+                                  featuresTitle: feature.page_name,
+                                  mHeight: mHeight,
+                                  mWidth: mWidth,
+                                  featuresIcon: feature.imageUrl,
+                                );
+                              },
+                            ),
+                          ))
+                      .toList(),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ContactUsSocial(
+                      image: "images/icon-facebook.png",
+                      title: "",
+                      link: m_features_card2_facebook_web_url,
+                    ),
+                    ContactUsSocial(
+                      image: "images/icon-youtube..png",
+                      title: "",
+                      link: m_features_card2_youtube_web_url,
+                    ),
+                    ContactUsSocial(
+                      image: "images/icon-instagram.png",
+                      title: "",
+                      link: m_features_card2_instagram_web_url,
+                    ),
+
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/live_stream_screen');
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 30,
+                              child: Image(
+                                image: AssetImage("images/icons-youtube.png"),
+                              ),
+                            ),
+                            Text("")
+                          ],
+                        ),
                       ),
                     ),
-                  ),
 
-                  // ContactUsSocial(),
-                  // ContactUsSocial(),
-                  // ContactUsSocial(),
-                ],
-              ),
-            ],
+                    // ContactUsSocial(),
+                    // ContactUsSocial(),
+                    // ContactUsSocial(),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
 
@@ -442,5 +506,24 @@ class Event {
       description: json['description'],
       image: json['image'],
     );
+  }
+}
+
+class Feature {
+  final String imageUrl;
+  final String page_name;
+  final String description;
+
+  Feature({
+    required this.page_name,
+    required this.description,
+    required this.imageUrl,
+  });
+
+  factory Feature.fromJson(Map<String, dynamic> json) {
+    return Feature(
+        page_name: json['page_name'],
+        description: json['description'],
+        imageUrl: json['image']);
   }
 }

@@ -131,7 +131,7 @@ class _MSalahTimeState extends State<MSalahTime> {
                   children: [
                     SalahTime(
                       mWidth: widget.mWidth * 0.3,
-                      salahTitle: 'Subah',
+                      salahTitle: 'Fajir',
                       salahTime: convertTo12HourFormat(prayerTime[0].fajir),
                     ),
                     SalahTime(
@@ -185,9 +185,10 @@ class _SalahTimeRemingWidgetState extends State<SalahTimeRemingWidget> {
   reminingTimeDiff() async {
     DateTime now = DateTime.now();
     var now2 = DateFormat.Hms().format(now);
-    var time = await DateFormat("'h:mm a").parse("${widget.cPrayerTime}");
+    var time = await DateFormat("h:mm a").parse("${widget.cPrayerTime}");
     var time2 = DateFormat("HH:mm:ss").parse("$now2");
     var diff = time.difference(time2);
+
     // If difference is negative, add 24 hours
     if (diff.inSeconds < 0) {
       diff = diff + Duration(hours: 24);
@@ -281,10 +282,10 @@ class FeaturesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
       child: Container(
         width: mWidth * 0.3,
-        height: 75,
+        height: 50,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(5),
@@ -297,24 +298,21 @@ class FeaturesCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: 30,
-                child: Image(
-                  image: AssetImage(featuresIcon),
-                ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 30,
+              child: Image(
+                image: NetworkImage(featuresIcon),
               ),
-              Text(
-                featuresTitle,
-                style: features_title_tstyle,
-              )
-            ],
-          ),
+            ),
+            Text(
+              featuresTitle,
+              style: features_title_tstyle,
+            )
+          ],
         ),
       ),
     );

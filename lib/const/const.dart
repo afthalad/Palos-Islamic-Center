@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 
 // Color appBarColor = Color.fromARGB(255, 67, 25, 3);
-Color appBarColor = const Color(0xFFCF962F);
-Color sec = const Color(0xFF441A05);
+Color appBarColor = Color.fromARGB(255, 40, 42, 70);
+Color sec = Color.fromARGB(255, 197, 36, 39);
 
 var textFormDecoration = InputDecoration(
   focusedBorder: const OutlineInputBorder(
