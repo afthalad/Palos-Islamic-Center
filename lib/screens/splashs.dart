@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: appBarColor.withOpacity(0.3),
       body: Center(
-        // child: Text("aasdsd"),
+       
         child: Container(
             width: 200,
             height: 200,

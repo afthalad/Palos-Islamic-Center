@@ -2,8 +2,8 @@
 
 // import 'dart:async';
 import 'dart:async';
-import 'dart:math';
 import 'package:al_sahabah/const/const.dart';
+import 'package:al_sahabah/screens/features_from_api.dart';
 import 'package:al_sahabah/services/redirects.dart';
 import 'package:al_sahabah/screens/prayer_time.dart';
 import 'package:al_sahabah/widgets/widgets.dart';
@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> headerImages = [];
   List<Event> events = [];
   var spinController = StreamController<int>.broadcast();
-  List<Feature> features = [];
+  List<dynamic> features = [];
   void spin() => spinController.add(++nextSpinValue);
 
   void eventsGet() async {
@@ -153,8 +154,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return DateFormat('h:mm a').format(time24Hour);
   }
 
-  List<List<Feature>> featuresLists = List.generate(2, (_) => []);
-
   Future<List<Feature>> fetchFeaturesData() async {
     const String apiUrl = 'http://52.90.175.175/api/pages/get';
 
@@ -225,16 +224,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle(
-            // Status bar color
             statusBarColor: Colors.transparent,
-
-            // Status bar brightness (optional)
-            statusBarIconBrightness:
-                Brightness.light, // For Android (dark icons)
-            statusBarBrightness: Brightness.light, // For iOS (dark icons)
+            statusBarIconBrightness: Brightness.light,
+            statusBarBrightness: Brightness.light,
           ),
           elevation: 1,
-          backgroundColor: appBarColor.withOpacity(0.3),
+          backgroundColor: appBarColor,
           centerTitle: true,
           title: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 35),
@@ -405,30 +400,50 @@ class _HomeScreenState extends State<HomeScreen> {
                   indicatorColor: Colors.grey,
                   indicatorBackgroundColor: Colors.white,
                   isLoop: false,
-                  children: chunk(features, 6)
-                      .map((featureChunk) => SizedBox(
-                            height: mHeight * 0.244, // specify a fixed height
-                            child: GridView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                mainAxisSpacing:
-                                    0, // set the spacing between rows
-                              ),
-                              itemCount: featureChunk.length,
-                              itemBuilder: (context, index) {
-                                final feature = featureChunk[index];
-                                return FeaturesCard(
-                                  featuresTitle: feature.page_name,
-                                  mHeight: mHeight,
-                                  mWidth: mWidth,
-                                  featuresIcon: feature.imageUrl,
-                                );
+                  children: [
+                    MFeaturesCard1(mWidth: mWidth, mHeight: mHeight),
+                    ...chunk(features, 6).map(
+                      (featureChunk) => SizedBox(
+                        height: mHeight * 0.244, // specify a fixed height
+                        child: GridView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  childAspectRatio:
+                                      1.32 // set the spacing between rows
+                                  ),
+                          itemCount: featureChunk.length,
+                          itemBuilder: (context, index) {
+                            final feature = featureChunk[index];
+                            return InkWell(
+                              onTap: () async {
+                                if (await feature.is_external_link == 1) {
+                                  launchUrl(Uri.parse(feature.url));
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => FeaturesFromApi(
+                                        appBarTitle: feature.page_name,
+                                        pageText: feature.description,
+                                      ),
+                                    ),
+                                  );
+                                }
                               },
-                            ),
-                          ))
-                      .toList(),
+                              child: FeaturesCardFromAdmin(
+                                featuresTitle: feature.page_name,
+                                mHeight: mHeight,
+                                mWidth: mWidth,
+                                featuresIcon: feature.imageUrl,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -513,17 +528,24 @@ class Feature {
   final String imageUrl;
   final String page_name;
   final String description;
+  final int is_external_link;
+  final String url;
 
   Feature({
     required this.page_name,
     required this.description,
     required this.imageUrl,
+    required this.is_external_link,
+    required this.url,
   });
 
   factory Feature.fromJson(Map<String, dynamic> json) {
     return Feature(
-        page_name: json['page_name'],
-        description: json['description'],
-        imageUrl: json['image']);
+      page_name: json['page_name'],
+      description: json['description'],
+      imageUrl: json['image'],
+      is_external_link: json['is_external_link'],
+      url: json['url'],
+    );
   }
 }

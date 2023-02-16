@@ -220,10 +220,6 @@ class _ContaceusDetailsScreenState extends State<ContaceusDetailsScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  // ListTile(
-                  //   title: Text(
-                  //       "Connect directly with the right person for your inquiry using our"),
-                  // ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ListView.builder(
@@ -278,54 +274,6 @@ class _ContaceusDetailsScreenState extends State<ContaceusDetailsScreen> {
     );
   }
 }
-
-//  persons.isEmpty
-//             ? const Center(child: CircularProgressIndicator())
-//             : Padding(
-//               padding: const EdgeInsets.all(10),
-//               child: ListView.builder(
-//                   itemCount: persons.length,
-//                   itemBuilder: (BuildContext context, int i) {
-//                     return Container(
-//                       decoration: const BoxDecoration(
-//                         border: Border(
-//                           bottom: BorderSide(
-//                               color: Colors.black12, width: 0.5),
-//                         ),
-//                       ),
-//                       child: ListTile(
-//                         contentPadding: const EdgeInsets.all(10),
-//                         title: Column(
-//                           mainAxisAlignment: MainAxisAlignment.center,
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: [
-//                             Text(persons[i].name,
-//                                 style: contactus_screen_profile_tstyle1),
-//                             Text(
-//                               persons[i].title,
-//                               style: contactus_screen_profile_tstyle1,
-//                             ),
-//                           ],
-//                         ),
-//                         subtitle: Column(
-//                           mainAxisAlignment:
-//                               MainAxisAlignment.spaceBetween,
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: [
-//                             Text(
-//                               persons[i].email,
-//                               style: contactus_screen_profile_tstyle,
-//                             ),
-//                             Text(
-//                               "${persons[i].phone1} , ${persons[i].phone2}",
-//                               style: contactus_screen_profile_tstyle,
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     );
-//                   }),
-//             )
 
 class Person {
   String name;

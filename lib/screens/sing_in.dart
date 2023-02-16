@@ -67,9 +67,6 @@ class _SigninScreenState extends State<SigninScreen> {
                       ),
                       Column(
                         children: [
-                          // const SizedBox(
-                          //   height: 10,
-                          // ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 2),
@@ -116,7 +113,6 @@ class _SigninScreenState extends State<SigninScreen> {
                                       )),
                                 ),
                               )),
-                          // const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

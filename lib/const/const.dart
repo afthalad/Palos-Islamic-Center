@@ -16,7 +16,7 @@ var textFormDecoration = InputDecoration(
 );
 
 // MSalah Time
-Color mSalah_time_container_color = appBarColor;
+Color mSalah_time_container_color = sec;
 TextStyle mSalah_time_title_tstyle =
     const TextStyle(color: Colors.white, fontSize: 15);
 TextStyle mSalah_time_subtitle_tstyle = const TextStyle(

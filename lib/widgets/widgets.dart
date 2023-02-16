@@ -285,7 +285,62 @@ class FeaturesCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
       child: Container(
         width: mWidth * 0.3,
-        height: 50,
+        height: 75,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.blueGrey[50]!,
+              spreadRadius: 3,
+              blurRadius: 10,
+              offset: Offset(0, 1),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 30,
+              child: Image(
+                image: AssetImage(featuresIcon),
+              ),
+            ),
+            Text(
+              featuresTitle,
+              style: features_title_tstyle,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FeaturesCardFromAdmin extends StatelessWidget {
+  final String featuresIcon;
+  final String featuresTitle;
+
+  const FeaturesCardFromAdmin({
+    Key? key,
+    required this.featuresIcon,
+    required this.featuresTitle,
+    required this.mWidth,
+    required this.mHeight,
+  }) : super(key: key);
+
+  final double mWidth;
+  final double mHeight;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+      child: Container(
+        width: mWidth * 0.3,
+        height: 75, // change the height to match the FeaturesCard height
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(5),
@@ -321,7 +376,7 @@ class FeaturesCard extends StatelessWidget {
 
 //1st Main Features Card__
 class MFeaturesCard1 extends StatelessWidget {
-  const MFeaturesCard1({
+  MFeaturesCard1({
     Key? key,
     required this.mWidth,
     required this.mHeight,
@@ -329,6 +384,12 @@ class MFeaturesCard1 extends StatelessWidget {
 
   final double mWidth;
   final double mHeight;
+  static const List<Tab> _tabs = [
+    Tab(text: 'Categries'),
+    Tab(text: 'My Questions'),
+    Tab(text: 'FAQ'),
+  ];
+  TabController? _tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -363,13 +424,21 @@ class MFeaturesCard1 extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                launchUrl(Uri.parse(m_features_card1_donationt_web_url));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AskTheImamScreen(
+                      tabs: _tabs,
+                      tabController: _tabController,
+                    ),
+                  ),
+                );
               },
               child: FeaturesCard(
                 mWidth: mWidth,
                 mHeight: mHeight,
-                featuresIcon: 'images/icon-donation.png',
-                featuresTitle: 'Donation',
+                featuresIcon: 'images/icon-quote.png',
+                featuresTitle: 'Ask the imam',
               ),
             ),
           ],
@@ -408,106 +477,6 @@ class MFeaturesCard1 extends StatelessWidget {
                 mHeight: mHeight,
                 featuresIcon: 'images/icon-news.png',
                 featuresTitle: 'News',
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-//2nd Main Features Card__
-class MFeaturesCard2 extends StatelessWidget {
-  MFeaturesCard2({
-    Key? key,
-    required this.mWidth,
-    required this.mHeight,
-  }) : super(key: key);
-
-  final double mWidth;
-  final double mHeight;
-  static const List<Tab> _tabs = [
-    Tab(text: 'Categries'),
-    Tab(text: 'My Questions'),
-    Tab(text: 'FAQ'),
-  ];
-  TabController? _tabController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: InkWell(
-                onTap: () {
-                  launchUrl(
-                      Uri.parse(m_features_card2_zakath_calulator_web_url));
-                },
-                child: FeaturesCard(
-                  mWidth: mWidth,
-                  mHeight: mHeight,
-                  featuresIcon: 'images/icon-calculator.png',
-                  featuresTitle: 'Zakat Calculator',
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AskTheImamScreen(
-                      tabs: _tabs,
-                      tabController: _tabController,
-                    ),
-                  ),
-                );
-              },
-              child: FeaturesCard(
-                mWidth: mWidth,
-                mHeight: mHeight,
-                featuresIcon: 'images/icon-quote.png',
-                featuresTitle: 'Ask the imam',
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class MFeaturesCard3 extends StatelessWidget {
-  const MFeaturesCard3({
-    Key? key,
-    required this.mWidth,
-    required this.mHeight,
-  }) : super(key: key);
-
-  final double mWidth;
-  final double mHeight;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, '/location_prayer_time_screen');
-              },
-              child: FeaturesCard(
-                mWidth: mWidth,
-                mHeight: mHeight,
-                featuresIcon: 'images/icons-visit.png',
-                featuresTitle: 'Location timing',
               ),
             ),
           ],
