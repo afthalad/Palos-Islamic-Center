@@ -579,7 +579,7 @@ class DrawerList extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Colors.white12, width: 0.5),
+          bottom: BorderSide(color: Colors.white38, width: 0.5),
         ),
       ),
       child: ListTile(

@@ -369,60 +369,12 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
                                 child: AthanTimesByMonths(
                                     monthPrayerTime: monthPrayerTime),
                               ),
-                              // SingleChildScrollView(
-                              //   child: IqamaTimesByMonths(
-                              //       monthPrayerTime: monthPrayerTime),
-                              // )
                             ],
                           ),
                         ),
                       ],
                     ),
                   ),
-                  // Column(
-                  //   children: [
-                  //     Expanded(
-                  //       child: PageView(
-                  //         children: _tables,
-                  //         onPageChanged: (index) {
-                  //           setState(() {
-                  //             _currentPageIndex = index;
-                  //           });
-                  //         },
-                  //       ),
-                  //     ),
-                  //     Row(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       children: [
-                  //         IconButton(
-                  //           icon: const Icon(
-                  //             Icons.arrow_left,
-                  //             color: Colors.red,
-                  //           ),
-                  //           onPressed: () {
-                  //             if (_currentPageIndex > 0) {
-                  //               setState(() {
-                  //                 _currentPageIndex--;
-                  //               });
-                  //             }
-                  //           },
-                  //         ),
-                  //         const SizedBox(width: 16),
-                  //         IconButton(
-                  //           icon: const Icon(Icons.arrow_right),
-                  //           onPressed: () {
-                  //             if (_currentPageIndex < _tables.length - 1) {
-                  //               setState(() {
-                  //                 _currentPageIndex++;
-                  //               });
-                  //             }
-                  //           },
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ],
-                  // ),
-                  // Add your content for the second tab here
                 ],
               ),
             ),
