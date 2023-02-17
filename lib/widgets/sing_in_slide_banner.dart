@@ -69,12 +69,13 @@ class SlideBanner extends StatelessWidget {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 90),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 60),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Colors.white24,
                       borderRadius: BorderRadius.circular(50)),
                   child: IconButton(
+                    iconSize: 20,
                     color: Colors.white,
                     onPressed: () {
                       Navigator.pop(context);
@@ -139,12 +140,13 @@ class SlideBanner extends StatelessWidget {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 90),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 60),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Colors.white24,
                       borderRadius: BorderRadius.circular(50)),
                   child: IconButton(
+                    iconSize: 20,
                     color: Colors.white,
                     onPressed: () {
                       Navigator.pop(context);
