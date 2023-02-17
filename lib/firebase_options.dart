@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -49,21 +43,41 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyC8lNJvCeYu5MRnPczKCrp0M7elhg_GSzY',
+    appId: '1:849491641703:web:45233c4b0a22ae9a695bc2',
+    messagingSenderId: '849491641703',
+    projectId: 'stg-masjid',
+    authDomain: 'stg-masjid.firebaseapp.com',
+    storageBucket: 'stg-masjid.appspot.com',
+    measurementId: 'G-PSST8V8Q18',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCiAwsWfu67OZCEinKIs4lLu8Fmx1XGEkE',
-    appId: '1:360806897515:android:3fad3f346977a06a535e2e',
-    messagingSenderId: '360806897515',
-    projectId: 'furqaand-c1aa3',
-    storageBucket: 'furqaand-c1aa3.appspot.com',
+    apiKey: 'AIzaSyBvAiB0-oW_NXRsV-m2z-1rAgedkAS1VE0',
+    appId: '1:849491641703:android:6d5d156aeb44c415695bc2',
+    messagingSenderId: '849491641703',
+    projectId: 'stg-masjid',
+    storageBucket: 'stg-masjid.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyADsCKIPqPjZZZsgLEhfcZ7_3l9_6yRGrg',
-    appId: '1:360806897515:ios:be4938b48e0adb55535e2e',
-    messagingSenderId: '360806897515',
-    projectId: 'furqaand-c1aa3',
-    storageBucket: 'furqaand-c1aa3.appspot.com',
-    iosClientId: '360806897515-ghh867da2n0pba69hlfuf1bfj1kf1hmm.apps.googleusercontent.com',
-    iosBundleId: 'com.example.alSahabah',
+    apiKey: 'AIzaSyBuoQPkFHeY-Jngk62l73MsgSQp6T2NaV4',
+    appId: '1:849491641703:ios:290d467ab7d7c457695bc2',
+    messagingSenderId: '849491641703',
+    projectId: 'stg-masjid',
+    storageBucket: 'stg-masjid.appspot.com',
+    iosClientId: '849491641703-ocj3ns4q0c8cg42b10g1vve8vtrulcm0.apps.googleusercontent.com',
+    iosBundleId: 'com.starstechgroup.starsTechMasjid',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyBuoQPkFHeY-Jngk62l73MsgSQp6T2NaV4',
+    appId: '1:849491641703:ios:771acd096dca327e695bc2',
+    messagingSenderId: '849491641703',
+    projectId: 'stg-masjid',
+    storageBucket: 'stg-masjid.appspot.com',
+    iosClientId: '849491641703-e24i8j07k608n11pdvsvpni25lt051bm.apps.googleusercontent.com',
+    iosBundleId: 'com.starstechgroup.stgMasjid',
   );
 }

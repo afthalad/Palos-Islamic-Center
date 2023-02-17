@@ -458,17 +458,18 @@ class AthanTimesByMonths extends StatelessWidget {
                 style: mSalah_time_title_tstyle,
               ),
             )),
-        Container(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.05,
-            color: sec,
-            child: Center(
-              child: Text(
-                "Athan Timings",
-                textAlign: TextAlign.center,
-                style: mSalah_time_title_tstyle,
-              ),
-            )),
+        // Container(
+        //   width: double.infinity,
+        //   height: MediaQuery.of(context).size.height * 0.05,
+        //   color: sec,
+        //   child: Center(
+        //     child: Text(
+        //       "Athan Timings",
+        //       textAlign: TextAlign.center,
+        //       style: mSalah_time_title_tstyle,
+        //     ),
+        //   ),
+        // ),
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
           // child: buildMonthPrayerTime(monthPrayerTime)

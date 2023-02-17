@@ -16,7 +16,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'firebase_options.dart';
+import 'firebase_options-1.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -36,7 +36,7 @@ void main() async {
     String? token = await FirebaseMessaging.instance.getToken();
     await prefs.setString('fcmToken', token!);
 
-    print('token : ' + token);
+    // print('token : ' + token);
     var response = await dio.post(
       "http://52.90.175.175/api/save-app-settigs",
       data: {
@@ -97,13 +97,13 @@ void main() async {
   }
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-    print('Message asdasdsadaas: ${message.data}');
+    // print('Message asdasdsadaas: ${message.data}');
     if (message.notification != null) {
       print('Message also contained a notification: ${message.notification}');
     }
   });
 
-  print('User granted permission: ${settings.authorizationStatus}');
+  // print('User granted permission: ${settings.authorizationStatus}');
   runApp(const MyApp());
 }
 

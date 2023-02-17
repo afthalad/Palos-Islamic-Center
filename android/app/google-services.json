@@ -1,34 +1,77 @@
 {
   "project_info": {
-    "project_number": "391468271213",
-    "project_id": "stgmasjidh",
-    "storage_bucket": "stgmasjidh.appspot.com"
+    "project_number": "849491641703",
+    "project_id": "stg-masjid",
+    "storage_bucket": "stg-masjid.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:391468271213:android:67fdc3c74d36b787166164",
+        "mobilesdk_app_id": "1:849491641703:android:ddb99e98036b2f21695bc2",
         "android_client_info": {
           "package_name": "com.PalosIslamicCenter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "391468271213-icoc4fvmta5abd9mmssh8aedi3v4j87t.apps.googleusercontent.com",
+          "client_id": "849491641703-6u9hqipg07s371kpsv2al09iqbqq61js.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCBf4YxBoKNqL1tAGplKPBMJsEA1cGn2QM"
+          "current_key": "AIzaSyBvAiB0-oW_NXRsV-m2z-1rAgedkAS1VE0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "391468271213-icoc4fvmta5abd9mmssh8aedi3v4j87t.apps.googleusercontent.com",
+              "client_id": "849491641703-6u9hqipg07s371kpsv2al09iqbqq61js.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "849491641703-e24i8j07k608n11pdvsvpni25lt051bm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.starstechgroup.stgMasjid"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849491641703:android:6d5d156aeb44c415695bc2",
+        "android_client_info": {
+          "package_name": "com.starstechgroup.stg_masjid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849491641703-6u9hqipg07s371kpsv2al09iqbqq61js.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvAiB0-oW_NXRsV-m2z-1rAgedkAS1VE0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "849491641703-6u9hqipg07s371kpsv2al09iqbqq61js.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "849491641703-e24i8j07k608n11pdvsvpni25lt051bm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.starstechgroup.stgMasjid"
+              }
             }
           ]
         }

@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>391468271213-5t1leaa0himq0dihn83l92sgmlqnsf6u.apps.googleusercontent.com</string>
+	<string>849491641703-ocj3ns4q0c8cg42b10g1vve8vtrulcm0.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.391468271213-5t1leaa0himq0dihn83l92sgmlqnsf6u</string>
+	<string>com.googleusercontent.apps.849491641703-ocj3ns4q0c8cg42b10g1vve8vtrulcm0</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCKGaVl1__8TfbkWHNmtMCQT3KMGHL95n8</string>
+	<string>AIzaSyBuoQPkFHeY-Jngk62l73MsgSQp6T2NaV4</string>
 	<key>GCM_SENDER_ID</key>
-	<string>391468271213</string>
+	<string>849491641703</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.alSahabah</string>
+	<string>com.starstechgroup.starsTechMasjid</string>
 	<key>PROJECT_ID</key>
-	<string>stgmasjidh</string>
+	<string>stg-masjid</string>
 	<key>STORAGE_BUCKET</key>
-	<string>stgmasjidh.appspot.com</string>
+	<string>stg-masjid.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:391468271213:ios:4afd079fe9828193166164</string>
+	<string>1:849491641703:ios:290d467ab7d7c457695bc2</string>
 </dict>
 </plist>
