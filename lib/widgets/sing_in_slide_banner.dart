@@ -9,7 +9,7 @@ class SlideBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.55,
+      height: MediaQuery.of(context).size.height * 0.6,
       child: ImageSlideshow(
         width: double.infinity,
         height: double.infinity,
@@ -66,7 +66,23 @@ class SlideBanner extends StatelessWidget {
                 ),
                 bottom: 40,
                 left: 10,
-              )
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 90),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white24,
+                      borderRadius: BorderRadius.circular(50)),
+                  child: IconButton(
+                    color: Colors.white,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back_ios_new_rounded),
+                  ),
+                ),
+              ),
             ],
           ),
           Stack(
@@ -120,7 +136,23 @@ class SlideBanner extends StatelessWidget {
                 ),
                 bottom: 40,
                 left: 10,
-              )
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 90),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white24,
+                      borderRadius: BorderRadius.circular(50)),
+                  child: IconButton(
+                    color: Colors.white,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back_ios_new_rounded),
+                  ),
+                ),
+              ),
             ],
           ),
         ],

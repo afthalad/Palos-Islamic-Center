@@ -37,6 +37,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_image_slideshow: ^0.1.4
+
   google_fonts: ^4.0.3
   url_launcher: ^6.1.7
   video_player: ^2.4.10
@@ -53,10 +54,8 @@ dependencies:
   firebase_core: ^2.4.1
   firebase_messaging: ^14.2.1
   flutter_notification_channel: ^2.0.0
-  
-  
-  # flutter_notification_channel: ^2.0.0
   flutter_local_notifications: ^13.0.0
+ 
 
  
 

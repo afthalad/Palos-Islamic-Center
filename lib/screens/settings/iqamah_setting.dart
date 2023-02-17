@@ -59,16 +59,11 @@ class _BeforeAthanSettingPageScreenState
       asrdropdownValue = prefs.getString('asrIqama') ?? 'No reminder';
       magribdropdownValue = prefs.getString('magribIqama') ?? 'No reminder';
       ishadropdownValue = prefs.getString('ishaIqama') ?? 'No reminder';
-      fajrTextController.text =
-          prefs.getString('fajrTextFormField') ?? 'No reminder';
-      duhrTextController.text =
-          prefs.getString('duhrTextFormField') ?? 'No reminder';
-      asrTextController.text =
-          prefs.getString('asrTextFormField') ?? 'No reminder';
-      magribTextController.text =
-          prefs.getString('magribTextFormField') ?? 'No reminder';
-      ishaTextController.text =
-          prefs.getString('ishaTextFormField') ?? 'No reminder';
+      fajrTextController.text = prefs.getString('fajrTextFormField') ?? '0';
+      duhrTextController.text = prefs.getString('duhrTextFormField') ?? '0';
+      asrTextController.text = prefs.getString('asrTextFormField') ?? '0';
+      magribTextController.text = prefs.getString('magribTextFormField') ?? '0';
+      ishaTextController.text = prefs.getString('ishaTextFormField') ?? '0';
     });
   }
 
