@@ -18,7 +18,7 @@ class NewsGet {
   void loadNextPage() {
     currentPage++;
     fetchNewss();
-    print(currentPage);
+    // print(currentPage);
   }
 }
 

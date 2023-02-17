@@ -13,7 +13,7 @@ class SettingPost {
     Dio dio = Dio();
     final prefs = await SharedPreferences.getInstance();
     var fcmToken = await prefs.getString('fcmToken');
-    print(notification);
+    // print(notification);
     var response =
         await dio.post("http://52.90.175.175/api/save-app-settigs", data: {
       "token": fcmToken,
@@ -68,7 +68,7 @@ class SettingPost {
     });
 
     if (response.statusCode == 200 && response.data['error'] == 0) {
-      print("success");
+      // print("success");
       ScaffoldMessenger.of(context!).showSnackBar(
         const SnackBar(
           duration: Duration(seconds: 3),
@@ -120,7 +120,7 @@ class SettingPost {
         "device_type": Platform.operatingSystem == "android" ? "android" : "ios"
       },
     );
-    print(response);
+    // print(response);
 
     if (response.statusCode == 200 && response.data['error'] == 0) {
       ScaffoldMessenger.of(context!).showSnackBar(

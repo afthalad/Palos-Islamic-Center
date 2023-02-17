@@ -16,12 +16,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'firebase_options-1.dart';
+import 'firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print("Handling a background message: ${message.messageId}");
+  // print("Handling a background message: ${message.messageId}");
 }
 
 void main() async {
@@ -45,7 +45,7 @@ void main() async {
       },
     );
   } else {
-    print("Token here frrom else : $fcmToke");
+    // print("Token here frrom else : $fcmToke");
   }
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -99,7 +99,7 @@ void main() async {
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
     // print('Message asdasdsadaas: ${message.data}');
     if (message.notification != null) {
-      print('Message also contained a notification: ${message.notification}');
+      // print('Message also contained a notification: ${message.notification}');
     }
   });
 

@@ -144,9 +144,9 @@ class _HomeScreenState extends State<HomeScreen> {
             await (nextDayFajirTime.add(Duration(days: 1))).difference(now);
       }
 
-      print(cPrayerName);
-      print(cPrayerTime);
-      print(remingTime);
+      // print(cPrayerName);
+      // print(cPrayerTime);
+      // print(remingTime);
     } else {}
   }
 
@@ -165,14 +165,14 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           features.addAll(data.map((i) => Feature.fromJson(i)).toList());
         });
-        print(features.length);
+        // print(features.length);
 
         return data.map((feature) => Feature.fromJson(feature)).toList();
       } else {
         throw Exception('Failed to load features data');
       }
     } catch (error) {
-      print(error);
+      // print(error);
       throw Exception('Failed to load features data: $error');
     }
   }
@@ -223,70 +223,75 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     return Scaffold(
-        appBar: AppBar(
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.light,
-            statusBarBrightness: Brightness.light,
-          ),
-          elevation: 1,
-          backgroundColor: appBarColor,
-          centerTitle: true,
-          title: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 35),
-            child: Row(children: [
-              Container(
-                  width: 55,
-                  height: 40,
-                  child: Image(image: AssetImage("images/stg.png"))),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: const Text('STG Masjid'),
-              ),
-            ]),
-          ),
-          actions: <Widget>[
-            SingleChildScrollView(
-              child: Builder(
-                builder: (BuildContext scaffoldContext) {
-                  return IconButton(
-                    icon: const Icon(Icons
-                        .notifications_active_rounded), // Replace with your desired icon
-                    onPressed: () {
-                      Scaffold.of(scaffoldContext).openEndDrawer();
-                    },
-                  );
-                },
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.dark,
+        ),
+        elevation: 1,
+        backgroundColor: appBarColor,
+        centerTitle: true,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 35),
+          child: Row(children: [
+            Container(
+              width: 55,
+              height: 40,
+              child: Image(
+                image: AssetImage("images/stg.png"),
               ),
             ),
-          ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: const Text('STG Masjid'),
+            ),
+          ]),
         ),
-        endDrawer: const EndDrawer(),
-        drawer: Builder(
-          builder: (context) {
-            return FutureBuilder<bool>(
-              future: Redirects.drawerList(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return snapshot.data!
-                      ? SignedInStartDrawer(
-                          formKey: _formKey,
-                          mHeight: mHeight,
-                          mWidth: mWidth,
-                        )
-                      : StartDrawer(
-                          formKey: _formKey,
-                          mHeight: mHeight,
-                          mWidth: mWidth,
-                        );
-                } else {
-                  return const CircularProgressIndicator();
-                }
+        actions: <Widget>[
+          SingleChildScrollView(
+            child: Builder(
+              builder: (BuildContext scaffoldContext) {
+                return IconButton(
+                  icon: const Icon(Icons
+                      .notifications_active_rounded), // Replace with your desired icon
+                  onPressed: () {
+                    Scaffold.of(scaffoldContext).openEndDrawer();
+                  },
+                );
               },
-            );
-          },
-        ),
-        body: RefreshIndicator(
+            ),
+          ),
+        ],
+      ),
+      endDrawer: const EndDrawer(),
+      drawer: Builder(
+        builder: (context) {
+          return FutureBuilder<bool>(
+            future: Redirects.drawerList(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return snapshot.data!
+                    ? SignedInStartDrawer(
+                        formKey: _formKey,
+                        mHeight: mHeight,
+                        mWidth: mWidth,
+                      )
+                    : StartDrawer(
+                        formKey: _formKey,
+                        mHeight: mHeight,
+                        mWidth: mWidth,
+                      );
+              } else {
+                return const CircularProgressIndicator();
+              }
+            },
+          );
+        },
+      ),
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: RefreshIndicator(
           displacement: 150,
           backgroundColor: Colors.white,
           color: Color.fromARGB(255, 40, 42, 70),
@@ -495,7 +500,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 

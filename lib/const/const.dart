@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-Color appBarColor = Colors.indigo.shade900;
+Color appBarColor = Colors.blueGrey;
 // Color appBarColor = Color.fromARGB(255, 40, 42, 70);
 Color sec = Color.fromARGB(255, 197, 36, 39);
 

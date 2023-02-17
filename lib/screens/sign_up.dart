@@ -58,7 +58,7 @@ class _SignUpPageScreenState extends State<SignUpPageScreen> {
           elevation: 1,
           backgroundColor: appBarColor,
           centerTitle: true,
-          title: const Text("Volunteer sing up"),
+          title: const Text("Sign up"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),

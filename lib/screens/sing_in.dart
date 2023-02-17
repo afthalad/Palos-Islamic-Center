@@ -128,12 +128,12 @@ class _SigninScreenState extends State<SigninScreen> {
                                     MaterialPageRoute(
                                       builder: (context) => SignUpPageScreen(
                                         formKey: _formKey2,
-                                        buttonText: "Sing up",
+                                        buttonText: "Sign up",
                                         mHeight:
                                             MediaQuery.of(context).size.height,
                                         mWidth:
                                             MediaQuery.of(context).size.height,
-                                        pageTitle: "Sing up",
+                                        pageTitle: "Sign up",
                                         pageSubTitle:
                                             "Fill out your information to create an account and start using our service. It only takes a few seconds!",
                                       ),

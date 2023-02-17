@@ -43,7 +43,7 @@ class _AskTheQuestionScreenState extends State<AskTheQuestionScreen> {
       categories = data.map((d) => Categories.fromJson(d)).toList();
     });
 
-    print(categories.runtimeType);
+    // print(categories.runtimeType);
   }
 
   @override

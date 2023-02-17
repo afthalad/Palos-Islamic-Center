@@ -30,7 +30,7 @@ class _EventsScreenState extends State<EventsScreen> {
   loadNextPage() {
     currentPage = currentPage + 1;
     getEvents();
-    print("DASDSADS:${currentPage}");
+    // print("DASDSADS:${currentPage}");
   }
 
   @override

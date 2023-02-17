@@ -30,10 +30,9 @@ class _FeaturesFromApiState extends State<FeaturesFromApi> {
       appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
-
             statusBarIconBrightness:
-                Brightness.light, // For Android (dark icons)
-            statusBarBrightness: Brightness.light, // For iOS (dark icons)
+                Brightness.dark, // For Android (dark icons)
+            statusBarBrightness: Brightness.dark, // For iOS (dark icons)
           ),
           elevation: 1,
           backgroundColor: appBarColor,

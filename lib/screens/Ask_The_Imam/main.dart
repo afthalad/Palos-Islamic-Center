@@ -34,7 +34,7 @@ class _AskTheImamScreenState extends State<AskTheImamScreen> {
   Future fetchCategoriess() async {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
-    print(token);
+    // print(token);
     Dio dio = Dio();
     dio.options.headers["Authorization"] = "Bearer $token";
     dio.options.headers["Accept"] = "application/json";

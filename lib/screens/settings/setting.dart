@@ -23,7 +23,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('notication', "");
     await prefs.setString('notication', switchValue ? "1" : "0");
-    print(prefs.getString('notication'));
+    // print(prefs.getString('notication'));
   }
 
   getEnableNotificationSetting(switchValue) async {
@@ -145,7 +145,7 @@ class _SettingPageScreenState extends State<SettingPageScreen> {
                     _switchValue = value;
                   });
                   await saveEnableNotificationSetting(_switchValue);
-                  print(_switchValue);
+                  // print(_switchValue);
                   await settingPost.enableNotificationSettingPost(_switchValue);
                 },
               ),

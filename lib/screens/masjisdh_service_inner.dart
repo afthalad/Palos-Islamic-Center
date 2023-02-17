@@ -21,7 +21,7 @@ class _MasjidhServiceInnerState extends State<MasjidhServiceInner> {
       var response = await Dio()
           .get('http://52.90.175.175/api/services/get/${widget.serviceId}');
       var data = response.data["data"];
-      print(data);
+      // print(data);
       setState(() {
         title = data["title"];
         description = data["description"];

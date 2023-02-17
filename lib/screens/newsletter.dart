@@ -42,7 +42,7 @@ class _NewsletterScreenState extends State<NewsletterScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool("newsletter", true);
       await prefs.setString("email", email);
-      print("successfully add this email $email to our newsletter");
+      // print("successfully add this email $email to our newsletter");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           duration: Duration(seconds: 3),
@@ -102,16 +102,16 @@ class _NewsletterScreenState extends State<NewsletterScreen> {
 
       if (response.statusCode == 200 && response.data["error"] == 0) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        print("Successfully unsubscribed to newsletter $email");
+        // print("Successfully unsubscribed to newsletter $email");
         await prefs.setBool("newsletter", false);
         await prefs.setString("email", "");
 
-        print(prefs.getBool(
-          "newsletter",
-        ));
-        print(prefs.getString(
-          "email",
-        ));
+        // print(prefs.getBool(
+        //   "newsletter",
+        // ));
+        // print(prefs.getString(
+        //   "email",
+        // ));
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             duration: Duration(seconds: 3),

@@ -163,8 +163,8 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
     DateTime now = await DateTime.now();
     String month = now.month.toString().padLeft(2, '0');
     int year = await now.year;
-    print(month);
-    print(year);
+    // print(month);
+    // print(year);
     Response response = await dio
         .get("http://52.90.175.175/api/prayer-time/get-by-month/$month/$year");
 
@@ -176,7 +176,7 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
       }
 
       setState(() {});
-      print(monthPrayerTime.length);
+      // print(monthPrayerTime.length);
     }
   }
 

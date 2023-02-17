@@ -42,7 +42,7 @@ class _NewsScreenState extends State<NewsScreen> {
       currentPage++;
     });
     fetchNewss();
-    print("object");
+    // print("object");
   }
 
   void _scrollControllerListner() {
