@@ -28,7 +28,7 @@ class _BeforeAthanSettingPageScreenState
 
   var drop = [
     'No reminder',
-    'Soft Beeb',
+    'Beeb',
   ];
 
   final fajrTextController = TextEditingController();
@@ -114,6 +114,7 @@ class _BeforeAthanSettingPageScreenState
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
+                        key: Key(value),
                       );
                     }).toList(),
                   ),
@@ -158,6 +159,7 @@ class _BeforeAthanSettingPageScreenState
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
+                        key: Key(value),
                       );
                     }).toList(),
                   ),
@@ -202,6 +204,7 @@ class _BeforeAthanSettingPageScreenState
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
+                        key: Key(value),
                       );
                     }).toList(),
                   ),
@@ -246,6 +249,7 @@ class _BeforeAthanSettingPageScreenState
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
+                        key: Key(value),
                       );
                     }).toList(),
                   ),
@@ -290,6 +294,7 @@ class _BeforeAthanSettingPageScreenState
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
+                        key: Key(value),
                       );
                     }).toList(),
                   ),

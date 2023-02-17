@@ -369,17 +369,12 @@ class _PrayerTimingsScreenState extends State<PrayerTimingsScreen> {
                                 child: AthanTimesByMonths(
                                     monthPrayerTime: monthPrayerTime),
                               ),
-                              // SingleChildScrollView(
-                              //   child: IqamaTimesByMonths(
-                              //       monthPrayerTime: monthPrayerTime),
-                              // )
                             ],
                           ),
                         ),
                       ],
                     ),
                   ),
-                 
                 ],
               ),
             ),

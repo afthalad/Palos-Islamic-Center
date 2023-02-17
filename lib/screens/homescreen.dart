@@ -226,8 +226,8 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.light,
-            statusBarBrightness: Brightness.light,
+            statusBarIconBrightness: Brightness.dark,
+            statusBarBrightness: Brightness.dark,
           ),
           elevation: 1,
           backgroundColor: appBarColor,
