@@ -43,11 +43,12 @@ class _AthanSettingPageScreenState extends State<AthanSettingPageScreen> {
   void getSettings() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      fajradhandropdownValue = prefs.getString('fajrAdhan')!;
-      duhradhandropdownValue = prefs.getString('duhrAdhan')!;
-      asradhandropdownValue = prefs.getString('asrAdhan')!;
-      magribadhandropdownValue = prefs.getString('magribAdhan')!;
-      ishaadhandropdownValue = prefs.getString('ishaAdhan')!;
+      fajradhandropdownValue = prefs.getString('fajrAdhan') ?? 'No reminder';
+      duhradhandropdownValue = prefs.getString('duhrAdhan') ?? 'No reminder';
+      asradhandropdownValue = prefs.getString('asrAdhan') ?? 'No reminder';
+      magribadhandropdownValue =
+          prefs.getString('magribAdhan') ?? 'No reminder';
+      ishaadhandropdownValue = prefs.getString('ishaAdhan') ?? 'No reminder';
     });
   }
 

@@ -767,33 +767,31 @@ class EndDrawer extends StatelessWidget {
         children: [
           DrawerHeader(
             padding: const EdgeInsets.all(0),
-            child: Expanded(
-              child: Container(
-                margin: const EdgeInsets.all(0),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.6), BlendMode.darken),
-                    fit: BoxFit.cover,
-                    image: NetworkImage(end_drawer_header_bgimage),
+            child: Container(
+              margin: const EdgeInsets.all(0),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.6), BlendMode.darken),
+                  fit: BoxFit.cover,
+                  image: NetworkImage(end_drawer_header_bgimage),
+                ),
+              ),
+              padding: const EdgeInsets.all(10),
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    end_drawer_heading,
+                    style: end_drawer_heading_tstyle,
                   ),
-                ),
-                padding: const EdgeInsets.all(10),
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      end_drawer_heading,
-                      style: end_drawer_heading_tstyle,
-                    ),
-                    Text(
-                      end_drawer_description,
-                      style: end_drawer_description_tstyle,
-                    ),
-                  ],
-                ),
+                  Text(
+                    end_drawer_description,
+                    style: end_drawer_description_tstyle,
+                  ),
+                ],
               ),
             ),
           ),
