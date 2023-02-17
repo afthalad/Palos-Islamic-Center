@@ -54,16 +54,21 @@ class _BeforeAthanSettingPageScreenState
   iqamahGetSettings() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      fajrdropdownValue = prefs.getString('fajrIqama')!;
-      duhrdropdownValue = prefs.getString('duhrIqama')!;
-      asrdropdownValue = prefs.getString('asrIqama')!;
-      magribdropdownValue = prefs.getString('magribIqama')!;
-      ishadropdownValue = prefs.getString('ishaIqama')!;
-      fajrTextController.text = prefs.getString('fajrTextFormField')!;
-      duhrTextController.text = prefs.getString('duhrTextFormField')!;
-      asrTextController.text = prefs.getString('asrTextFormField')!;
-      magribTextController.text = prefs.getString('magribTextFormField')!;
-      ishaTextController.text = prefs.getString('ishaTextFormField')!;
+      fajrdropdownValue = prefs.getString('fajrIqama') ?? 'No reminder';
+      duhrdropdownValue = prefs.getString('duhrIqama') ?? 'No reminder';
+      asrdropdownValue = prefs.getString('asrIqama') ?? 'No reminder';
+      magribdropdownValue = prefs.getString('magribIqama') ?? 'No reminder';
+      ishadropdownValue = prefs.getString('ishaIqama') ?? 'No reminder';
+      fajrTextController.text =
+          prefs.getString('fajrTextFormField') ?? 'No reminder';
+      duhrTextController.text =
+          prefs.getString('duhrTextFormField') ?? 'No reminder';
+      asrTextController.text =
+          prefs.getString('asrTextFormField') ?? 'No reminder';
+      magribTextController.text =
+          prefs.getString('magribTextFormField') ?? 'No reminder';
+      ishaTextController.text =
+          prefs.getString('ishaTextFormField') ?? 'No reminder';
     });
   }
 
