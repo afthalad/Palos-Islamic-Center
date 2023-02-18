@@ -363,9 +363,13 @@ class FeaturesCardFromAdmin extends StatelessWidget {
                 image: NetworkImage(featuresIcon),
               ),
             ),
-            Text(
-              featuresTitle,
-              style: features_title_tstyle,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                featuresTitle,
+                maxLines: 1,
+                style: features_title_tstyle,
+              ),
             )
           ],
         ),

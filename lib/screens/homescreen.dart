@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Timer? _timer;
 
   var cPrayerName = "";
-  String cPrayerTime = "12:00 AM"; // this line changed
+  String cPrayerTime = "12:00 PM"; // this line changed
   var remingTime;
 
   List<PrayerTimeClass> prayerTime = [];
@@ -53,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
             .map((i) => Event.fromJson(i))
             .toList();
       });
+      // print(events.length);
     } catch (e) {
       null;
     }
@@ -143,10 +144,13 @@ class _HomeScreenState extends State<HomeScreen> {
         remingTime =
             await (nextDayFajirTime.add(Duration(days: 1))).difference(now);
       }
+<<<<<<< HEAD
 
       // print(cPrayerName);
       // print(cPrayerTime);
       // print(remingTime);
+=======
+>>>>>>> b5e6dd0620920c0ad0f7bcf879c5a7707ad45e40
     } else {}
   }
 
@@ -195,8 +199,9 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
 
-    eventsGet();
     headerImageGet();
+    eventsGet();
+    print(events.length);
     super.initState();
   }
 

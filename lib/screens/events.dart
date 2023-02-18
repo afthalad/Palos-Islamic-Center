@@ -24,7 +24,10 @@ class _EventsScreenState extends State<EventsScreen> {
       setState(() {
         events.addAll(data.map((i) => Event.fromJson(i)).toList());
       });
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+      print(events.length);
+    }
   }
 
   loadNextPage() {
