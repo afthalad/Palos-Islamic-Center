@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>849491641703-e24i8j07k608n11pdvsvpni25lt051bm.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.849491641703-e24i8j07k608n11pdvsvpni25lt051bm</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBuoQPkFHeY-Jngk62l73MsgSQp6T2NaV4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>849491641703</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.starstechgroup.stgMasjid</string>
+	<key>PROJECT_ID</key>
+	<string>stg-masjid</string>
+	<key>STORAGE_BUCKET</key>
+	<string>stg-masjid.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:849491641703:ios:771acd096dca327e695bc2</string>
+</dict>
+</plist>
